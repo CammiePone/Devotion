@@ -27,7 +27,7 @@ public class TimeCultLeaderRobesModel<T extends LivingEntity> extends BipedEntit
 		robe = body.getChild("robe");
 		leftRobe = body.getChild("cape").getChild("leftRobe");
 		rightRobe = body.getChild("cape").getChild("rightRobe");
-		hood = body.getChild("hood");
+		hood = head.getChild("hood");
 		cape = body.getChild("cape");
 		leftLegArmour = leftLeg.getChild("leftLegArmour");
 		rightLegArmour = rightLeg.getChild("rightLegArmour");
@@ -52,7 +52,7 @@ public class TimeCultLeaderRobesModel<T extends LivingEntity> extends BipedEntit
 		ModelPartData cube_r1 = skull.addChild("cube_r1", ModelPartBuilder.create().uv(106, 73).cuboid(-9.0F, -12.0F, -2.0F, 7.0F, 3.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.0F, -0.6545F, 0.7854F));
 		ModelPartData cube_r2 = skull.addChild("cube_r2", ModelPartBuilder.create().uv(78, 47).cuboid(2.0F, -12.0F, -2.0F, 7.0F, 3.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.0F, 0.6545F, -0.7854F));
 		ModelPartData robe = body.addChild("robe", ModelPartBuilder.create().uv(46, 101).cuboid(-4.0F, 1.0F, -2.0F, 8.0F, 13.0F, 4.0F, new Dilation(0.9F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		ModelPartData cube_r3 = body.addChild("hood", ModelPartBuilder.create().uv(79, 55).cuboid(-5.0F, -9.0F, -4.25F, 10.0F, 9.0F, 9.0F, new Dilation(0.55F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
+		ModelPartData hood = head.addChild("hood", ModelPartBuilder.create().uv(79, 55).cuboid(-5.0F, -9.0F, -4.25F, 10.0F, 9.0F, 9.0F, new Dilation(0.55F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
 		ModelPartData cape = body.addChild("cape", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 2.0F, 2.0F));
 		ModelPartData cube_r4 = cape.addChild("cube_r4", ModelPartBuilder.create().uv(70, 108).cuboid(-4.0F, -2.0F, 0.0F, 8.0F, 18.0F, 2.0F, new Dilation(0.2F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
 		ModelPartData cube_r5 = cape.addChild("rightRobe", ModelPartBuilder.create().uv(46, 81).cuboid(2.0F, 3.0F, -6.0F, 9.0F, 12.0F, 8.0F, new Dilation(0.25F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.0F, -0.0436F, 0.0F));

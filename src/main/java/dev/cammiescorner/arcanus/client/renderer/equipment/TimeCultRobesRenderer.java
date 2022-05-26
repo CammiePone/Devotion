@@ -3,6 +3,7 @@ package dev.cammiescorner.arcanus.client.renderer.equipment;
 import dev.cammiescorner.arcanus.Arcanus;
 import dev.cammiescorner.arcanus.client.models.equipment.TimeCultLeaderRobesModel;
 import dev.cammiescorner.arcanus.client.models.equipment.TimeCultRobesModel;
+import dev.cammiescorner.arcanus.common.registry.ArcanusItems;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -13,7 +14,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 
 public class TimeCultRobesRenderer implements ArmorRenderer {
 	private final MinecraftClient client = MinecraftClient.getInstance();
@@ -42,17 +42,17 @@ public class TimeCultRobesRenderer implements ArmorRenderer {
 			entityModel.setAttributes(leaderModel);
 			leaderModel.setVisible(true);
 			leaderModel.skull.visible = slot == EquipmentSlot.HEAD;
+			leaderModel.hood.visible = slot == EquipmentSlot.CHEST && entity.getEquippedStack(EquipmentSlot.HEAD).getItem() == ArcanusItems.TIME_CULTIST_LEADER_HOOD;
+			leaderModel.cape.visible = slot == EquipmentSlot.CHEST;
 			leaderModel.robe.visible = slot == EquipmentSlot.LEGS;
 			leaderModel.leftLegArmour.visible = slot == EquipmentSlot.LEGS;
 			leaderModel.rightLegArmour.visible = slot == EquipmentSlot.LEGS;
 			leaderModel.leftShoe.visible = slot == EquipmentSlot.FEET;
 			leaderModel.rightShoe.visible = slot == EquipmentSlot.FEET;
-			leaderModel.hood.visible = slot == EquipmentSlot.CHEST;
-			leaderModel.cape.visible = slot == EquipmentSlot.CHEST;
-			leaderModel.hood.setAngles(entity.getPitch() / 60f, (entity.getHeadYaw() - entity.bodyYaw) / 160f, 0);
-			leaderModel.leftRobe.setAngles(entityModel.rightArm.pitch / 1.4f,0,0);
-			leaderModel.rightRobe.setAngles(entityModel.leftArm.pitch / 1.4f,0,0);
 			ArmorRenderer.renderPart(matrices, vertices, light, stack, leaderModel, texture);
+
+			leaderModel.leftRobe.setAngles(entityModel.rightArm.pitch * 0.8F, 0, 0);
+			leaderModel.rightRobe.setAngles(entityModel.leftArm.pitch * 0.8F, 0, 0);
 		}
 		else {
 			NbtCompound nbt = stack.getSubNbt(Arcanus.MOD_ID);
