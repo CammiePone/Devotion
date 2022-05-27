@@ -33,6 +33,7 @@ public class ArcanusClient implements ClientModInitializer {
 	public static final Identifier EMITTER_MAGE_ROBES = Arcanus.id("textures/entity/armor/emitter_mage_robes.png");
 	public static final Identifier CONJURER_MAGE_ROBES = Arcanus.id("textures/entity/armor/conjurer_mage_robes.png");
 	public static final Identifier MANIPULATOR_MAGE_ROBES = Arcanus.id("textures/entity/armor/manipulator_mage_robes.png");
+	public static long clientTick = 0;
 
 	@Override
 	public void onInitializeClient(ModContainer mod) {

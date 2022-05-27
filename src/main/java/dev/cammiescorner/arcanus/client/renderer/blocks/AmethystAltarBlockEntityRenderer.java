@@ -2,6 +2,7 @@ package dev.cammiescorner.arcanus.client.renderer.blocks;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.cammiescorner.arcanus.api.ArcanusHelper;
+import dev.cammiescorner.arcanus.client.ArcanusClient;
 import dev.cammiescorner.arcanus.client.AuraVertexConsumerProvider;
 import dev.cammiescorner.arcanus.client.models.TranslucentBakedModel;
 import dev.cammiescorner.arcanus.common.blocks.entities.AmethystAltarBlockEntity;
@@ -44,7 +45,7 @@ public class AmethystAltarBlockEntityRenderer implements BlockEntityRenderer<Ame
 		int filledSlots = altar.filledSlots();
 
 		if(world != null) {
-			double time = world.getTime() + tickDelta;
+			double time = ArcanusClient.clientTick + tickDelta;
 			HashMap<BlockPos, BlockState> structureMap = ArcanusHelper.getStructureMap(world);
 			BlockPos altarOffset = ArcanusHelper.getAltarOffset(world);
 

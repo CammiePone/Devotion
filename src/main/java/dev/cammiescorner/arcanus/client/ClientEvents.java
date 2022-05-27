@@ -36,6 +36,8 @@ public class ClientEvents {
 			}
 		});
 
+		ClientTickEvents.END.register(client -> ArcanusClient.clientTick++);
+
 		KeyBindingCallback.UNPRESSED.register((key, modifiers) -> {
 			MinecraftClient client = MinecraftClient.getInstance();
 
