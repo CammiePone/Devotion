@@ -43,28 +43,26 @@ public final class AuraEffectManager implements EntitiesPreRenderCallback, Shade
 	 * Gets the aura level of an entity as a float in the range [0..1]
 	 *
 	 * @param entity the entity
-	 *
 	 * @return the aura level
 	 */
 	public static float getAuraFor(Entity entity) {
-		return ArcanusComponents.AURA_COMPONENT.isProvidedBy(entity) && ArcanusComponents.AURA_FADE_COMPONENT.isProvidedBy(entity) && ArcanusHelper.getAuraFade(entity) > 0 ?
-				(ArcanusComponents.AURA_COMPONENT.get(entity).getAura() / (float) ArcanusComponents.AURA_COMPONENT.get(entity).getMaxAura()) * ArcanusHelper.getAuraFade(entity) : 0;
+		return ArcanusComponents.AURA_COMPONENT.isProvidedBy(entity) && ArcanusComponents.AURA_FADE_COMPONENT.isProvidedBy(entity) &&
+				ArcanusHelper.getAuraFade(entity) > 0 ? (ArcanusHelper.getAura(entity) / (float) ArcanusHelper.getMaxAura(entity)) * ArcanusHelper.getAuraFade(entity) : 0;
 	}
 
 	/**
 	 * Gets the aura colour of an entity as a three-length int array in the range [0.255]
 	 *
 	 * @param entity the entity
-	 *
 	 * @return the aura colour
 	 */
 	public static int[] getAuraColourFor(Entity entity) {
-		return ArcanusComponents.CURRENT_SPELL_COMPONENT.isProvidedBy(entity) ? ArcanusComponents.CURRENT_SPELL_COMPONENT.get(entity).getSelectedSpell().getSpellType().getRgbInt() : new int[]{0, 0, 0};
+		return ArcanusComponents.CURRENT_SPELL_COMPONENT.isProvidedBy(entity) ? ArcanusHelper.getSelectedSpell(entity).getSpellType().getRgbInt() : new int[] { 0, 0, 0 };
 	}
 
 	@Override
 	public void beforeEntitiesRender(@NotNull Camera camera, @NotNull Frustum frustum, float tickDelta) {
-		this.auraBufferCleared = false;
+		auraBufferCleared = false;
 	}
 
 	@Override
@@ -88,13 +86,13 @@ public final class AuraEffectManager implements EntitiesPreRenderCallback, Shade
 		if(auraFramebuffer != null) {
 			auraFramebuffer.beginWrite(false);
 
-			if(!this.auraBufferCleared) {
+			if(!auraBufferCleared) {
 				// clear framebuffer colour (but not depth)
 				float[] clearColor = auraFramebuffer.clearColor;
 				RenderSystem.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 				RenderSystem.clear(GL_COLOR_BUFFER_BIT, MinecraftClient.IS_SYSTEM_MAC);
 
-				this.auraBufferCleared = true;
+				auraBufferCleared = true;
 			}
 		}
 	}
@@ -115,6 +113,7 @@ public final class AuraEffectManager implements EntitiesPreRenderCallback, Shade
 	private void assignDepthTexture(ManagedShaderEffect managedShaderEffect) {
 		client.getFramebuffer().beginWrite(false);
 		int depthTexturePtr = client.getFramebuffer().getDepthAttachment();
+
 		if(depthTexturePtr > -1) {
 			auraFramebuffer.beginWrite(false);
 			GlStateManager._glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexturePtr, 0);
@@ -125,7 +124,6 @@ public final class AuraEffectManager implements EntitiesPreRenderCallback, Shade
 	 * Gets the {@link RenderLayer} for rendering auras with a given texture
 	 *
 	 * @param texture the identifier of the texture to use
-	 *
 	 * @return the render layer
 	 */
 	public static RenderLayer getRenderLayer(Identifier texture) {
@@ -136,7 +134,6 @@ public final class AuraEffectManager implements EntitiesPreRenderCallback, Shade
 	 * Gets the {@link RenderLayer} for rendering auras with the same texture as a given render layer
 	 *
 	 * @param base the render layer to take the texture from
-	 *
 	 * @return the render layer
 	 */
 	public static RenderLayer getRenderLayer(@NotNull RenderLayer base) {
@@ -172,15 +169,13 @@ public final class AuraEffectManager implements EntitiesPreRenderCallback, Shade
 		 * Extracts the texture from a render layer and creates an aura render layer with it.
 		 *
 		 * @param base the render layer to take the texture from
-		 *
 		 * @return the aura render layer
 		 */
 		private static RenderLayer getRenderLayerWithTextureFrom(RenderLayer base) {
-			if (base instanceof RenderLayer.MultiPhase multiPhase) {
+			if(base instanceof RenderLayer.MultiPhase multiPhase)
 				return AURA_LAYER.apply(multiPhase.getPhases().texture.getId().orElse(WHITE_TEXTURE));
-			} else {
+			else
 				return DEFAULT_AURA_LAYER;
-			}
 		}
 	}
 }

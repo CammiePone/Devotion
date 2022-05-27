@@ -26,7 +26,8 @@
 			"init": "dev.cammiescorner.arcanus.Arcanus",
 			"client_init": "dev.cammiescorner.arcanus.client.ArcanusClient",
 			"pre_launch": "dev.cammiescorner.arcanus.common.ArcanusPreLaunch",
-			"cardinal-components": "dev.cammiescorner.arcanus.common.registry.ArcanusComponents"
+			"cardinal-components": "dev.cammiescorner.arcanus.common.registry.ArcanusComponents",
+			"modmenu": "dev.cammiescorner.arcanus.common.integration.ArcanusModMenu"
 		},
 		"depends": [
 			{
@@ -42,8 +43,8 @@
 				"versions": ">=1.18.2"
 			},
 			{
-				"id": "cloth-config2",
-				"versions": ">=6.0.39"
+				"id": "midnightlib",
+				"versions": ">=0.4.0"
 			},
 			{
 				"id": "cardinal-components-base",

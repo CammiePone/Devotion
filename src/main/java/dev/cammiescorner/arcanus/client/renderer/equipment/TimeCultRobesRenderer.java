@@ -49,10 +49,11 @@ public class TimeCultRobesRenderer implements ArmorRenderer {
 			leaderModel.rightLegArmour.visible = slot == EquipmentSlot.LEGS;
 			leaderModel.leftShoe.visible = slot == EquipmentSlot.FEET;
 			leaderModel.rightShoe.visible = slot == EquipmentSlot.FEET;
-			ArmorRenderer.renderPart(matrices, vertices, light, stack, leaderModel, texture);
 
 			leaderModel.leftRobe.setAngles(entityModel.rightArm.pitch * 0.8F, 0, 0);
 			leaderModel.rightRobe.setAngles(entityModel.leftArm.pitch * 0.8F, 0, 0);
+
+			ArmorRenderer.renderPart(matrices, vertices, light, stack, leaderModel, texture);
 		}
 		else {
 			NbtCompound nbt = stack.getSubNbt(Arcanus.MOD_ID);

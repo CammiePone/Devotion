@@ -67,16 +67,14 @@ public class AmethystAltarBlockEntity extends BlockEntity implements Inventory {
 			if(world.getTime() % 20 == 0)
 				altar.checkMultiblock();
 
+			int filledSlots = altar.filledSlots();
 			Box box = state.getCollisionShape(world, pos).getBoundingBox().stretch(2, 0.4, 2).stretch(-3, 0, -3).offset(altar.getPos());
-			List<ItemEntity> list = world.getEntitiesByType(TypeFilter.instanceOf(ItemEntity.class), box, itemEntity -> altar.filledSlots() < altar.size());
+			List<ItemEntity> list = world.getEntitiesByType(TypeFilter.instanceOf(ItemEntity.class), box, itemEntity -> filledSlots < altar.size());
 
-			for(ItemEntity itemEntity : list) {
-				int filledSlots = altar.filledSlots();
-
-				if(filledSlots >= altar.size())
-					break;
-
+			if(!list.isEmpty()) {
+				ItemEntity itemEntity = list.get(0);
 				ItemStack stack = itemEntity.getStack();
+
 				altar.setStack(filledSlots, stack.split(1));
 
 				if(stack.getCount() <= 0)
@@ -116,8 +114,6 @@ public class AmethystAltarBlockEntity extends BlockEntity implements Inventory {
 					}
 				}
 				else {
-					altar.craftingTime++;
-
 					if(altar.getCraftingTime() >= 120) {
 						if(world instanceof ServerWorld serverWorld) {
 							ServerPlayerEntity player = serverWorld.getClosestEntity(ServerPlayerEntity.class, TargetPredicate.createNonAttackable(), null, altar.getPos().getX() + 0.5, altar.getPos().getY() + 0.5, altar.getPos().getZ() + 0.5, box);
@@ -131,6 +127,9 @@ public class AmethystAltarBlockEntity extends BlockEntity implements Inventory {
 				}
 			}
 		}
+
+		if(blockEntity instanceof AmethystAltarBlockEntity altar && altar.isCompleted() && altar.isCrafting() && altar.power >= altar.getRequiredPower())
+			altar.craftingTime++;
 	}
 
 	@Override

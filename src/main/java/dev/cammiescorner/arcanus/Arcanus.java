@@ -4,9 +4,11 @@ import dev.cammiescorner.arcanus.api.actions.AltarAction;
 import dev.cammiescorner.arcanus.api.entity.ArcanusAttributes;
 import dev.cammiescorner.arcanus.api.spells.Spell;
 import dev.cammiescorner.arcanus.common.CommonEvents;
+import dev.cammiescorner.arcanus.common.integration.ArcanusConfig;
 import dev.cammiescorner.arcanus.common.packets.c2s.CastSpellPacket;
 import dev.cammiescorner.arcanus.common.packets.c2s.SetCastingPacket;
 import dev.cammiescorner.arcanus.common.registry.*;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -36,6 +38,8 @@ public class Arcanus implements ModInitializer {
 
 	@Override
 	public void onInitialize(ModContainer mod) {
+		MidnightConfig.init(Arcanus.MOD_ID, ArcanusConfig.class);
+
 		ArcanusItems.register();
 		ArcanusBlocks.register();
 		ArcanusBlockEntities.register();

@@ -41,9 +41,10 @@ public class MageRobesRenderer implements ArmorRenderer {
 		model.belt.visible = slot == EquipmentSlot.LEGS;
 		model.leftShoe.visible = slot == EquipmentSlot.FEET;
 		model.rightShoe.visible = slot == EquipmentSlot.FEET;
-		ArmorRenderer.renderPart(matrices, vertices, light, stack, model, texture);
 
 		ModelPart cape = model.cloak.getChild("cube_r2");
 		// TODO animate cape on the cloak
+
+		ArmorRenderer.renderPart(matrices, vertices, light, stack, model, texture);
 	}
 }

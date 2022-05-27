@@ -14,6 +14,7 @@ repositories {
 	maven { url "https://maven.willbl.dev/releases" }
 	maven { url "https://jitpack.io" }
 	maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+	maven { url "https://api.modrinth.com/maven" }
 }
 
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
@@ -32,12 +33,8 @@ dependencies {
 	modImplementation libs.modmenu
 	modImplementation libs.satin
 	modImplementation libs.early.features
+	modImplementation libs.midnightlib
 //    modImplementation include(libs.blabber)
-
-	modApi(libs.cloth.config) {
-		exclude group: "net.fabricmc.fabric-api"
-		exclude group: "net.fabricmc", module: "fabric-loader"
-	}
 
 	implementation libs.mixinextras
 	annotationProcessor libs.mixinextras
