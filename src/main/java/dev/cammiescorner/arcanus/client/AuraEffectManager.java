@@ -3,6 +3,7 @@ package dev.cammiescorner.arcanus.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.cammiescorner.arcanus.api.ArcanusHelper;
+import dev.cammiescorner.arcanus.common.integration.ArcanusConfig;
 import dev.cammiescorner.arcanus.common.registry.ArcanusComponents;
 import ladysnake.satin.api.event.EntitiesPreRenderCallback;
 import ladysnake.satin.api.event.ShaderEffectRenderCallback;
@@ -68,6 +69,8 @@ public final class AuraEffectManager implements EntitiesPreRenderCallback, Shade
 	@Override
 	public void renderShaderEffects(float tickDelta) {
 		if(this.auraBufferCleared) {
+			auraPostShader.setUniformValue("TransStepGranularity", ArcanusConfig.auraGradiant);
+			auraPostShader.setUniformValue("BlobsStepGranularity", ArcanusConfig.auraSharpness);
 			auraPostShader.render(tickDelta);
 			client.getFramebuffer().beginWrite(true);
 			RenderSystem.enableBlend();
