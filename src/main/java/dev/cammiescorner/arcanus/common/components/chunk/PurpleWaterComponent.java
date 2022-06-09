@@ -11,6 +11,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
@@ -51,6 +52,15 @@ public class PurpleWaterComponent implements AutoSyncedComponent {
 		tag.put("WaterMap", nbtList);
 	}
 
+	@Override
+	public void writeSyncPacket(PacketByteBuf buf, ServerPlayerEntity recipient) {
+		buf.writeVarInt(this.waterMap.size());
+		for (var entry : this.waterMap.entrySet()) {
+			buf.writeBlockPos(entry.getKey());
+			buf.writeBlockPos(entry.getValue());
+		}
+	}
+
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void applySyncPacket(PacketByteBuf buf) {
@@ -58,7 +68,11 @@ public class PurpleWaterComponent implements AutoSyncedComponent {
 
 		var waterMapHash = this.waterMap.hashCode();
 
-		AutoSyncedComponent.super.applySyncPacket(buf);
+		this.waterMap.clear();
+		int amount = buf.readVarInt();
+		for (int i = 0; i < amount; i++) {
+			this.waterMap.put(buf.readBlockPos(), buf.readBlockPos());
+		}
 
 		if (waterMapHash != this.waterMap.hashCode()) {
 			ChunkPos pos = chunk.getPos();
