@@ -54,9 +54,18 @@ public class PurpleWaterComponent implements AutoSyncedComponent {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void applySyncPacket(PacketByteBuf buf) {
+		MinecraftClient.getInstance().getProfiler().push("Purple Water Chunk Sync");
+
+		var waterMapHash = this.waterMap.hashCode();
+
 		AutoSyncedComponent.super.applySyncPacket(buf);
-		ChunkPos pos = chunk.getPos();
-		MinecraftClient.getInstance().worldRenderer.scheduleBlockRenders(pos.getStartX(), chunk.getBottomY(), pos.getStartZ(), pos.getEndX(), chunk.getTopY(), pos.getEndZ());
+
+		if (waterMapHash != this.waterMap.hashCode()) {
+			ChunkPos pos = chunk.getPos();
+			MinecraftClient.getInstance().worldRenderer.scheduleBlockRenders(pos.getStartX(), chunk.getBottomY(), pos.getStartZ(), pos.getEndX(), chunk.getTopY(), pos.getEndZ());
+		}
+
+		MinecraftClient.getInstance().getProfiler().pop();
 	}
 
 	public void addAltar(BlockPos pos, BlockPos altarPos) {
