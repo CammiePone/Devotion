@@ -25,12 +25,12 @@ public class AuraFadeComponent implements AutoSyncedComponent, ServerTickingComp
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		timer = tag.getInt("AuraFadeTimer");
+		timer = tag.getShort("AuraFadeTimer");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putInt("AuraFadeTimer", timer);
+		tag.putShort("AuraFadeTimer", (short) timer);
 	}
 
 	public int getTimer() {
