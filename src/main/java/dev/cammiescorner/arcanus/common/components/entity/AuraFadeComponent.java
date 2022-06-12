@@ -17,10 +17,10 @@ public class AuraFadeComponent implements AutoSyncedComponent, ServerTickingComp
 
 	@Override
 	public void serverTick() {
-		if(ArcanusHelper.isCasting(entity))
-			setTimer(Math.min(10, ++timer));
-		else
-			setTimer(Math.max(0, --timer));
+		if(ArcanusHelper.isCasting(entity) && timer < 10)
+			setTimer(++timer);
+		if(!ArcanusHelper.isCasting(entity) && timer > 0)
+			setTimer(--timer);
 	}
 
 	@Override
