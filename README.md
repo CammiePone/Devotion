@@ -1,4 +1,4 @@
-# **Arcanus**
+# **Devotion**
 
 <p align="center">
 <img src="https://cdn.discordapp.com/attachments/732731816250834965/853310224828203078/ispentwaytoolongonthispleasehelp.png" width="322" height="109" title="Do not ask for Forge :)" alt="Do not ask for Forge :)">
@@ -8,9 +8,9 @@
 
 ---
 
-Arcanus is a magic mod with a focus on spells, cults, and spirits.
+Devotion is a magic mod with a focus on spells, cults, and spirits.
 
-You can read the [Planning Doc Here](https://github.com/CammiePone/Planning-Docs/blob/main/Arcanus.md). Warning: it's long.
+You can read the [Planning Doc Here](https://github.com/CammiePone/Planning-Docs/blob/main/Devotion.md). Warning: it's long.
 
 ---
 
