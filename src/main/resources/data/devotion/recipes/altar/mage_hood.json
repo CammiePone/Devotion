@@ -1,0 +1,28 @@
+{
+	"type": "devotion:amethyst_altar",
+	"ingredients": [
+		{
+			"item": "minecraft:leather_helmet"
+		},
+        {
+            "item": "minecraft:string"
+        },
+        {
+            "item": "minecraft:string"
+        },
+        {
+            "item": "minecraft:string"
+        },
+        {
+            "item": "minecraft:amethyst_shard"
+        },
+        {
+            "item": "minecraft:amethyst_shard"
+        }
+	],
+	"power": 8,
+	"result": {
+		"type": "devotion:craft_item",
+		"item": "devotion:mage_hood"
+	}
+}

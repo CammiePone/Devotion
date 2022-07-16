@@ -2,10 +2,10 @@
 	"schema_version": 1,
 	"quilt_loader": {
 		"group": "dev.cammiescorner",
-		"id": "arcanus",
+		"id": "devotion",
 		"version": "${version}",
 		"metadata": {
-			"name": "Arcanus 2",
+			"name": "Devotion",
 			"description": "Funni magic mod go BRRRRRR",
 			"contributors": {
 				"Cammie": "Owner",
@@ -16,18 +16,18 @@
 			"license": {
 				"name": "Custom License",
 				"id": "Custom License",
-				"url": "https://github.com/CammiePone/Arcanus/blob/1.19-dev/LICENSE",
+				"url": "https://github.com/CammiePone/Devotion/blob/1.19-dev/LICENSE",
 				"description": "This license permits small portions of the code to be used without prior permission, but not large parts."
 			},
-			"icon": "assets/arcanus/icon.png"
+			"icon": "assets/devotion/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "dev.cammiescorner.arcanus.Arcanus",
-			"client_init": "dev.cammiescorner.arcanus.client.ArcanusClient",
-			"pre_launch": "dev.cammiescorner.arcanus.common.ArcanusPreLaunch",
-			"cardinal-components": "dev.cammiescorner.arcanus.common.registry.ArcanusComponents",
-			"modmenu": "dev.cammiescorner.arcanus.common.integration.ArcanusModMenu"
+			"init": "dev.cammiescorner.devotion.Devotion",
+			"client_init": "dev.cammiescorner.devotion.client.DevotionClient",
+			"pre_launch": "dev.cammiescorner.devotion.common.DevotionPreLaunch",
+			"cardinal-components": "dev.cammiescorner.devotion.common.registry.DevotionComponents",
+			"modmenu": "dev.cammiescorner.devotion.common.integration.DevotionModMenu"
 		},
 		"depends": [
 			{
@@ -72,19 +72,19 @@
 			}
 		]
 	},
-	"access_widener": "arcanus.accesswidener",
-	"mixin": "arcanus.mixins.json",
+	"access_widener": "devotion.accesswidener",
+	"mixin": "devotion.mixins.json",
 	"cardinal-components": [
-		"arcanus:aura",
-		"arcanus:casting",
-		"arcanus:cult",
-		"arcanus:current_spell",
-		"arcanus:spell_inventory",
-		"arcanus:spell_cooldown",
-		"arcanus:aura_fade",
-		"arcanus:aura_affinity",
-		"arcanus:unique_spells",
-		"arcanus:altar_structure",
-		"arcanus:purple_water"
+		"devotion:aura",
+		"devotion:casting",
+		"devotion:cult",
+		"devotion:current_spell",
+		"devotion:spell_inventory",
+		"devotion:spell_cooldown",
+		"devotion:aura_fade",
+		"devotion:aura_affinity",
+		"devotion:unique_spells",
+		"devotion:altar_structure",
+		"devotion:purple_water"
 	]
 }

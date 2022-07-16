@@ -1,0 +1,14 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "devotion:item/conjurer_mage_hood_open"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "devotion:closed": 1
+            },
+            "model": "devotion:item/conjurer_mage_hood_closed"
+        }
+    ]
+}

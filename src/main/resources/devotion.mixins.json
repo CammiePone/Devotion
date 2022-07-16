@@ -1,0 +1,24 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.cammiescorner.devotion.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"AbstractBlockMixin",
+		"ItemStackMixin",
+		"PlayerEntityMixin",
+		"ScreenHandlerMixin"
+	],
+	"client": [
+		"client.BiomeColorsMixin",
+		"client.HeldItemRendererMixin",
+		"client.InGameHudMixin",
+		"client.KeyboardMixin",
+		"client.LivingEntityRendererMixin",
+		"client.MinecraftClientMixin",
+        "client.PlayerEntityRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

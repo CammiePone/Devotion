@@ -1,0 +1,45 @@
+{
+  "targets": [
+    "swap",
+    "auras"
+  ],
+  "passes": [
+    {
+      "name": "devotion:wobble",
+      "intarget": "auras",
+      "outtarget": "swap",
+      "uniforms": [
+        {
+          "name": "Frequency",
+          "values": [ 50, 50 ]
+        },
+        {
+          "name": "WobbleAmount",
+          "values": [ 0.001 , 0.001 ]
+        }
+      ]
+    },
+    {
+      "name": "devotion:blobs_with_alpha",
+      "intarget": "swap",
+      "outtarget": "auras"
+    },
+    {
+      "name": "devotion:transparent_centre",
+      "intarget": "auras",
+      "outtarget": "swap"
+    },
+    {
+      "_comment": "// FIXME: blit doesn't work here for some reason",
+      "name": "blur",
+      "intarget": "swap",
+      "outtarget": "auras",
+      "uniforms": [
+        {
+          "name": "Radius",
+          "values": [ 0.0 ]
+        }
+      ]
+    }
+  ]
+}

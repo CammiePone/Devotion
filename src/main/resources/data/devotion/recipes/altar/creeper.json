@@ -1,0 +1,19 @@
+{
+    "type": "devotion:amethyst_altar",
+    "ingredients": [
+        {
+            "item": "minecraft:gunpowder"
+        },
+        {
+            "item": "minecraft:gunpowder"
+        },
+        {
+            "item": "minecraft:gunpowder"
+        }
+    ],
+    "power": 5,
+    "result": {
+        "type": "devotion:summon_entity",
+        "entity": "minecraft:creeper"
+    }
+}

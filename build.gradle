@@ -93,7 +93,7 @@ jar {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/arcanus.accesswidener")
+	accessWidenerPath = file("src/main/resources/devotion.accesswidener")
 }
 
 // Configure the maven publication
