@@ -32,39 +32,39 @@
 		"depends": [
 			{
 				"id": "quilt_loader",
-				"versions": ">=0.16.0-"
+				"versions": ">=0.17.0-"
 			},
 			{
 				"id": "quilted_fabric_api",
-				"versions": ">=1.0.0-"
+				"versions": ">=2.0.0-"
 			},
 			{
 				"id": "minecraft",
-				"versions": ">=1.18.2"
+				"versions": "1.19.x"
 			},
 			{
 				"id": "midnightlib",
-				"versions": ">=0.4.0"
+				"versions": ">=0.5.2"
 			},
 			{
 				"id": "cardinal-components-base",
-				"versions": ">=4.1.4"
+				"versions": ">=5.0.1"
 			},
 			{
 				"id": "cardinal-components-entity",
-				"versions": ">=4.1.4"
+				"versions": ">=5.0.1"
 			},
 			{
 				"id": "cardinal-components-world",
-				"versions": ">=4.1.4"
+				"versions": ">=5.0.1"
 			},
 			{
 				"id": "cardinal-components-chunk",
-				"versions": ">=4.1.4"
+				"versions": ">=5.0.1"
 			},
 			{
 				"id": "satin",
-				"versions": ">=1.7.2"
+				"versions": ">=1.9.0"
 			},
 			{
 				"id": "java",

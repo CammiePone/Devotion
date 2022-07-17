@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion.client.renderer.blocks;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.cammiescorner.devotion.api.DevotionHelper;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.AuraVertexConsumerProvider;
@@ -10,7 +11,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -23,15 +23,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class AmethystAltarBlockEntityRenderer implements BlockEntityRenderer<AmethystAltarBlockEntity> {
 	private final ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
 	private final BlockRenderManager blockRenderer = MinecraftClient.getInstance().getBlockRenderManager();
+	private final RandomGenerator random = RandomGenerator.createLegacy(42L);
 
 	public AmethystAltarBlockEntityRenderer(BlockEntityRendererFactory.Context cxt) {
 
@@ -40,8 +41,6 @@ public class AmethystAltarBlockEntityRenderer implements BlockEntityRenderer<Ame
 	@Override
 	public void render(AmethystAltarBlockEntity altar, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = altar.getWorld();
-		Random random = new Random();
-		random.setSeed(42L);
 		int filledSlots = altar.filledSlots();
 
 		if(world != null) {
@@ -51,8 +50,6 @@ public class AmethystAltarBlockEntityRenderer implements BlockEntityRenderer<Ame
 
 			if(structureMap != null && !structureMap.isEmpty()) {
 				float scale = (float) (0.8125F + (Math.sin(time * 0.075) * 0.0625F));
-				float offsetX = Math.abs(altarOffset.getX()) - ((1 - scale) * 0.5F);
-				float offsetZ = Math.abs(altarOffset.getZ()) - ((1 - scale) * 0.5F);
 
 				for(Map.Entry<BlockPos, BlockState> entry : structureMap.entrySet()) {
 					BlockPos pos = entry.getKey();

@@ -1,16 +1,16 @@
 [versions]
 # The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
-minecraft = "1.18.2"
-quilt_mappings = "1.18.2+build.23"
-quilt_loader = "0.16.1-beta.3"
-quilted_fabric_api = "1.0.0-beta.11+0.51.1-1.18.2"
-cca = "4.1.4"
-modmenu = "3.0.0"
-satin = "1.7.2"
+minecraft = "1.19"
+quilt_mappings = "1.19+build.1"
+quilt_loader = "0.17.0"
+quilted_fabric_api = "2.0.0-beta.5+0.57.0-1.19"
+cca = "5.0.1"
+modmenu = "4.0.0"
+satin = "1.9.0"
 early_features = "1.0.2"
-blabber = "0.1.2"
-midnightlib = "0.4.0"
-mixinextras = "0.0.7"
+blabber = "0.3.0"
+midnightlib = "0.5.2"
+mixinextras = "0.0.11"
 lucko_perms = "0.1-SNAPSHOT"
 
 [libraries]
@@ -29,5 +29,6 @@ midnightlib = { module = "maven.modrinth:midnightlib", version.ref = "midnightli
 blabber = { module = "io.github.ladysnake:blabber", version.ref = "blabber" }
 mixinextras = { module = "com.github.LlamaLad7:MixinExtras", version.ref = "mixinextras" }
 lucko_perms = { module = "me.lucko:fabric-permissions-api", version.ref = "lucko_perms" }
+
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version = "0.12.+" }

@@ -10,7 +10,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,10 +35,10 @@ public class ItemStackMixin {
 
 		if(attribute == DevotionAttributes.AURA_REGEN) {
 			list.remove(list.size() - 1);
-			list.add(new TranslatableText(
+			list.add(Text.translatable(
 					"attribute.modifier.plus." + modifier.getOperation().getId(),
 					MODIFIER_FORMAT.format(e),
-					new TranslatableText((attribute).getTranslationKey())
+					Text.translatable((attribute).getTranslationKey())
 			).formatted(Formatting.RED));
 		}
 	}
@@ -53,10 +52,10 @@ public class ItemStackMixin {
 
 		if(attribute == DevotionAttributes.AURA_REGEN) {
 			list.remove(list.size() - 1);
-			list.add(new TranslatableText(
+			list.add(Text.translatable(
 					"attribute.modifier.take." + modifier.getOperation().getId(),
 					MODIFIER_FORMAT.format(e),
-					new TranslatableText((attribute).getTranslationKey())
+					Text.translatable((attribute).getTranslationKey())
 			).formatted(Formatting.BLUE));
 		}
 	}

@@ -8,7 +8,6 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -29,9 +28,9 @@ public abstract class RobesItem extends ArmorItem {
 			NbtCompound tag = stack.getSubNbt(Devotion.MOD_ID);
 
 			if(tag != null && tag.getBoolean("Closed"))
-				tooltip.add(new TranslatableText(Devotion.MOD_ID + ".mage_robes.closed").formatted(Formatting.GRAY));
+				tooltip.add(Text.translatable(Devotion.MOD_ID + ".mage_robes.closed").formatted(Formatting.GRAY));
 			else
-				tooltip.add(new TranslatableText(Devotion.MOD_ID + ".mage_robes.open").formatted(Formatting.GRAY));
+				tooltip.add(Text.translatable(Devotion.MOD_ID + ".mage_robes.open").formatted(Formatting.GRAY));
 		}
 	}
 }

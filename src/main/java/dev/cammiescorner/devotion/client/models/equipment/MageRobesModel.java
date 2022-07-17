@@ -1,9 +1,9 @@
 package dev.cammiescorner.devotion.client.models.equipment;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.cammiescorner.devotion.Devotion;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelPartNames;

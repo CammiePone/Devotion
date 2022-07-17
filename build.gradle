@@ -34,13 +34,14 @@ dependencies {
 	modImplementation libs.satin
 	modImplementation libs.early.features
 	modImplementation libs.midnightlib
-//    modImplementation include(libs.blabber)
+    modImplementation libs.blabber
 
 	implementation libs.mixinextras
 	annotationProcessor libs.mixinextras
 	include libs.mixinextras
 	include libs.early.features
-//    include libs.lucko.perms
+	include libs.blabber
+    include libs.lucko.perms
 }
 
 configurations.all {

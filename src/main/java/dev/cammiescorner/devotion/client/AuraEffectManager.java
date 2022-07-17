@@ -1,7 +1,10 @@
 package dev.cammiescorner.devotion.client;
 
+import com.mojang.blaze3d.framebuffer.Framebuffer;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormats;
 import dev.cammiescorner.devotion.api.DevotionHelper;
 import dev.cammiescorner.devotion.common.integration.DevotionConfig;
 import dev.cammiescorner.devotion.common.registry.DevotionComponents;
@@ -12,7 +15,6 @@ import ladysnake.satin.api.managed.ManagedFramebuffer;
 import ladysnake.satin.api.managed.ManagedShaderEffect;
 import ladysnake.satin.api.managed.ShaderEffectManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.render.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;

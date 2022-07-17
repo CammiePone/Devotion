@@ -1,8 +1,8 @@
 package dev.cammiescorner.devotion.client;
 
-import net.minecraft.client.render.FixedColorVertexConsumer;
+import com.mojang.blaze3d.vertex.FixedColorVertexConsumer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.util.Identifier;
 
@@ -80,7 +80,7 @@ public final class AuraVertexConsumerProvider implements VertexConsumerProvider 
         }
 
         @Override
-        public VertexConsumer texture(float u, float v) {
+        public VertexConsumer uv(float u, float v) {
             return this;
         }
 
@@ -104,7 +104,7 @@ public final class AuraVertexConsumerProvider implements VertexConsumerProvider 
         }
 
         @Override
-        public void fixedColor(int red, int green, int blue, int alpha) {
+        public void fixColor(int red, int green, int blue, int alpha) {
         }
 
         @Override
@@ -125,11 +125,11 @@ public final class AuraVertexConsumerProvider implements VertexConsumerProvider 
 
         AuraVertexConsumer(VertexConsumer delegate, int red, int green, int blue, int alpha) {
             this.delegate = delegate;
-            super.fixedColor(red, green, blue, alpha);
+            super.fixColor(red, green, blue, alpha);
         }
 
         @Override
-        public void fixedColor(int red, int green, int blue, int alpha) {
+        public void fixColor(int red, int green, int blue, int alpha) {
         }
 
         @Override
@@ -150,7 +150,7 @@ public final class AuraVertexConsumerProvider implements VertexConsumerProvider 
         }
 
         @Override
-        public VertexConsumer texture(float u, float v) {
+        public VertexConsumer uv(float u, float v) {
             this.u = u;
             this.v = v;
             return this;
@@ -173,12 +173,12 @@ public final class AuraVertexConsumerProvider implements VertexConsumerProvider 
 
         @Override
         public void vertex(float x, float y, float z, float red, float green, float blue, float alpha, float u, float v, int overlay, int light, float normalX, float normalY, float normalZ) {
-            this.delegate.vertex(x, y, z).color(this.fixedRed, this.fixedGreen, this.fixedBlue, this.fixedAlpha).texture(u, v).next();
+            this.delegate.vertex(x, y, z).color(this.fixedRed, this.fixedGreen, this.fixedBlue, this.fixedAlpha).uv(u, v).next();
         }
 
         @Override
         public void next() {
-            this.delegate.vertex(this.x, this.y, this.z).color(this.fixedRed, this.fixedGreen, this.fixedBlue, this.fixedAlpha).texture(this.u, this.v).next();
+            this.delegate.vertex(this.x, this.y, this.z).color(this.fixedRed, this.fixedGreen, this.fixedBlue, this.fixedAlpha).uv(this.u, this.v).next();
         }
     }
 }

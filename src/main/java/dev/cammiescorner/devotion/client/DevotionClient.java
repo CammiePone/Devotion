@@ -1,12 +1,10 @@
 package dev.cammiescorner.devotion.client;
 
-import com.williambl.early_features.api.LivingEntityEarlyFeatureRendererRegistrationCallback;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.client.models.equipment.MageRobesModel;
 import dev.cammiescorner.devotion.client.models.equipment.TimeCultLeaderRobesModel;
 import dev.cammiescorner.devotion.client.models.equipment.TimeCultRobesModel;
 import dev.cammiescorner.devotion.client.renderer.blocks.AmethystAltarBlockEntityRenderer;
-import dev.cammiescorner.devotion.client.renderer.entities.AuraFeatureRenderer;
 import dev.cammiescorner.devotion.client.renderer.equipment.MageRobesRenderer;
 import dev.cammiescorner.devotion.client.renderer.equipment.TimeCultRobesRenderer;
 import dev.cammiescorner.devotion.common.registry.DevotionBlockEntities;
@@ -18,8 +16,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
@@ -55,10 +51,10 @@ public class DevotionClient implements ClientModInitializer {
 		ArmorRenderer.register(new TimeCultRobesRenderer(false), DevotionItems.TIME_CULTIST_HOOD, DevotionItems.TIME_CULTIST_ROBE, DevotionItems.TIME_CULTIST_LEGGINGS, DevotionItems.TIME_CULTIST_BOOTS);
 		ArmorRenderer.register(new TimeCultRobesRenderer(true), DevotionItems.TIME_CULTIST_LEADER_HOOD, DevotionItems.TIME_CULTIST_LEADER_ROBE, DevotionItems.TIME_CULTIST_LEADER_LEGGINGS, DevotionItems.TIME_CULTIST_LEADER_BOOTS);
 
-		LivingEntityEarlyFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, context) -> {
-			if(entityRenderer instanceof PlayerEntityRenderer playerRenderer)
-				entityRenderer.addEarlyFeature(new AuraFeatureRenderer<>(playerRenderer, new HeldItemFeatureRenderer<>(playerRenderer)));
-		});
+//		LivingEntityEarlyFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, context) -> {
+//			if(entityRenderer instanceof PlayerEntityRenderer playerRenderer)
+//				entityRenderer.addEarlyFeature(new AuraFeatureRenderer<>(playerRenderer, new HeldItemFeatureRenderer<>(playerRenderer)));
+//		});
 
 		for(Item hoodItem : Devotion.HOOD_ITEMS) {
 			ModelPredicateProviderRegistry.register(hoodItem, Devotion.id("closed_hood"), (stack, world, entity, i) -> {

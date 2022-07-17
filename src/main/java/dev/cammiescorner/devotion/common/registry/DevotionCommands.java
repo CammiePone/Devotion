@@ -14,14 +14,14 @@ import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.components.entity.AuraComponent;
 import dev.cammiescorner.devotion.common.components.entity.CurrentSpellComponent;
 import dev.cammiescorner.devotion.common.components.entity.SpellInventoryComponent;
+import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
+import net.minecraft.command.CommandBuildContext;
 import net.minecraft.command.CommandSource;
-import net.minecraft.command.argument.ArgumentTypes;
-import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
+import net.minecraft.command.argument.SingletonArgumentInfo;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
@@ -29,10 +29,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class DevotionCommands {
 	public static void register() {
-		ArgumentTypes.register("spell", SpellArgumentType.class, new ConstantArgumentSerializer<>(SpellArgumentType::new));
+		ArgumentTypeRegistry.registerArgumentType(Devotion.id("spell"), SpellArgumentType.class, SingletonArgumentInfo.contextFree(SpellArgumentType::new));
 	}
 
-	public static void init(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated, boolean bl) {
+	public static void init(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext commandBuildContext, CommandManager.RegistrationEnvironment environment) {
 		dispatcher.register(CommandManager.literal("spell")
 				.then(CommandManager.literal("set")
 						.then(CommandManager.argument("spell", SpellArgumentType.spell())
@@ -47,7 +47,7 @@ public class DevotionCommands {
 	}
 
 	public static class SpellArgumentType implements ArgumentType<Spell> {
-		public static final DynamicCommandExceptionType INVALID_SPELL_EXCEPTION = new DynamicCommandExceptionType(object -> new TranslatableText("commands." + Devotion.MOD_ID + ".spells.not_found", object));
+		public static final DynamicCommandExceptionType INVALID_SPELL_EXCEPTION = new DynamicCommandExceptionType(object -> Text.translatable("commands." + Devotion.MOD_ID + ".spells.not_found", object));
 
 		public static SpellArgumentType spell() {
 			return new SpellArgumentType();
@@ -76,7 +76,7 @@ public class DevotionCommands {
 			Spell spell = DevotionCommands.SpellArgumentType.getSpell(context, "spell");
 
 			spellComponent.setSpellInSlot(spell, 0);
-			context.getSource().sendFeedback(new LiteralText("Set spell to: ").append(new LiteralText(Devotion.SPELL.getId(spell).toString()).formatted(Formatting.YELLOW)), false);
+			context.getSource().sendFeedback(Text.literal("Set spell to: ").append(Text.literal(Devotion.SPELL.getId(spell).toString()).formatted(Formatting.YELLOW)), false);
 
 			return Command.SINGLE_SUCCESS;
 		}
@@ -86,7 +86,7 @@ public class DevotionCommands {
 			CurrentSpellComponent spellComponent = DevotionComponents.CURRENT_SPELL_COMPONENT.get(player);
 			Spell spell = spellComponent.getSelectedSpell();
 
-			context.getSource().sendFeedback(new LiteralText("Current spell: ").append(new LiteralText(Devotion.SPELL.getId(spell).toString()).formatted(Formatting.YELLOW)), false);
+			context.getSource().sendFeedback(Text.literal("Current spell: ").append(Text.literal(Devotion.SPELL.getId(spell).toString()).formatted(Formatting.YELLOW)), false);
 
 			return Command.SINGLE_SUCCESS;
 		}
