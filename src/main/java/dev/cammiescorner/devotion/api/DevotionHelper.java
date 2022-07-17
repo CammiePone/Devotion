@@ -1,11 +1,12 @@
 package dev.cammiescorner.devotion.api;
 
-import dev.cammiescorner.devotion.api.cults.Cults;
+import dev.cammiescorner.devotion.api.cults.Cult;
 import dev.cammiescorner.devotion.api.entity.DevotionAttributes;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.registry.DevotionComponents;
 import dev.cammiescorner.devotion.common.registry.DevotionTags;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -113,28 +114,24 @@ public class DevotionHelper {
 		DevotionComponents.UNIQUE_SPELLS_COMPONENT.get(entity).setActive(spell, active);
 	}
 
-	public static Cults getCult(Entity entity) {
-		return DevotionComponents.CULT_COMPONENT.get(entity).getCult();
+	public static Object2ObjectMap<Cult, Integer> getAllCultReputation(Entity entity) {
+		return DevotionComponents.CULT_COMPONENT.get(entity).getCultRepMap();
 	}
 
-	public static void setCult(Entity entity, Cults cult) {
-		DevotionComponents.CULT_COMPONENT.get(entity).setCult(cult);
+	public static int getCultReputation(Entity entity, Cult cult) {
+		return DevotionComponents.CULT_COMPONENT.get(entity).getCultReputation(cult);
 	}
 
-	public static int getReputation(Entity entity) {
-		return DevotionComponents.CULT_COMPONENT.get(entity).getReputation();
+	public static void setCultReputation(Entity entity, Cult cult, int amount) {
+		DevotionComponents.CULT_COMPONENT.get(entity).setCultReputation(cult, amount);
 	}
 
-	public static void setReputation(Entity entity, int amount) {
-		DevotionComponents.CULT_COMPONENT.get(entity).setReputation(amount);
+	public static boolean addReputation(Entity entity, Cult cult, int amount, boolean simulate) {
+		return DevotionComponents.CULT_COMPONENT.get(entity).addReputation(cult, amount, simulate);
 	}
 
-	public static boolean addReputation(Entity entity, int amount, boolean simulate) {
-		return DevotionComponents.CULT_COMPONENT.get(entity).addReputation(amount, simulate);
-	}
-
-	public static boolean reduceReputation(Entity entity, int amount, boolean simulate) {
-		return DevotionComponents.CULT_COMPONENT.get(entity).reduceReputation(amount, simulate);
+	public static boolean reduceReputation(Entity entity, Cult cult, int amount, boolean simulate) {
+		return DevotionComponents.CULT_COMPONENT.get(entity).reduceReputation(cult, amount, simulate);
 	}
 
 	public static float getAuraFade(Entity entity) {

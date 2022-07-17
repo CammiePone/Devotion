@@ -1,16 +1,20 @@
 package dev.cammiescorner.devotion.common.components.entity;
 
-import dev.cammiescorner.devotion.api.cults.Cults;
+import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.cults.Cult;
 import dev.cammiescorner.devotion.common.registry.DevotionComponents;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.util.Identifier;
 
 public class CultComponent implements AutoSyncedComponent {
 	private final LivingEntity entity;
-	private Cults cult = Cults.NONE;
-	private int reputation;
+	private final Object2ObjectMap<Cult, Integer> cultRepMap = new Object2ObjectOpenHashMap<>();
 
 	public CultComponent(LivingEntity entity) {
 		this.entity = entity;
@@ -18,39 +22,46 @@ public class CultComponent implements AutoSyncedComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		int a = tag.getInt("CultReputation");
+		NbtList nbtList = tag.getList("CultReputation", NbtElement.COMPOUND_TYPE);
 
-		cult = Cults.values()[a & 7];
-		reputation = a >> 3 & 15;
+		cultRepMap.clear();
+		for(int i = 0; i < nbtList.size(); i++) {
+			NbtCompound map = nbtList.getCompound(i);
+			cultRepMap.put(Devotion.CULT.get(new Identifier(map.getString("Cult"))), map.getInt("Reputation"));
+		}
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putInt("CultReputation", (reputation << 3) + (cult.ordinal() & 7));
+		NbtList nbtList = new NbtList();
+
+		cultRepMap.keySet().forEach(cult -> {
+			NbtCompound map = new NbtCompound();
+			map.putString("Cult", Devotion.CULT.getId(cult).toString());
+			map.putInt("Reputation", cultRepMap.get(cult));
+			nbtList.add(map);
+		});
+
+		tag.put("CultReputation", nbtList);
 	}
 
-	public Cults getCult() {
-		return cult;
+	public Object2ObjectMap<Cult, Integer> getCultRepMap() {
+		return cultRepMap;
 	}
 
-	public void setCult(Cults cult) {
-		this.cult = cult;
+	public int getCultReputation(Cult cult) {
+		return cultRepMap.get(cult);
+	}
+
+	public void setCultReputation(Cult cult, int amount) {
+		cultRepMap.put(cult, amount);
 		DevotionComponents.CULT_COMPONENT.sync(entity);
 	}
 
-	public int getReputation() {
-		return reputation;
-	}
-
-	public void setReputation(int amount) {
-		reputation = MathHelper.clamp(amount, 0, 10);
-		DevotionComponents.CULT_COMPONENT.sync(entity);
-	}
-
-	public boolean addReputation(int amount, boolean simulate) {
-		if(getReputation() < 10) {
+	public boolean addReputation(Cult cult, int amount, boolean simulate) {
+		if(getCultReputation(cult) < 10) {
 			if(!simulate)
-				setReputation(getReputation() + amount);
+				setCultReputation(cult, getCultReputation(cult) + amount);
 
 			return true;
 		}
@@ -58,10 +69,10 @@ public class CultComponent implements AutoSyncedComponent {
 		return false;
 	}
 
-	public boolean reduceReputation(int amount, boolean simulate) {
-		if(getReputation() - amount >= 0) {
+	public boolean reduceReputation(Cult cult, int amount, boolean simulate) {
+		if(getCultReputation(cult) - amount >= -1) {
 			if(!simulate)
-				setReputation(getReputation() - amount);
+				setCultReputation(cult, getCultReputation(cult) - amount);
 
 			return true;
 		}

@@ -61,7 +61,7 @@ public class DevotionClient implements ClientModInitializer {
 		});
 
 		for(Item hoodItem : Devotion.HOOD_ITEMS) {
-			ModelPredicateProviderRegistry.register(hoodItem, Devotion.id("closed"), (stack, world, entity, i) -> {
+			ModelPredicateProviderRegistry.register(hoodItem, Devotion.id("closed_hood"), (stack, world, entity, i) -> {
 				NbtCompound tag = stack.getSubNbt(Devotion.MOD_ID);
 
 				if(tag == null)
@@ -70,5 +70,14 @@ public class DevotionClient implements ClientModInitializer {
 				return tag.getBoolean("Closed") ? 1F : 0F;
 			});
 		}
+
+		ModelPredicateProviderRegistry.register(DevotionItems.RESEARCH_SCROLL, Devotion.id("completed_research"), (stack, world, entity, i) -> {
+			NbtCompound tag = stack.getSubNbt(Devotion.MOD_ID);
+
+			if(tag == null)
+				return 0F;
+
+			return tag.getBoolean("Completed") ? 1F : 0F;
+		});
 	}
 }

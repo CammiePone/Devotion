@@ -6,7 +6,7 @@
     "overrides": [
         {
             "predicate": {
-                "devotion:closed": 1
+                "devotion:closed_hood": 1
             },
             "model": "devotion:item/transmuter_mage_hood_closed"
         }

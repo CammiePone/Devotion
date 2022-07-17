@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion;
 
 import dev.cammiescorner.devotion.api.actions.AltarAction;
+import dev.cammiescorner.devotion.api.cults.Cult;
 import dev.cammiescorner.devotion.api.entity.DevotionAttributes;
 import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.CommonEvents;
@@ -30,6 +31,7 @@ public class Devotion implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 	public static final DefaultedRegistry<Spell> SPELL = FabricRegistryBuilder.createDefaulted(Spell.class, id("spell"), id("empty")).buildAndRegister();
 	public static final DefaultedRegistry<AltarAction> ALTAR_ACTIONS = FabricRegistryBuilder.createDefaulted(AltarAction.class, id("altar_actions"), id("empty")).buildAndRegister();
+	public static final DefaultedRegistry<Cult> CULT = FabricRegistryBuilder.createDefaulted(Cult.class, id("cult"), id("empty")).buildAndRegister();
 	public static final ItemGroup ITEM_GROUP = QuiltItemGroup.createWithIcon(id("general"), () -> new ItemStack(DevotionBlocks.AMETHYST_ALTAR));
 	public static final List<Item> HOOD_ITEMS = List.of(
 			DevotionItems.MAGE_HOOD, DevotionItems.ENHANCER_MAGE_HOOD, DevotionItems.TRANSMUTER_MAGE_HOOD, DevotionItems.EMITTER_MAGE_HOOD,
@@ -48,6 +50,7 @@ public class Devotion implements ModInitializer {
 		DevotionSounds.register();
 		DevotionCommands.register();
 		DevotionRecipes.loadMeBitch();
+		DevotionCults.register();
 
 		Registry.register(Registry.ATTRIBUTE, id("casting_multiplier"), DevotionAttributes.AURA_COST);
 		Registry.register(Registry.ATTRIBUTE, id("aura_regen"), DevotionAttributes.AURA_REGEN);

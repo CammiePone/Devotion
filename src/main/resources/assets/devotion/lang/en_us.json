@@ -1,6 +1,7 @@
 {
     "itemGroup.devotion.general": "Devotion",
 
+    "item.devotion.guide_book": "Devotion Guide Book",
     "item.devotion.rough_fae_stone": "Inert Rough Fae Stone",
     "item.devotion.passable_fae_stone": "Inert Passable Fae Stone",
     "item.devotion.mage_hood": "Mage Hood",
@@ -35,6 +36,10 @@
     "item.devotion.time_cultist_leader_cloak": "Time Cultist Leader Cloak",
     "item.devotion.time_cultist_leader_leggings": "Time Cultist Leader Leggings",
     "item.devotion.time_cultist_leader_boots": "Time Cultist Leader Boots",
+    "item.devotion.diamond_gemstone_tablet": "Diamond Gemstone Tablet",
+    "item.devotion.amethyst_gemstone_tablet": "Amethyst Gemstone Tablet",
+    "item.devotion.quartz_gemstone_tablet": "Quartz Gemstone Tablet",
+    "item.devotion.emerald_gemstone_tablet": "Emerald Gemstone Tablet",
 
 	"block.devotion.amethyst_altar": "Amethyst Altar",
 
