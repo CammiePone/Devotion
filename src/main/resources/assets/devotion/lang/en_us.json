@@ -1,4 +1,11 @@
 {
+    "riddle_text.enhancement.1": "This is filler text for the Enhancement riddle.",
+    "riddle_text.transmutation.1": "This is filler text for the Transmutation riddle.",
+    "riddle_text.emission.1": "This is filler text for the Emission riddle.",
+    "riddle_text.conjuration.1": "This is filler text for the Conjuration riddle.",
+    "riddle_text.manipulation.1": "This is filler text for the Manipulation riddle.",
+    "riddle_text.specialisation.1": "This is filler text for the Specialization riddle.",
+
     "itemGroup.devotion.general": "Devotion",
 
     "item.devotion.guide_book": "Devotion Guide Book",

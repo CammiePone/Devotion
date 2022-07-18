@@ -12,6 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
@@ -74,8 +75,31 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 			for(int i = 0; i < 5; i++)
 				DrawableHelper.drawTexture(matrices, pentagonX(256, i), pentagonY(104, i), z, i * 24, 216, 24, 24, 384, 320);
 
-			for(int i = 0; i < list.size(); i++)
-				textRenderer.draw(matrices, list.getString(i), 48, 40 + 16 * i, 0);
+			List<OrderedText> agony = new ArrayList<>();
+			int posY = 0;
+			int boxHeight = 151;
+			int boxWidth = 132;
+
+			for(int i = 0; i < list.size(); i++) {
+				agony.addAll(textRenderer.wrapLines(Text.translatable(list.getString(i)), boxWidth));
+
+				if(i < list.size() - 1)
+					agony.add(Text.literal("").asOrderedText());
+			}
+
+			matrices.push();
+			float textHeight = Math.max(1, agony.size()) * Math.max(1, textRenderer.fontHeight - 1);
+			float scale = Math.min(1, boxHeight / textHeight);
+			matrices.translate(48 + (boxWidth * 0.5), 34 + (boxHeight * 0.5), 0);
+			matrices.scale(scale, scale, 1);
+			matrices.translate(0, -textHeight * 0.5, 0);
+
+			for(OrderedText text : agony) {
+				textRenderer.draw(matrices, text, -textRenderer.getWidth(text) * 0.5F, posY, 0);
+				posY += 8;
+			}
+
+			matrices.pop();
 		}
 	}
 
@@ -95,19 +119,31 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if(lineStart == null) {
-			if(mousePos.distanceSquared(enhancerPos) <= 144)
+		NbtList list = handler.getScroll().getOrCreateNbt().getList("RiddleList", NbtElement.STRING_TYPE);
+
+		if(!list.isEmpty() && lineStart == null && button == 0) {
+			Vec2f lastPos = new Vec2f(0, 0);
+
+			if(!lines.isEmpty())
+				lastPos = lines.get(lines.size() - 1).getRight();
+
+			if(mousePos.distanceSquared(enhancerPos) <= 144 && (lines.isEmpty() || lastPos.equals(enhancerPos)))
 				lineStart = enhancerPos;
-			else if(mousePos.distanceSquared(transmuterPos) <= 144)
+			else if(mousePos.distanceSquared(transmuterPos) <= 144 && (lines.isEmpty() || lastPos.equals(transmuterPos)))
 				lineStart = transmuterPos;
-			else if(mousePos.distanceSquared(emitterPos) <= 144)
+			else if(mousePos.distanceSquared(emitterPos) <= 144 && (lines.isEmpty() || lastPos.equals(emitterPos)))
 				lineStart = emitterPos;
-			else if(mousePos.distanceSquared(conjurerPos) <= 144)
+			else if(mousePos.distanceSquared(conjurerPos) <= 144 && (lines.isEmpty() || lastPos.equals(conjurerPos)))
 				lineStart = conjurerPos;
-			else if(mousePos.distanceSquared(manipulatorPos) <= 144)
+			else if(mousePos.distanceSquared(manipulatorPos) <= 144 && (lines.isEmpty() || lastPos.equals(manipulatorPos)))
 				lineStart = manipulatorPos;
-			else if(mousePos.distanceSquared(specialistPos) <= 144)
+			else if(mousePos.distanceSquared(specialistPos) <= 144 && (lines.isEmpty() || lastPos.equals(specialistPos)))
 				lineStart = specialistPos;
+		}
+
+		if(!lines.isEmpty() && button == 1) {
+			lines.remove(lines.size() - 1);
+			lineStart = null;
 		}
 
 		return super.mouseClicked(mouseX, mouseY, button);

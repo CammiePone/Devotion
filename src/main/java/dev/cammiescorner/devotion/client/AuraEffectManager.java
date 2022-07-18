@@ -37,7 +37,7 @@ import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 public final class AuraEffectManager implements EntitiesPreRenderCallback, ShaderEffectRenderCallback {
 	public static final AuraEffectManager INSTANCE = new AuraEffectManager();
 	private final MinecraftClient client = MinecraftClient.getInstance();
-	private final ManagedCoreShader auraCoreShader = ShaderEffectManager.getInstance().manageCoreShader(id("rendertype_aura"));
+	public final ManagedCoreShader auraCoreShader = ShaderEffectManager.getInstance().manageCoreShader(id("rendertype_aura"));
 	private final ManagedShaderEffect auraPostShader = ShaderEffectManager.getInstance().manage(id("shaders/post/aura.json"), this::assignDepthTexture);
 	private final ManagedFramebuffer auraFramebuffer = auraPostShader.getTarget("auras");
 	private boolean auraBufferCleared;

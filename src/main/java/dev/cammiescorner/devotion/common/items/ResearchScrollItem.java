@@ -45,7 +45,14 @@ public class ResearchScrollItem extends Item {
 		if(!stack.hasNbt()) {
 			NbtCompound tag = stack.getOrCreateNbt();
 			NbtList nbtList = new NbtList();
-			List<String> list = new ArrayList<>(List.of("enhancement", "transmutation", "emission", "conjuration", "manipulation", "specialisation"));
+			List<String> list = new ArrayList<>(List.of(
+					"riddle_text.enhancement.1",
+					"riddle_text.transmutation.1",
+					"riddle_text.emission.1",
+					"riddle_text.conjuration.1",
+					"riddle_text.manipulation.1",
+					"riddle_text.specialisation.1"
+			));
 			Collections.shuffle(list);
 
 			for(String s : list)
