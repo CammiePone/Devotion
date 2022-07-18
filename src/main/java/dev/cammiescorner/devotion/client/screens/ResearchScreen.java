@@ -3,6 +3,7 @@ package dev.cammiescorner.devotion.client.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.screens.ResearchScreenHandler;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.OrderedText;
@@ -64,7 +66,7 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 			}
 		}
 
-		NbtList list = handler.getScroll().getOrCreateNbt().getList("RiddleList", NbtElement.STRING_TYPE);
+		NbtList list = handler.getScroll().getOrCreateNbt().getList("RiddleList", NbtElement.COMPOUND_TYPE);
 
 		if(!list.isEmpty()) {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -81,7 +83,10 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 			int boxWidth = 132;
 
 			for(int i = 0; i < list.size(); i++) {
-				agony.addAll(textRenderer.wrapLines(Text.translatable(list.getString(i)), boxWidth));
+				NbtCompound compound = list.getCompound(i);
+				AuraType type = AuraType.values()[compound.getInt("AuraTypeIndex")];
+
+				agony.addAll(textRenderer.wrapLines(Text.translatable("riddle_text." + type.getName() + "." + compound.getInt("RiddleIndex")), boxWidth));
 
 				if(i < list.size() - 1)
 					agony.add(Text.literal("").asOrderedText());
@@ -119,7 +124,7 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		NbtList list = handler.getScroll().getOrCreateNbt().getList("RiddleList", NbtElement.STRING_TYPE);
+		NbtList list = handler.getScroll().getOrCreateNbt().getList("RiddleList", NbtElement.COMPOUND_TYPE);
 
 		if(!list.isEmpty() && lineStart == null && button == 0) {
 			Vec2f lastPos = new Vec2f(0, 0);

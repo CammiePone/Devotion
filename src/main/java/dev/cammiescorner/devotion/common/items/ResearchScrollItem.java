@@ -1,5 +1,6 @@
 package dev.cammiescorner.devotion.common.items;
 
+import dev.cammiescorner.devotion.api.spells.AuraType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LecternBlock;
@@ -9,16 +10,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Pair;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ResearchScrollItem extends Item {
@@ -45,18 +45,25 @@ public class ResearchScrollItem extends Item {
 		if(!stack.hasNbt()) {
 			NbtCompound tag = stack.getOrCreateNbt();
 			NbtList nbtList = new NbtList();
-			List<String> list = new ArrayList<>(List.of(
-					"riddle_text.enhancement.1",
-					"riddle_text.transmutation.1",
-					"riddle_text.emission.1",
-					"riddle_text.conjuration.1",
-					"riddle_text.manipulation.1",
-					"riddle_text.specialisation.1"
-			));
-			Collections.shuffle(list);
+			List<Pair<AuraType, Integer>> list = new ArrayList<>();
+			int maxRiddles = player.getRandom().nextInt(5) + 4;
 
-			for(String s : list)
-				nbtList.add(NbtString.of(s));
+			for(int i = 0; i < maxRiddles; i++) {
+				AuraType type, prevType1 = i < 1 ? null : list.get(i - 1).getLeft(), prevType2 = i < 2 ? null : list.get(i - 2).getLeft();
+
+				do type = AuraType.values()[player.getRandom().nextInt(6)];
+				while(type.equals(prevType1) || type.equals(prevType2));
+
+				list.add(new Pair<>(type, player.getRandom().nextInt(9)));
+			}
+
+			for(Pair<AuraType, Integer> pair : list) {
+				NbtCompound compound = new NbtCompound();
+				compound.putInt("AuraTypeIndex", pair.getLeft().ordinal());
+				compound.putInt("RiddleIndex", pair.getRight());
+
+				nbtList.add(compound);
+			}
 
 			tag.put("RiddleList", nbtList);
 		}

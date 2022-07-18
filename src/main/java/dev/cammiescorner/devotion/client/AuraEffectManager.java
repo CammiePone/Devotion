@@ -60,7 +60,7 @@ public final class AuraEffectManager implements EntitiesPreRenderCallback, Shade
 	 * @return the aura colour
 	 */
 	public static int[] getAuraColourFor(Entity entity) {
-		return DevotionComponents.CURRENT_SPELL_COMPONENT.isProvidedBy(entity) ? DevotionHelper.getSelectedSpell(entity).getSpellType().getRgbInt() : new int[] { 0, 0, 0 };
+		return DevotionComponents.CURRENT_SPELL_COMPONENT.isProvidedBy(entity) ? DevotionHelper.getSelectedSpell(entity).getSpellType().getRgbI() : new int[] { 0, 0, 0 };
 	}
 
 	@Override
