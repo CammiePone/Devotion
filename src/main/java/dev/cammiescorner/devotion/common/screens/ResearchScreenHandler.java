@@ -11,7 +11,6 @@ public class ResearchScreenHandler extends ScreenHandler {
 
 	public ResearchScreenHandler(int syncId, Inventory inventory) {
 		super(DevotionScreenHandlers.RESEARCH_SCREEN_HANDLER, syncId);
-		checkSize(inventory, 1);
 		this.inventory = inventory;
 	}
 

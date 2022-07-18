@@ -40,7 +40,7 @@ public abstract class LecternBlockEntityMixin extends BlockEntity implements Cle
 
 	@Inject(method = "createMenu", at = @At("HEAD"), cancellable = true)
 	private void devotion$createResearchScreen(int i, PlayerInventory playerInventory, PlayerEntity playerEntity, CallbackInfoReturnable<ScreenHandler> info) {
-		if(!inventory.isEmpty() && getBook().getItem() instanceof ResearchScrollItem)
+		if(getBook().getItem() instanceof ResearchScrollItem)
 			info.setReturnValue(new ResearchScreenHandler(i, inventory));
 	}
 
