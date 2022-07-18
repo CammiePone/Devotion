@@ -51,6 +51,7 @@ public class Devotion implements ModInitializer {
 		DevotionCommands.register();
 		DevotionRecipes.loadMeBitch();
 		DevotionCults.register();
+		DevotionScreenHandlers.register();
 
 		Registry.register(Registry.ATTRIBUTE, id("casting_multiplier"), DevotionAttributes.AURA_COST);
 		Registry.register(Registry.ATTRIBUTE, id("aura_regen"), DevotionAttributes.AURA_REGEN);

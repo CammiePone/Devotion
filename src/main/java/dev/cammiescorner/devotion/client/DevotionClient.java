@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion.client;
 
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.client.models.entity.ScrollModel;
 import dev.cammiescorner.devotion.client.models.equipment.MageRobesModel;
 import dev.cammiescorner.devotion.client.models.equipment.TimeCultLeaderRobesModel;
 import dev.cammiescorner.devotion.client.models.equipment.TimeCultRobesModel;
@@ -39,6 +40,7 @@ public class DevotionClient implements ClientModInitializer {
 
 		EntitiesPreRenderCallback.EVENT.register(AuraEffectManager.INSTANCE);
 		ShaderEffectRenderCallback.EVENT.register(AuraEffectManager.INSTANCE);
+		EntityModelLayerRegistry.registerModelLayer(ScrollModel.MODEL_LAYER, ScrollModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(MageRobesModel.MODEL_LAYER, MageRobesModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(TimeCultRobesModel.MODEL_LAYER, TimeCultRobesModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(TimeCultLeaderRobesModel.MODEL_LAYER, TimeCultLeaderRobesModel::getTexturedModelData);

@@ -32,7 +32,7 @@ dependencies {
 	modImplementation libs.cca.chunk
 	modImplementation libs.modmenu
 	modImplementation libs.satin
-	modImplementation libs.early.features
+//	modImplementation libs.early.features
 	modImplementation libs.midnightlib
     modImplementation libs.blabber
 

@@ -63,5 +63,7 @@
 
     "devotion.midnightconfig.title": "Devotion",
     "devotion.midnightconfig.auraSharpness": "Aura Shader Sharpness",
-    "devotion.midnightconfig.auraGradiant": "Aura Shader Gradiant"
+    "devotion.midnightconfig.auraGradiant": "Aura Shader Gradiant",
+
+    "lectern.devotion.take_scroll": "Take Scroll"
 }

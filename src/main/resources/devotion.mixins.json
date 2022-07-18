@@ -6,6 +6,7 @@
 	"mixins": [
 		"AbstractBlockMixin",
 		"ItemStackMixin",
+		"LecternBlockEntityMixin",
 		"PlayerEntityMixin",
 		"ScreenHandlerMixin"
 	],
@@ -14,9 +15,10 @@
 		"client.HeldItemRendererMixin",
 		"client.InGameHudMixin",
 		"client.KeyboardMixin",
+		"client.LecternBlockEntityRendererMixin",
 		"client.LivingEntityRendererMixin",
 		"client.MinecraftClientMixin",
-        "client.PlayerEntityRendererMixin"
+		"client.PlayerEntityRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
