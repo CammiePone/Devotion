@@ -8,10 +8,12 @@ import net.minecraft.screen.ScreenHandler;
 
 public class ResearchScreenHandler extends ScreenHandler {
 	private final Inventory inventory;
+	private final ItemStack stack;
 
-	public ResearchScreenHandler(int syncId, Inventory inventory) {
+	public ResearchScreenHandler(int syncId, Inventory inventory, ItemStack stack) {
 		super(DevotionScreenHandlers.RESEARCH_SCREEN_HANDLER, syncId);
 		this.inventory = inventory;
+		this.stack = stack;
 	}
 
 	@Override
@@ -39,6 +41,6 @@ public class ResearchScreenHandler extends ScreenHandler {
 	}
 
 	public ItemStack getScroll() {
-		return inventory.getStack(0);
+		return stack;
 	}
 }

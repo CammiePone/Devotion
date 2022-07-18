@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.common.registry;
 
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.common.screens.ResearchScreenHandler;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -13,7 +14,7 @@ public class DevotionScreenHandlers {
 	public static final LinkedHashMap<ScreenHandlerType<?>, Identifier> SCREEN_HANDLERS = new LinkedHashMap<>();
 
 	//-----Screen Handlers-----//
-	public static final ScreenHandlerType<ResearchScreenHandler> RESEARCH_SCREEN_HANDLER = create("research_screen_handler", new ScreenHandlerType<>(ResearchScreenHandler::new));
+	public static final ScreenHandlerType<ResearchScreenHandler> RESEARCH_SCREEN_HANDLER = create("research_screen_handler", new ExtendedScreenHandlerType<>((syncId, inventory, buf) -> new ResearchScreenHandler(syncId, inventory, buf.readItemStack())));
 
 	//-----Registry-----//
 	public static void register() {
