@@ -189,30 +189,18 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
 		if(lineStart != null && button == 0) {
-			if(mousePos.distanceSquared(enhancerPos) <= 144 && !lineStart.equals(enhancerPos)) {
-				lines.add(new Pair<>(lineStart, enhancerPos));
-				auraTypes.add(AuraType.ENHANCER);
-			}
-			else if(mousePos.distanceSquared(transmuterPos) <= 144 && !lineStart.equals(transmuterPos)) {
-				lines.add(new Pair<>(lineStart, transmuterPos));
-				auraTypes.add(AuraType.TRANSMUTER);
-			}
-			else if(mousePos.distanceSquared(emitterPos) <= 144 && !lineStart.equals(emitterPos)) {
-				lines.add(new Pair<>(lineStart, emitterPos));
-				auraTypes.add(AuraType.EMITTER);
-			}
-			else if(mousePos.distanceSquared(conjurerPos) <= 144 && !lineStart.equals(conjurerPos)) {
-				lines.add(new Pair<>(lineStart, conjurerPos));
-				auraTypes.add(AuraType.CONJURER);
-			}
-			else if(mousePos.distanceSquared(manipulatorPos) <= 144 && !lineStart.equals(manipulatorPos)) {
-				lines.add(new Pair<>(lineStart, manipulatorPos));
-				auraTypes.add(AuraType.MANIPULATOR);
-			}
-			else if(mousePos.distanceSquared(specialistPos) <= 144 && !lineStart.equals(specialistPos)) {
-				lines.add(new Pair<>(lineStart, specialistPos));
-				auraTypes.add(AuraType.SPECIALIST);
-			}
+			if(mousePos.distanceSquared(enhancerPos) <= 144 && !lineStart.equals(enhancerPos))
+				addLine(lineStart, enhancerPos, AuraType.ENHANCER);
+			else if(mousePos.distanceSquared(transmuterPos) <= 144 && !lineStart.equals(transmuterPos))
+				addLine(lineStart, transmuterPos, AuraType.TRANSMUTER);
+			else if(mousePos.distanceSquared(emitterPos) <= 144 && !lineStart.equals(emitterPos))
+				addLine(lineStart, emitterPos, AuraType.EMITTER);
+			else if(mousePos.distanceSquared(conjurerPos) <= 144 && !lineStart.equals(conjurerPos))
+				addLine(lineStart, conjurerPos, AuraType.CONJURER);
+			else if(mousePos.distanceSquared(manipulatorPos) <= 144 && !lineStart.equals(manipulatorPos))
+				addLine(lineStart, manipulatorPos, AuraType.MANIPULATOR);
+			else if(mousePos.distanceSquared(specialistPos) <= 144 && !lineStart.equals(specialistPos))
+				addLine(lineStart, specialistPos, AuraType.SPECIALIST);
 
 			lineStart = null;
 			SaveScrollDataPacket.send(handler.syncId, auraTypes);
@@ -299,5 +287,14 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 					auraTypes.add(next);
 			}
 		}
+	}
+
+	public void addLine(Vec2f pos1, Vec2f pos2, AuraType type) {
+		for(Pair<Vec2f, Vec2f> line : lines)
+			if((line.getLeft().equals(pos1) && line.getRight().equals(pos2)) || (line.getLeft().equals(pos2) && line.getRight().equals(pos1)))
+				return;
+
+		lines.add(new Pair<>(pos1, pos2));
+		auraTypes.add(type);
 	}
 }
