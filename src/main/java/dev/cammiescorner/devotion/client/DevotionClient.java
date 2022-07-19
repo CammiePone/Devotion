@@ -10,6 +10,7 @@ import dev.cammiescorner.devotion.client.renderer.blocks.AmethystAltarBlockEntit
 import dev.cammiescorner.devotion.client.renderer.entities.AuraFeatureRenderer;
 import dev.cammiescorner.devotion.client.renderer.equipment.MageRobesRenderer;
 import dev.cammiescorner.devotion.client.renderer.equipment.TimeCultRobesRenderer;
+import dev.cammiescorner.devotion.common.packets.s2c.RefreshResearchScreenPacket;
 import dev.cammiescorner.devotion.common.registry.DevotionBlockEntities;
 import dev.cammiescorner.devotion.common.registry.DevotionItems;
 import dev.cammiescorner.devotion.common.registry.DevotionKeyBinds;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
+import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 public class DevotionClient implements ClientModInitializer {
 	public static final Identifier MAGE_ROBES = Devotion.id("textures/entity/armor/mage_robes.png");
@@ -56,6 +58,8 @@ public class DevotionClient implements ClientModInitializer {
 		ArmorRenderer.register(new MageRobesRenderer(MANIPULATOR_MAGE_ROBES), DevotionItems.MANIPULATOR_MAGE_HOOD, DevotionItems.MANIPULATOR_MAGE_ROBE, DevotionItems.MANIPULATOR_MAGE_BELT, DevotionItems.MANIPULATOR_MAGE_BOOTS);
 		ArmorRenderer.register(new TimeCultRobesRenderer(false), DevotionItems.TIME_CULTIST_HOOD, DevotionItems.TIME_CULTIST_ROBE, DevotionItems.TIME_CULTIST_LEGGINGS, DevotionItems.TIME_CULTIST_BOOTS);
 		ArmorRenderer.register(new TimeCultRobesRenderer(true), DevotionItems.TIME_CULTIST_LEADER_HOOD, DevotionItems.TIME_CULTIST_LEADER_ROBE, DevotionItems.TIME_CULTIST_LEADER_LEGGINGS, DevotionItems.TIME_CULTIST_LEADER_BOOTS);
+
+		ClientPlayNetworking.registerGlobalReceiver(RefreshResearchScreenPacket.ID, RefreshResearchScreenPacket::handle);
 
 		LivingEntityEarlyFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, context) -> {
 			if(entityRenderer instanceof PlayerEntityRenderer playerRenderer)

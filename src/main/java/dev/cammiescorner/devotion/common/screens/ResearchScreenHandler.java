@@ -5,15 +5,22 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
 
 public class ResearchScreenHandler extends ScreenHandler {
 	private final Inventory inventory;
-	private final ItemStack stack;
+	private final ScreenHandlerContext context;
+	private ItemStack stack;
 
 	public ResearchScreenHandler(int syncId, Inventory inventory, ItemStack stack) {
+		this(syncId, inventory, ScreenHandlerContext.EMPTY, stack);
+	}
+
+	public ResearchScreenHandler(int syncId, Inventory inventory, ScreenHandlerContext context, ItemStack stack) {
 		super(DevotionScreenHandlers.RESEARCH_SCREEN_HANDLER, syncId);
 		this.inventory = inventory;
 		this.stack = stack;
+		this.context = context;
 	}
 
 	@Override
@@ -42,5 +49,13 @@ public class ResearchScreenHandler extends ScreenHandler {
 
 	public ItemStack getScroll() {
 		return stack;
+	}
+
+	public void setScroll(ItemStack stack) {
+		this.stack = stack;
+	}
+
+	public ScreenHandlerContext getContext() {
+		return context;
 	}
 }

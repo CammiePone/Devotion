@@ -19,6 +19,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Clearable;
 import net.minecraft.util.math.BlockPos;
@@ -44,7 +45,7 @@ public abstract class LecternBlockEntityMixin extends BlockEntity implements Cle
 	@Inject(method = "createMenu", at = @At("HEAD"), cancellable = true)
 	private void devotion$createResearchScreen(int i, PlayerInventory playerInventory, PlayerEntity playerEntity, CallbackInfoReturnable<ScreenHandler> info) {
 		if(getBook().getItem() instanceof ResearchScrollItem)
-			info.setReturnValue(new ResearchScreenHandler(i, inventory, getBook()));
+			info.setReturnValue(new ResearchScreenHandler(i, inventory, ScreenHandlerContext.create(world, getPos()), getBook()));
 	}
 
 	@Inject(method = "setBook(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;)V", at = @At("TAIL"))

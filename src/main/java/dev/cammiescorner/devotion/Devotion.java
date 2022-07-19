@@ -7,6 +7,7 @@ import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.CommonEvents;
 import dev.cammiescorner.devotion.common.integration.DevotionConfig;
 import dev.cammiescorner.devotion.common.packets.c2s.CastSpellPacket;
+import dev.cammiescorner.devotion.common.packets.c2s.SaveScrollDataPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SetCastingPacket;
 import dev.cammiescorner.devotion.common.registry.*;
 import eu.midnightdust.lib.config.MidnightConfig;
@@ -64,6 +65,7 @@ public class Devotion implements ModInitializer {
 
 		ServerPlayNetworking.registerGlobalReceiver(CastSpellPacket.ID, CastSpellPacket::handler);
 		ServerPlayNetworking.registerGlobalReceiver(SetCastingPacket.ID, SetCastingPacket::handler);
+		ServerPlayNetworking.registerGlobalReceiver(SaveScrollDataPacket.ID, SaveScrollDataPacket::handler);
 
 		CommonEvents.events();
 	}

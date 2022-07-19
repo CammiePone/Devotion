@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.spells.AuraType;
+import dev.cammiescorner.devotion.common.packets.c2s.SaveScrollDataPacket;
 import dev.cammiescorner.devotion.common.screens.ResearchScreenHandler;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -28,6 +29,7 @@ import java.util.List;
 public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	public static final Identifier TEXTURE = Devotion.id("textures/gui/research/research_scroll.png");
 	private final List<Pair<Vec2f, Vec2f>> lines = new ArrayList<>();
+	private final List<AuraType> auraTypes = new ArrayList<>();
 	private final Vec2f enhancerPos = new Vec2f(268, 52);
 	private final Vec2f transmuterPos = new Vec2f(328, 97);
 	private final Vec2f conjurerPos = new Vec2f(305, 167);
@@ -120,6 +122,7 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 		x = (width - 384) / 2;
 		y = (height - 216) / 2;
 		addDrawableChild(new ButtonWidget(x + 142, y + 200, 100, 20, Text.translatable("lectern." + Devotion.MOD_ID + ".take_scroll"), this::takeScrollButtonShit));
+		redrawLines();
 	}
 
 	@Override
@@ -132,22 +135,48 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 			if(!lines.isEmpty())
 				lastPos = lines.get(lines.size() - 1).getRight();
 
-			if(mousePos.distanceSquared(enhancerPos) <= 144 && (lines.isEmpty() || lastPos.equals(enhancerPos)))
+			if(mousePos.distanceSquared(enhancerPos) <= 144 && (lines.isEmpty() || lastPos.equals(enhancerPos))) {
 				lineStart = enhancerPos;
-			else if(mousePos.distanceSquared(transmuterPos) <= 144 && (lines.isEmpty() || lastPos.equals(transmuterPos)))
+
+				if(lines.isEmpty())
+					auraTypes.add(AuraType.ENHANCER);
+			}
+			else if(mousePos.distanceSquared(transmuterPos) <= 144 && (lines.isEmpty() || lastPos.equals(transmuterPos))) {
 				lineStart = transmuterPos;
-			else if(mousePos.distanceSquared(emitterPos) <= 144 && (lines.isEmpty() || lastPos.equals(emitterPos)))
+
+				if(lines.isEmpty())
+					auraTypes.add(AuraType.TRANSMUTER);
+			}
+			else if(mousePos.distanceSquared(emitterPos) <= 144 && (lines.isEmpty() || lastPos.equals(emitterPos))) {
 				lineStart = emitterPos;
-			else if(mousePos.distanceSquared(conjurerPos) <= 144 && (lines.isEmpty() || lastPos.equals(conjurerPos)))
+
+				if(lines.isEmpty())
+					auraTypes.add(AuraType.EMITTER);
+			}
+			else if(mousePos.distanceSquared(conjurerPos) <= 144 && (lines.isEmpty() || lastPos.equals(conjurerPos))) {
 				lineStart = conjurerPos;
-			else if(mousePos.distanceSquared(manipulatorPos) <= 144 && (lines.isEmpty() || lastPos.equals(manipulatorPos)))
+
+				if(lines.isEmpty())
+					auraTypes.add(AuraType.CONJURER);
+			}
+			else if(mousePos.distanceSquared(manipulatorPos) <= 144 && (lines.isEmpty() || lastPos.equals(manipulatorPos))) {
 				lineStart = manipulatorPos;
-			else if(mousePos.distanceSquared(specialistPos) <= 144 && (lines.isEmpty() || lastPos.equals(specialistPos)))
+
+				if(lines.isEmpty())
+					auraTypes.add(AuraType.MANIPULATOR);
+			}
+			else if(mousePos.distanceSquared(specialistPos) <= 144 && (lines.isEmpty() || lastPos.equals(specialistPos))) {
 				lineStart = specialistPos;
+
+				if(lines.isEmpty())
+					auraTypes.add(AuraType.SPECIALIST);
+			}
 		}
 
-		if(!lines.isEmpty() && button == 1) {
+		if(!lines.isEmpty() && !auraTypes.isEmpty() && button == 1) {
 			lines.remove(lines.size() - 1);
+			auraTypes.remove(auraTypes.size() - 1);
+			SaveScrollDataPacket.send(handler.syncId, auraTypes);
 			lineStart = null;
 		}
 
@@ -156,21 +185,34 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		if(lineStart != null) {
-			if(mousePos.distanceSquared(enhancerPos) <= 144 && !lineStart.equals(enhancerPos))
+		if(lineStart != null && button == 0) {
+			if(mousePos.distanceSquared(enhancerPos) <= 144 && !lineStart.equals(enhancerPos)) {
 				lines.add(new Pair<>(lineStart, enhancerPos));
-			else if(mousePos.distanceSquared(transmuterPos) <= 144 && !lineStart.equals(transmuterPos))
+				auraTypes.add(AuraType.ENHANCER);
+			}
+			else if(mousePos.distanceSquared(transmuterPos) <= 144 && !lineStart.equals(transmuterPos)) {
 				lines.add(new Pair<>(lineStart, transmuterPos));
-			else if(mousePos.distanceSquared(emitterPos) <= 144 && !lineStart.equals(emitterPos))
+				auraTypes.add(AuraType.TRANSMUTER);
+			}
+			else if(mousePos.distanceSquared(emitterPos) <= 144 && !lineStart.equals(emitterPos)) {
 				lines.add(new Pair<>(lineStart, emitterPos));
-			else if(mousePos.distanceSquared(conjurerPos) <= 144 && !lineStart.equals(conjurerPos))
+				auraTypes.add(AuraType.EMITTER);
+			}
+			else if(mousePos.distanceSquared(conjurerPos) <= 144 && !lineStart.equals(conjurerPos)) {
 				lines.add(new Pair<>(lineStart, conjurerPos));
-			else if(mousePos.distanceSquared(manipulatorPos) <= 144 && !lineStart.equals(manipulatorPos))
+				auraTypes.add(AuraType.CONJURER);
+			}
+			else if(mousePos.distanceSquared(manipulatorPos) <= 144 && !lineStart.equals(manipulatorPos)) {
 				lines.add(new Pair<>(lineStart, manipulatorPos));
-			else if(mousePos.distanceSquared(specialistPos) <= 144 && !lineStart.equals(specialistPos))
+				auraTypes.add(AuraType.MANIPULATOR);
+			}
+			else if(mousePos.distanceSquared(specialistPos) <= 144 && !lineStart.equals(specialistPos)) {
 				lines.add(new Pair<>(lineStart, specialistPos));
+				auraTypes.add(AuraType.SPECIALIST);
+			}
 
 			lineStart = null;
+			SaveScrollDataPacket.send(handler.syncId, auraTypes);
 		}
 
 		return super.mouseReleased(mouseX, mouseY, button);
@@ -180,6 +222,12 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	public void mouseMoved(double mouseX, double mouseY) {
 		super.mouseMoved(mouseX, mouseY);
 		mousePos = new Vec2f((float) (mouseX - x), (float) (mouseY - y));
+	}
+
+	@Override
+	public void closeScreen() {
+		SaveScrollDataPacket.send(handler.syncId, auraTypes);
+		super.closeScreen();
 	}
 
 	private void takeScrollButtonShit(ButtonWidget buttonWidget) {
@@ -210,5 +258,43 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 		bufferBuilder.vertex(matrix, x1 + dx, y1 + dy, 0).color(0).next();
 		bufferBuilder.vertex(matrix, x1 - dx, y1 - dy, 0).color(0).next();
 		BufferRenderer.drawWithShader(bufferBuilder.end());
+	}
+
+	public void redrawLines() {
+		NbtList nbtList = handler.getScroll().getOrCreateNbt().getList("AuraTypes", NbtElement.STRING_TYPE);
+		lines.clear();
+		auraTypes.clear();
+		lineStart = null;
+
+		if(!nbtList.isEmpty()) {
+			for(int i = 0; i < nbtList.size() - 1; i++) {
+				AuraType current = AuraType.valueOf(nbtList.getString(i));
+				AuraType next = AuraType.valueOf(nbtList.getString(i + 1));
+				Vec2f lineX = switch(current) {
+					case ENHANCER -> enhancerPos;
+					case TRANSMUTER -> transmuterPos;
+					case EMITTER -> emitterPos;
+					case CONJURER -> conjurerPos;
+					case MANIPULATOR -> manipulatorPos;
+					case SPECIALIST -> specialistPos;
+					case NONE -> new Vec2f(0, 0);
+				};
+				Vec2f lineY = switch(next) {
+					case ENHANCER -> enhancerPos;
+					case TRANSMUTER -> transmuterPos;
+					case EMITTER -> emitterPos;
+					case CONJURER -> conjurerPos;
+					case MANIPULATOR -> manipulatorPos;
+					case SPECIALIST -> specialistPos;
+					case NONE -> new Vec2f(0, 0);
+				};
+
+				lines.add(new Pair<>(lineX, lineY));
+				auraTypes.add(current);
+
+				if(i == nbtList.size() - 2)
+					auraTypes.add(next);
+			}
+		}
 	}
 }
