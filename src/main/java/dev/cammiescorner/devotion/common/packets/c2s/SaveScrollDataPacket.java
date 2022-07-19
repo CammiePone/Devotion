@@ -57,7 +57,7 @@ public class SaveScrollDataPacket {
 						for(int i = 0; i < riddleList.size(); i++) {
 							if(riddleList.getCompound(i).getInt("AuraTypeIndex") != auraTypeList.getInt(i))
 								break;
-							else if(i == riddleList.size() - 1)
+							else if(riddleList.size() == auraTypeList.size())
 								tag.putBoolean("Completed", true);
 						}
 

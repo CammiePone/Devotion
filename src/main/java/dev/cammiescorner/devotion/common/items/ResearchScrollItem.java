@@ -45,9 +45,9 @@ public class ResearchScrollItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getStackInHand(hand);
+		NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
 
-		if(!stack.hasNbt()) {
-			NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
+		if(!tag.contains("RiddleList")) {
 			NbtList nbtList = new NbtList();
 			int maxRiddles = player.getRandom().nextInt(5) + 4;
 
@@ -60,9 +60,20 @@ public class ResearchScrollItem extends Item {
 			}
 
 			tag.put("RiddleList", nbtList);
+			return TypedActionResult.success(stack);
+		}
+
+		if(tag.getBoolean("Completed")) {
+			stack.decrement(1);
+			return TypedActionResult.success(stack);
 		}
 
 		return super.use(world, player, hand);
+	}
+
+	@Override
+	public boolean hasGlint(ItemStack stack) {
+		return stack.hasNbt() && stack.getSubNbt(Devotion.MOD_ID).getBoolean("Completed");
 	}
 
 	/**
