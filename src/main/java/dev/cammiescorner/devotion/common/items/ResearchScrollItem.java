@@ -47,7 +47,7 @@ public class ResearchScrollItem extends Item {
 		ItemStack stack = player.getStackInHand(hand);
 
 		if(!stack.hasNbt()) {
-			NbtCompound tag = stack.getOrCreateNbt();
+			NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
 			NbtList nbtList = new NbtList();
 			int maxRiddles = player.getRandom().nextInt(5) + 4;
 

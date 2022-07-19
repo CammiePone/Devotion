@@ -69,45 +69,49 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 			}
 		}
 
-		NbtList list = handler.getScroll().getOrCreateNbt().getList("RiddleList", NbtElement.COMPOUND_TYPE);
+		NbtCompound tag = handler.getScroll().getSubNbt(Devotion.MOD_ID);
 
-		if(!list.isEmpty()) {
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-			RenderSystem.setShaderTexture(0, TEXTURE);
-			DrawableHelper.drawTexture(matrices, 256, 104, z, 120, 216, 24, 24, 384, 320);
+		if(tag != null) {
+			NbtList list = tag.getList("RiddleList", NbtElement.COMPOUND_TYPE);
 
-			for(int i = 0; i < 5; i++)
-				DrawableHelper.drawTexture(matrices, pentagonX(256, i), pentagonY(104, i), z, i * 24, 216, 24, 24, 384, 320);
+			if(!list.isEmpty()) {
+				RenderSystem.setShader(GameRenderer::getPositionTexShader);
+				RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+				RenderSystem.setShaderTexture(0, TEXTURE);
+				DrawableHelper.drawTexture(matrices, 256, 104, z, 120, 216, 24, 24, 384, 320);
 
-			List<OrderedText> agony = new ArrayList<>();
-			int posY = 0;
-			int boxHeight = 151;
-			int boxWidth = 132;
+				for(int i = 0; i < 5; i++)
+					DrawableHelper.drawTexture(matrices, pentagonX(256, i), pentagonY(104, i), z, i * 24, 216, 24, 24, 384, 320);
 
-			for(int i = 0; i < list.size(); i++) {
-				NbtCompound compound = list.getCompound(i);
-				AuraType type = AuraType.values()[compound.getInt("AuraTypeIndex")];
+				List<OrderedText> agony = new ArrayList<>();
+				int posY = 0;
+				int boxHeight = 151;
+				int boxWidth = 132;
 
-				agony.addAll(textRenderer.wrapLines(Text.translatable("riddle_text." + type.getName() + "." + compound.getInt("RiddleIndex")), boxWidth));
+				for(int i = 0; i < list.size(); i++) {
+					NbtCompound compound = list.getCompound(i);
+					AuraType type = AuraType.values()[compound.getInt("AuraTypeIndex")];
 
-				if(i < list.size() - 1)
-					agony.add(Text.literal("").asOrderedText());
+					agony.addAll(textRenderer.wrapLines(Text.translatable("riddle_text." + type.getName() + "." + compound.getInt("RiddleIndex")), boxWidth));
+
+					if(i < list.size() - 1)
+						agony.add(Text.literal("").asOrderedText());
+				}
+
+				matrices.push();
+				float textHeight = Math.max(1, agony.size()) * Math.max(1, textRenderer.fontHeight - 1);
+				float scale = Math.min(1, boxHeight / textHeight);
+				matrices.translate(48 + (boxWidth * 0.5), 34 + (boxHeight * 0.5), 0);
+				matrices.scale(scale, scale, 1);
+				matrices.translate(0, -textHeight * 0.5, 0);
+
+				for(OrderedText text : agony) {
+					textRenderer.draw(matrices, text, -textRenderer.getWidth(text) * 0.5F, posY, 0);
+					posY += 8;
+				}
+
+				matrices.pop();
 			}
-
-			matrices.push();
-			float textHeight = Math.max(1, agony.size()) * Math.max(1, textRenderer.fontHeight - 1);
-			float scale = Math.min(1, boxHeight / textHeight);
-			matrices.translate(48 + (boxWidth * 0.5), 34 + (boxHeight * 0.5), 0);
-			matrices.scale(scale, scale, 1);
-			matrices.translate(0, -textHeight * 0.5, 0);
-
-			for(OrderedText text : agony) {
-				textRenderer.draw(matrices, text, -textRenderer.getWidth(text) * 0.5F, posY, 0);
-				posY += 8;
-			}
-
-			matrices.pop();
 		}
 	}
 
@@ -128,59 +132,63 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		NbtList list = handler.getScroll().getOrCreateNbt().getList("RiddleList", NbtElement.COMPOUND_TYPE);
+		NbtCompound tag = handler.getScroll().getSubNbt(Devotion.MOD_ID);
 
-		if(!list.isEmpty() && lineStart == null && button == 0) {
-			if(!lines.isEmpty())
-				lastPos = lines.get(lines.size() - 1).getRight();
+		if(tag != null && !tag.getBoolean("Completed")) {
+			NbtList list = tag.getList("RiddleList", NbtElement.COMPOUND_TYPE);
 
-			if(mousePos.distanceSquared(enhancerPos) <= 144 && (lines.isEmpty() || lastPos.equals(enhancerPos))) {
-				lineStart = enhancerPos;
+			if(!list.isEmpty() && lineStart == null && button == 0) {
+				if(!lines.isEmpty())
+					lastPos = lines.get(lines.size() - 1).getRight();
 
-				if(lines.isEmpty())
-					auraTypes.add(AuraType.ENHANCER);
+				if(mousePos.distanceSquared(enhancerPos) <= 144 && (lines.isEmpty() || lastPos.equals(enhancerPos))) {
+					lineStart = enhancerPos;
+
+					if(lines.isEmpty())
+						auraTypes.add(AuraType.ENHANCER);
+				}
+				else if(mousePos.distanceSquared(transmuterPos) <= 144 && (lines.isEmpty() || lastPos.equals(transmuterPos))) {
+					lineStart = transmuterPos;
+
+					if(lines.isEmpty())
+						auraTypes.add(AuraType.TRANSMUTER);
+				}
+				else if(mousePos.distanceSquared(emitterPos) <= 144 && (lines.isEmpty() || lastPos.equals(emitterPos))) {
+					lineStart = emitterPos;
+
+					if(lines.isEmpty())
+						auraTypes.add(AuraType.EMITTER);
+				}
+				else if(mousePos.distanceSquared(conjurerPos) <= 144 && (lines.isEmpty() || lastPos.equals(conjurerPos))) {
+					lineStart = conjurerPos;
+
+					if(lines.isEmpty())
+						auraTypes.add(AuraType.CONJURER);
+				}
+				else if(mousePos.distanceSquared(manipulatorPos) <= 144 && (lines.isEmpty() || lastPos.equals(manipulatorPos))) {
+					lineStart = manipulatorPos;
+
+					if(lines.isEmpty())
+						auraTypes.add(AuraType.MANIPULATOR);
+				}
+				else if(mousePos.distanceSquared(specialistPos) <= 144 && (lines.isEmpty() || lastPos.equals(specialistPos))) {
+					lineStart = specialistPos;
+
+					if(lines.isEmpty())
+						auraTypes.add(AuraType.SPECIALIST);
+				}
 			}
-			else if(mousePos.distanceSquared(transmuterPos) <= 144 && (lines.isEmpty() || lastPos.equals(transmuterPos))) {
-				lineStart = transmuterPos;
 
-				if(lines.isEmpty())
-					auraTypes.add(AuraType.TRANSMUTER);
+			if(button == 1) {
+				if(!lines.isEmpty())
+					lines.remove(lines.size() - 1);
+				if(!auraTypes.isEmpty())
+					auraTypes.remove(auraTypes.size() - 1);
+
+				SaveScrollDataPacket.send(handler.syncId, auraTypes);
+				lineStart = null;
+				lastPos = new Vec2f(0, 0);
 			}
-			else if(mousePos.distanceSquared(emitterPos) <= 144 && (lines.isEmpty() || lastPos.equals(emitterPos))) {
-				lineStart = emitterPos;
-
-				if(lines.isEmpty())
-					auraTypes.add(AuraType.EMITTER);
-			}
-			else if(mousePos.distanceSquared(conjurerPos) <= 144 && (lines.isEmpty() || lastPos.equals(conjurerPos))) {
-				lineStart = conjurerPos;
-
-				if(lines.isEmpty())
-					auraTypes.add(AuraType.CONJURER);
-			}
-			else if(mousePos.distanceSquared(manipulatorPos) <= 144 && (lines.isEmpty() || lastPos.equals(manipulatorPos))) {
-				lineStart = manipulatorPos;
-
-				if(lines.isEmpty())
-					auraTypes.add(AuraType.MANIPULATOR);
-			}
-			else if(mousePos.distanceSquared(specialistPos) <= 144 && (lines.isEmpty() || lastPos.equals(specialistPos))) {
-				lineStart = specialistPos;
-
-				if(lines.isEmpty())
-					auraTypes.add(AuraType.SPECIALIST);
-			}
-		}
-
-		if(button == 1) {
-			if(!lines.isEmpty())
-				lines.remove(lines.size() - 1);
-			if(!auraTypes.isEmpty())
-				auraTypes.remove(auraTypes.size() - 1);
-
-			SaveScrollDataPacket.send(handler.syncId, auraTypes);
-			lineStart = null;
-			lastPos = new Vec2f(0, 0);
 		}
 
 		return super.mouseClicked(mouseX, mouseY, button);
@@ -252,39 +260,45 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	}
 
 	public void redrawLines() {
-		NbtList nbtList = handler.getScroll().getOrCreateNbt().getList("AuraTypes", NbtElement.STRING_TYPE);
-		lines.clear();
-		auraTypes.clear();
-		lineStart = null;
+		NbtCompound tag = handler.getScroll().getSubNbt(Devotion.MOD_ID);
 
-		if(!nbtList.isEmpty()) {
-			for(int i = 0; i < nbtList.size() - 1; i++) {
-				AuraType current = AuraType.valueOf(nbtList.getString(i));
-				AuraType next = AuraType.valueOf(nbtList.getString(i + 1));
-				Vec2f lineX = switch(current) {
-					case ENHANCER -> enhancerPos;
-					case TRANSMUTER -> transmuterPos;
-					case EMITTER -> emitterPos;
-					case CONJURER -> conjurerPos;
-					case MANIPULATOR -> manipulatorPos;
-					case SPECIALIST -> specialistPos;
-					case NONE -> new Vec2f(0, 0);
-				};
-				Vec2f lineY = switch(next) {
-					case ENHANCER -> enhancerPos;
-					case TRANSMUTER -> transmuterPos;
-					case EMITTER -> emitterPos;
-					case CONJURER -> conjurerPos;
-					case MANIPULATOR -> manipulatorPos;
-					case SPECIALIST -> specialistPos;
-					case NONE -> new Vec2f(0, 0);
-				};
+		if(tag != null) {
+			NbtList nbtList = tag.getList("AuraTypes", NbtElement.INT_TYPE);
+			boolean completed = tag.getBoolean("Completed");
+			// TODO if completed, render the aura shader around the lines @Will BL
+			lines.clear();
+			auraTypes.clear();
+			lineStart = null;
 
-				lines.add(new Pair<>(lineX, lineY));
-				auraTypes.add(current);
+			if(!nbtList.isEmpty()) {
+				for(int i = 0; i < nbtList.size() - 1; i++) {
+					AuraType current = AuraType.values()[nbtList.getInt(i)];
+					AuraType next = AuraType.values()[nbtList.getInt(i + 1)];
+					Vec2f lineX = switch(current) {
+						case ENHANCER -> enhancerPos;
+						case TRANSMUTER -> transmuterPos;
+						case EMITTER -> emitterPos;
+						case CONJURER -> conjurerPos;
+						case MANIPULATOR -> manipulatorPos;
+						case SPECIALIST -> specialistPos;
+						case NONE -> new Vec2f(0, 0);
+					};
+					Vec2f lineY = switch(next) {
+						case ENHANCER -> enhancerPos;
+						case TRANSMUTER -> transmuterPos;
+						case EMITTER -> emitterPos;
+						case CONJURER -> conjurerPos;
+						case MANIPULATOR -> manipulatorPos;
+						case SPECIALIST -> specialistPos;
+						case NONE -> new Vec2f(0, 0);
+					};
 
-				if(i == nbtList.size() - 2)
-					auraTypes.add(next);
+					lines.add(new Pair<>(lineX, lineY));
+					auraTypes.add(current);
+
+					if(i == nbtList.size() - 2)
+						auraTypes.add(next);
+				}
 			}
 		}
 	}
