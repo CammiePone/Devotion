@@ -41,6 +41,7 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	private final int distance = 64;
 	private final int z = 0;
 	private Vec2f mousePos = new Vec2f(0, 0);
+	private Vec2f lastPos = new Vec2f(0, 0);
 	private Vec2f lineStart;
 
 	public ResearchScreen(ResearchScreenHandler handler, PlayerInventory inventory, Text text) {
@@ -130,8 +131,6 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 		NbtList list = handler.getScroll().getOrCreateNbt().getList("RiddleList", NbtElement.COMPOUND_TYPE);
 
 		if(!list.isEmpty() && lineStart == null && button == 0) {
-			Vec2f lastPos = new Vec2f(0, 0);
-
 			if(!lines.isEmpty())
 				lastPos = lines.get(lines.size() - 1).getRight();
 
@@ -173,11 +172,15 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 			}
 		}
 
-		if(!lines.isEmpty() && !auraTypes.isEmpty() && button == 1) {
-			lines.remove(lines.size() - 1);
-			auraTypes.remove(auraTypes.size() - 1);
+		if(button == 1) {
+			if(!lines.isEmpty())
+				lines.remove(lines.size() - 1);
+			if(!auraTypes.isEmpty())
+				auraTypes.remove(auraTypes.size() - 1);
+
 			SaveScrollDataPacket.send(handler.syncId, auraTypes);
 			lineStart = null;
+			lastPos = new Vec2f(0, 0);
 		}
 
 		return super.mouseClicked(mouseX, mouseY, button);

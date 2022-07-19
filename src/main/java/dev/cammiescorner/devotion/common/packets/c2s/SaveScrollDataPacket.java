@@ -7,6 +7,7 @@ import dev.cammiescorner.devotion.common.screens.ResearchScreenHandler;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.entity.LecternBlockEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
@@ -47,6 +48,10 @@ public class SaveScrollDataPacket {
 				screenHandler.getContext().run((world, pos) -> {
 					if(world.getBlockEntity(pos) instanceof LecternBlockEntity lectern) {
 						NbtCompound tag = lectern.getBook().getOrCreateNbt();
+
+						if(tag.getList("AuraTypes", NbtElement.STRING_TYPE) != null)
+							tag.remove("AuraTypes");
+
 						tag.put("AuraTypes", nbtList);
 						lectern.markDirty();
 
