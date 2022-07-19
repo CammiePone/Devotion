@@ -1,8 +1,10 @@
 package dev.cammiescorner.devotion;
 
+import dev.cammiescorner.devotion.api.Graph;
 import dev.cammiescorner.devotion.api.actions.AltarAction;
 import dev.cammiescorner.devotion.api.cults.Cult;
 import dev.cammiescorner.devotion.api.entity.DevotionAttributes;
+import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.CommonEvents;
 import dev.cammiescorner.devotion.common.integration.DevotionConfig;
@@ -16,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.registry.DefaultedRegistry;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +41,22 @@ public class Devotion implements ModInitializer {
 			DevotionItems.MAGE_HOOD, DevotionItems.ENHANCER_MAGE_HOOD, DevotionItems.TRANSMUTER_MAGE_HOOD, DevotionItems.EMITTER_MAGE_HOOD,
 			DevotionItems.CONJURER_MAGE_HOOD, DevotionItems.MANIPULATOR_MAGE_HOOD, DevotionItems.TIME_CULTIST_HOOD
 	);
+	public static final Graph<AuraType> AURA_GRAPH = Util.make(new Graph<>(), (graph) -> {
+		for(int i = 0; i < AuraType.values().length - 1; i++)
+			graph.addNode(new Graph.Node<>(AuraType.values()[i]));
+
+		for(int i = 0; i < graph.nodes.size(); i++) {
+			Graph.Node<AuraType> node = graph.nodes.get(i);
+
+			for(int j = 0; j < graph.nodes.size(); j++) {
+				if (i == j)
+					continue; // do not loop back to self
+
+				Graph.Node<AuraType> target = graph.nodes.get(j);
+				graph.addEdge(node, target);
+			}
+		}
+	});
 
 	@Override
 	public void onInitialize(ModContainer mod) {
