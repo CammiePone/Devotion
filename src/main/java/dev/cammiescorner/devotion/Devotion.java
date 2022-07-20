@@ -4,19 +4,24 @@ import dev.cammiescorner.devotion.api.Graph;
 import dev.cammiescorner.devotion.api.actions.AltarAction;
 import dev.cammiescorner.devotion.api.cults.Cult;
 import dev.cammiescorner.devotion.api.entity.DevotionAttributes;
+import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.CommonEvents;
+import dev.cammiescorner.devotion.common.data.ResearchReloadListener;
 import dev.cammiescorner.devotion.common.integration.DevotionConfig;
 import dev.cammiescorner.devotion.common.packets.c2s.CastSpellPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SaveScrollDataPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SetCastingPacket;
 import dev.cammiescorner.devotion.common.registry.*;
 import eu.midnightdust.lib.config.MidnightConfig;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.DefaultedRegistry;
@@ -27,6 +32,7 @@ import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
+import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
 
 import java.util.List;
 
@@ -37,6 +43,7 @@ public class Devotion implements ModInitializer {
 	public static final DefaultedRegistry<AltarAction> ALTAR_ACTIONS = FabricRegistryBuilder.createDefaulted(AltarAction.class, id("altar_actions"), id("empty")).buildAndRegister();
 	public static final DefaultedRegistry<Cult> CULT = FabricRegistryBuilder.createDefaulted(Cult.class, id("cult"), id("empty")).buildAndRegister();
 	public static final ItemGroup ITEM_GROUP = QuiltItemGroup.createWithIcon(id("general"), () -> new ItemStack(DevotionBlocks.AMETHYST_ALTAR));
+	public static final Object2ObjectMap<Identifier, Research> RESEARCH = new Object2ObjectOpenHashMap<>();
 	public static final List<Item> HOOD_ITEMS = List.of(
 			DevotionItems.MAGE_HOOD, DevotionItems.ENHANCER_MAGE_HOOD, DevotionItems.TRANSMUTER_MAGE_HOOD, DevotionItems.EMITTER_MAGE_HOOD,
 			DevotionItems.CONJURER_MAGE_HOOD, DevotionItems.MANIPULATOR_MAGE_HOOD, DevotionItems.TIME_CULTIST_HOOD
@@ -85,6 +92,8 @@ public class Devotion implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(CastSpellPacket.ID, CastSpellPacket::handler);
 		ServerPlayNetworking.registerGlobalReceiver(SetCastingPacket.ID, SetCastingPacket::handler);
 		ServerPlayNetworking.registerGlobalReceiver(SaveScrollDataPacket.ID, SaveScrollDataPacket::handler);
+
+		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(new ResearchReloadListener());
 
 		CommonEvents.events();
 	}
