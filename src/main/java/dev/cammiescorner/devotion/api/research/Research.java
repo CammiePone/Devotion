@@ -1,5 +1,6 @@
 package dev.cammiescorner.devotion.api.research;
 
+import dev.cammiescorner.devotion.Devotion;
 import net.minecraft.util.Identifier;
 
 import java.util.HashSet;
@@ -13,6 +14,10 @@ public class Research {
 	public Research(Identifier id, boolean isHidden) {
 		this.id = id;
 		this.isHidden = isHidden;
+	}
+
+	public static Research getById(Identifier id) {
+		return Devotion.RESEARCH.get(id);
 	}
 
 	public Set<Research> getParents() {
