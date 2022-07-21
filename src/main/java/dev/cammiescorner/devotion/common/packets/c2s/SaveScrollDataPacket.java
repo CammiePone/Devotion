@@ -55,10 +55,13 @@ public class SaveScrollDataPacket {
 						NbtList riddleList = tag.getList("RiddleList", NbtElement.COMPOUND_TYPE);
 
 						for(int i = 0; i < riddleList.size(); i++) {
-							if(riddleList.getCompound(i).getInt("AuraTypeIndex") != auraTypeList.getInt(i))
+							if(riddleList.getCompound(i).getInt("AuraTypeIndex") != auraTypeList.getInt(i)) {
 								break;
-							else if(riddleList.size() == auraTypeList.size())
+							}
+							else if(riddleList.size() == auraTypeList.size() && (!tag.contains("Completed") || !tag.getBoolean("Completed"))) {
 								tag.putBoolean("Completed", true);
+								tag.putLong("TimeCompleted", world.getTime());
+							}
 						}
 
 						lectern.markDirty();

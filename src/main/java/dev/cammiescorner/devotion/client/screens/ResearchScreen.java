@@ -243,8 +243,24 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	}
 
 	private void drawLine(MatrixStack matrices, float x1, float y1, float x2, float y2) {
+		NbtCompound tag = handler.getScroll().getSubNbt(Devotion.MOD_ID);
+
+		boolean completed = false;
+		float colour = 0F;
+
+		if(tag != null && client != null && client.world != null) {
+			completed = tag.getBoolean("Completed");
+
+			if(tag.contains("TimeCompleted"))
+				colour = 0.25F + (float) Math.sin((client.world.getTime() - tag.getLong("TimeCompleted")) * 0.15F) * 0.25F;
+		}
+
+		if(completed) {
+			// TODO if completed, render the aura shader around the lines @Will BL
+		}
+
 		RenderSystem.setShader(GameRenderer::getPositionShader);
-		RenderSystem.setShaderColor(0.4F, 1F, 0.8F, 1F);
+		RenderSystem.setShaderColor(0.224F + colour, 0.196F + colour, 0.175F + colour, 1F);
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
 		Matrix4f matrix = matrices.peek().getPosition();
 		float angle = (float) (Math.atan2(y2 - y1, x2 - x1) - (Math.PI * 0.5));
@@ -262,10 +278,8 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	public void redrawLines() {
 		NbtCompound tag = handler.getScroll().getSubNbt(Devotion.MOD_ID);
 
-		if(tag != null) {
+		if(tag != null && client != null && client.world != null) {
 			NbtList nbtList = tag.getList("AuraTypes", NbtElement.INT_TYPE);
-			boolean completed = tag.getBoolean("Completed");
-			// TODO if completed, render the aura shader around the lines @Will BL
 			lines.clear();
 			auraTypes.clear();
 			lineStart = null;
