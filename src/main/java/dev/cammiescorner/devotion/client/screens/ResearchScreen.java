@@ -230,8 +230,10 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	}
 
 	private void takeScrollButtonShit(ButtonWidget buttonWidget) {
-		client.interactionManager.clickButton(handler.syncId, 0);
-		closeScreen();
+		if(client != null && client.interactionManager != null) {
+			client.interactionManager.clickButton(handler.syncId, 0);
+			closeScreen();
+		}
 	}
 
 	private int pentagonX(int x, int index) {
@@ -244,20 +246,10 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 
 	private void drawLine(MatrixStack matrices, float x1, float y1, float x2, float y2) {
 		NbtCompound tag = handler.getScroll().getSubNbt(Devotion.MOD_ID);
-
-		boolean completed = false;
 		float colour = 0F;
 
-		if(tag != null && client != null && client.world != null) {
-			completed = tag.getBoolean("Completed");
-
-			if(tag.contains("TimeCompleted"))
-				colour = 0.25F + (float) Math.sin((client.world.getTime() - tag.getLong("TimeCompleted")) * 0.15F) * 0.25F;
-		}
-
-		if(completed) {
-			// TODO if completed, render the aura shader around the lines @Will BL
-		}
+		if(tag != null && client != null && client.world != null && tag.getBoolean("Completed") && tag.contains("TimeCompleted"))
+			colour = 0.25F + (float) Math.sin((client.world.getTime() - tag.getLong("TimeCompleted")) * 0.15F) * 0.25F;
 
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		RenderSystem.setShaderColor(0.224F + colour, 0.196F + colour, 0.175F + colour, 1F);

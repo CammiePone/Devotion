@@ -103,6 +103,10 @@
 
 	"block.devotion.amethyst_altar": "Amethyst Altar",
 
+    "research.devotion.temp1": "Temp Research #1",
+    "research.devotion.temp2": "Temp Research #2",
+    "research.devotion.temp3": "Temp Research #3",
+
 	"category.devotion.keys": "Devotion",
 	"key.devotion.openSpellInv": "Open Spell Inventory",
 	"key.devotion.swapCastingMode": "Enter Casting Mode",

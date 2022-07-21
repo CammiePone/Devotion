@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.common.items;
 
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.Graph;
+import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -12,10 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Pair;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.text.Text;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
@@ -43,11 +42,24 @@ public class ResearchScrollItem extends Item {
 	}
 
 	@Override
+	public Text getName(ItemStack stack) {
+		NbtCompound tag = stack.getSubNbt(Devotion.MOD_ID);
+
+		if(tag != null && tag.contains("ResearchId")) {
+			Research research = Research.getById(new Identifier(tag.getString("ResearchId")));
+			return super.getName(stack).copy().append(" (").append(Text.translatable(research.getTranslationKey())).append(")");
+		}
+
+		return super.getName(stack);
+	}
+
+	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getStackInHand(hand);
 		NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
 
 		if(!tag.contains("RiddleList")) {
+			List<Identifier> researchIds = Devotion.RESEARCH.keySet().stream().toList();
 			NbtList nbtList = new NbtList();
 			int maxRiddles = player.getRandom().nextInt(5) + 4;
 
@@ -60,10 +72,14 @@ public class ResearchScrollItem extends Item {
 			}
 
 			tag.put("RiddleList", nbtList);
+			tag.putString("ResearchId", researchIds.get(player.getRandom().nextInt(researchIds.size())).toString());
 			return TypedActionResult.success(stack);
 		}
 
 		if(tag.getBoolean("Completed")) {
+			Identifier researchId = new Identifier(tag.getString("ResearchId"));
+			Research research = Research.getById(researchId);
+
 			stack.decrement(1);
 			return TypedActionResult.success(stack);
 		}

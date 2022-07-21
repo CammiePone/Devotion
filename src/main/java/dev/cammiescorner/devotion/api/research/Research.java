@@ -28,6 +28,10 @@ public class Research {
 		return id;
 	}
 
+	public String getTranslationKey() {
+		return "research." + id.getNamespace() + "." + id.getPath();
+	}
+
 	public boolean isHidden() {
 		return isHidden;
 	}
