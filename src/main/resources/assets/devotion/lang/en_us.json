@@ -122,6 +122,9 @@
 
     "devotion.mage_robes.open": "Open",
     "devotion.mage_robes.closed": "Closed",
+    "research_error.devotion.not_enough_aura": "You don't have enough Aura to learn this...",
+    "research_error.devotion.already_known": "You already know this knowledge!",
+    "research_error.devotion.dont_know_parents": "You don't seem to understand what's written here...",
 
 	"subtitles.devotion.block.amethyst_block.grow": "Amethyst Crystal grows",
 

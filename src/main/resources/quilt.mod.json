@@ -86,6 +86,8 @@
 		"devotion:aura_fade",
 		"devotion:aura_affinity",
 		"devotion:unique_spells",
+		"devotion:unlocked_research",
+
 		"devotion:altar_structure",
 		"devotion:purple_water"
 	]

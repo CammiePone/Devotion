@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.api;
 
 import dev.cammiescorner.devotion.api.cults.Cult;
 import dev.cammiescorner.devotion.api.entity.DevotionAttributes;
+import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.registry.DevotionComponents;
@@ -12,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -19,6 +21,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DevotionHelper {
 	public static int getAura(Entity entity) {
@@ -112,6 +115,26 @@ public class DevotionHelper {
 
 	public static void setUniqueSpellActive(Entity entity, Spell spell, boolean active) {
 		DevotionComponents.UNIQUE_SPELLS_COMPONENT.get(entity).setActive(spell, active);
+	}
+
+	public static Set<Identifier> getResearchIds(Entity entity) {
+		return DevotionComponents.RESEARCH_COMPONENT.get(entity).getResearchIds();
+	}
+
+	public static boolean giveResearch(Entity entity, Research research, boolean simulate) {
+		return DevotionComponents.RESEARCH_COMPONENT.get(entity).giveResearch(research, simulate);
+	}
+
+	public static boolean giveResearchById(Entity entity, Identifier researchId, boolean simulate) {
+		return DevotionComponents.RESEARCH_COMPONENT.get(entity).giveResearchById(researchId, simulate);
+	}
+
+	public static boolean revokeResearch(Entity entity, Research research, boolean simulate) {
+		return DevotionComponents.RESEARCH_COMPONENT.get(entity).revokeResearch(research, simulate);
+	}
+
+	public static boolean revokeResearchById(Entity entity, Identifier researchId, boolean simulate) {
+		return DevotionComponents.RESEARCH_COMPONENT.get(entity).revokeResearchById(researchId, simulate);
 	}
 
 	public static Object2ObjectMap<Cult, Integer> getAllCultReputation(Entity entity) {

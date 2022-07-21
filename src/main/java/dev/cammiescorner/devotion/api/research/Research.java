@@ -24,6 +24,15 @@ public class Research {
 		return parents;
 	}
 
+	public Set<Identifier> getParentIds() {
+		Set<Identifier> parentIds = new HashSet<>();
+
+		for(Research parent : parents)
+			parentIds.add(parent.getId());
+
+		return parentIds;
+	}
+
 	public Identifier getId() {
 		return id;
 	}

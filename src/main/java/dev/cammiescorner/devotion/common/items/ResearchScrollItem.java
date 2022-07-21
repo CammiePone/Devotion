@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion.common.items;
 
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.DevotionHelper;
 import dev.cammiescorner.devotion.api.Graph;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
@@ -12,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
@@ -55,33 +57,54 @@ public class ResearchScrollItem extends Item {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getStackInHand(hand);
-		NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
+		if(!world.isClient()) {
+			ItemStack stack = player.getStackInHand(hand);
+			NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
 
-		if(!tag.contains("RiddleList")) {
-			List<Identifier> researchIds = Devotion.RESEARCH.keySet().stream().toList();
-			NbtList nbtList = new NbtList();
-			int maxRiddles = player.getRandom().nextInt(5) + 4;
+			if(!tag.contains("RiddleList")) {
+				List<Identifier> researchIds = Devotion.RESEARCH.keySet().stream().toList();
+				NbtList nbtList = new NbtList();
+				int maxRiddles = player.getRandom().nextInt(5) + 4;
 
-			for(Pair<AuraType, Integer> pair : generateRiddleList(player.getRandom(), maxRiddles)) {
-				NbtCompound compound = new NbtCompound();
-				compound.putInt("AuraTypeIndex", pair.getLeft().ordinal());
-				compound.putInt("RiddleIndex", pair.getRight());
+				for(Pair<AuraType, Integer> pair : generateRiddleList(player.getRandom(), maxRiddles)) {
+					NbtCompound compound = new NbtCompound();
+					compound.putInt("AuraTypeIndex", pair.getLeft().ordinal());
+					compound.putInt("RiddleIndex", pair.getRight());
 
-				nbtList.add(compound);
+					nbtList.add(compound);
+				}
+
+				tag.put("RiddleList", nbtList);
+				tag.putString("ResearchId", researchIds.get(player.getRandom().nextInt(researchIds.size())).toString());
+				return TypedActionResult.success(stack);
 			}
 
-			tag.put("RiddleList", nbtList);
-			tag.putString("ResearchId", researchIds.get(player.getRandom().nextInt(researchIds.size())).toString());
-			return TypedActionResult.success(stack);
-		}
+			if(tag.getBoolean("Completed")) {
+				Identifier researchId = new Identifier(tag.getString("ResearchId"));
+				Research research = Research.getById(researchId);
 
-		if(tag.getBoolean("Completed")) {
-			Identifier researchId = new Identifier(tag.getString("ResearchId"));
-			Research research = Research.getById(researchId);
-
-			stack.decrement(1);
-			return TypedActionResult.success(stack);
+				if(DevotionHelper.getResearchIds(player).containsAll(research.getParentIds())) {
+					if(DevotionHelper.giveResearch(player, research, true)) {
+						if(DevotionHelper.drainAura(player, tag.getList("RiddleList", NbtElement.COMPOUND_TYPE).size(), false)) {
+							DevotionHelper.giveResearch(player, research, false);
+							stack.decrement(1);
+							return TypedActionResult.success(stack);
+						}
+						else {
+							player.sendMessage(Text.translatable("research_error.devotion.not_enough_aura").formatted(Formatting.RED), true);
+							return TypedActionResult.fail(stack);
+						}
+					}
+					else {
+						player.sendMessage(Text.translatable("research_error.devotion.already_known").formatted(Formatting.RED), true);
+						return TypedActionResult.fail(stack);
+					}
+				}
+				else {
+					player.sendMessage(Text.translatable("research_error.devotion.dont_know_parents").formatted(Formatting.RED), true);
+					return TypedActionResult.fail(stack);
+				}
+			}
 		}
 
 		return super.use(world, player, hand);
