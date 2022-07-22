@@ -11,6 +11,7 @@ import dev.cammiescorner.devotion.common.CommonEvents;
 import dev.cammiescorner.devotion.common.data.ResearchReloadListener;
 import dev.cammiescorner.devotion.common.integration.DevotionConfig;
 import dev.cammiescorner.devotion.common.packets.c2s.CastSpellPacket;
+import dev.cammiescorner.devotion.common.packets.c2s.ChangeSpellPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SaveScrollDataPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SetCastingPacket;
 import dev.cammiescorner.devotion.common.registry.*;
@@ -90,6 +91,7 @@ public class Devotion implements ModInitializer {
 		Registry.register(Registry.ATTRIBUTE, id("manipulation_affinity"), DevotionAttributes.MANIPULATION_AFFINITY);
 
 		ServerPlayNetworking.registerGlobalReceiver(CastSpellPacket.ID, CastSpellPacket::handler);
+		ServerPlayNetworking.registerGlobalReceiver(ChangeSpellPacket.ID, ChangeSpellPacket::handler);
 		ServerPlayNetworking.registerGlobalReceiver(SetCastingPacket.ID, SetCastingPacket::handler);
 		ServerPlayNetworking.registerGlobalReceiver(SaveScrollDataPacket.ID, SaveScrollDataPacket::handler);
 

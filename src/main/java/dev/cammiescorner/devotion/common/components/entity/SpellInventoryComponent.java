@@ -15,7 +15,7 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class SpellInventoryComponent implements AutoSyncedComponent {
 	private final LivingEntity entity;
-	private final DefaultedList<Spell> spells = DefaultedList.ofSize(10, DevotionSpells.EMPTY);
+	private final DefaultedList<Spell> spells = DefaultedList.ofSize(11, DevotionSpells.EMPTY);
 	private int maxSpells = 2;
 
 	public SpellInventoryComponent(LivingEntity entity) {
