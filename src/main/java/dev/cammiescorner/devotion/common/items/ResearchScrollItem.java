@@ -85,7 +85,7 @@ public class ResearchScrollItem extends Item {
 
 				if(DevotionHelper.getResearchIds(player).containsAll(research.getParentIds())) {
 					if(DevotionHelper.giveResearch(player, research, true)) {
-						if(DevotionHelper.drainAura(player, tag.getList("RiddleList", NbtElement.COMPOUND_TYPE).size(), false)) {
+						if(player.isCreative() || DevotionHelper.drainAura(player, tag.getList("RiddleList", NbtElement.COMPOUND_TYPE).size(), false)) {
 							DevotionHelper.giveResearch(player, research, false);
 							stack.decrement(1);
 							return TypedActionResult.success(stack);
