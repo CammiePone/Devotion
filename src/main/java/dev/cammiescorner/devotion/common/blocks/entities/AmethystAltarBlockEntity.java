@@ -26,6 +26,8 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.collection.DefaultedList;
@@ -269,17 +271,24 @@ public class AmethystAltarBlockEntity extends BlockEntity implements Inventory {
 		notifyListeners();
 	}
 
-	public void tryCrafting() {
+	public void tryCrafting(PlayerEntity player) {
 		if(isCrafting()) {
 			setCrafting(false);
 			return;
 		}
 
-		if(world != null)
+		if(world != null) {
+
 			world.getRecipeManager().getFirstMatch(DevotionRecipes.ALTAR_TYPE, this, world).ifPresent(altarRecipe -> {
-				recipe = altarRecipe;
-				setCrafting(true);
+				if(altarRecipe.getRequiredResearch().isEmpty() || DevotionHelper.getResearchIds(player).containsAll(altarRecipe.getRequiredResearch())) {
+					recipe = altarRecipe;
+					setCrafting(true);
+				}
+				else {
+					player.sendMessage(Text.translatable("altar_crafting." + Devotion.MOD_ID + ".lacks_research").formatted(Formatting.RED), true);
+				}
 			});
+		}
 	}
 
 	public boolean isCompleted() {

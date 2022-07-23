@@ -3,8 +3,11 @@ package dev.cammiescorner.devotion.common.data;
 import com.google.gson.*;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.research.Research;
+import dev.cammiescorner.devotion.common.recipes.AmethystAltarRecipe;
+import dev.cammiescorner.devotion.common.registry.DevotionRecipes;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.profiler.Profiler;
@@ -19,6 +22,13 @@ public class ResearchReloadListener extends JsonDataLoader implements Identifiab
 
 	public ResearchReloadListener() {
 		super(GSON, "devotion_research");
+	}
+
+	public static void verifyResearchInRecipes(MinecraftServer server) {
+		for(AmethystAltarRecipe altarRecipe : server.getRecipeManager().listAllOfType(DevotionRecipes.ALTAR_TYPE))
+			for(Identifier researchId : altarRecipe.getRequiredResearch())
+				if(Research.getById(researchId) == null)
+					Devotion.LOGGER.error("Altar recipe {} has non-existent research requirement {}", altarRecipe.getId(), researchId);
 	}
 
 	@Override

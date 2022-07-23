@@ -110,7 +110,7 @@ public class AmethystAltarBlock extends Block implements Waterloggable, BlockEnt
 			}
 			else {
 				if(altar.isCompleted())
-					altar.tryCrafting();
+					altar.tryCrafting(player);
 				else
 					altar.checkMultiblock();
 

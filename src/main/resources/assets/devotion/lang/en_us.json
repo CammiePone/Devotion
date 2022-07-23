@@ -132,5 +132,6 @@
     "devotion.midnightconfig.auraSharpness": "Aura Shader Sharpness",
     "devotion.midnightconfig.auraGradiant": "Aura Shader Gradiant",
 
-    "lectern.devotion.take_scroll": "Take Scroll"
+    "lectern.devotion.take_scroll": "Take Scroll",
+    "altar_crafting.devotion.lacks_research": "You don't understand what you're trying to accomplish..."
 }

@@ -20,6 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -115,6 +116,15 @@ public class DevotionHelper {
 
 	public static void setUniqueSpellActive(Entity entity, Spell spell, boolean active) {
 		DevotionComponents.UNIQUE_SPELLS_COMPONENT.get(entity).setActive(spell, active);
+	}
+
+	public static Set<Research> getResearch(Entity entity) {
+		Set<Research> research = new HashSet<>();
+
+		for(Identifier researchId : getResearchIds(entity))
+			research.add(Research.getById(researchId));
+
+		return research;
 	}
 
 	public static Set<Identifier> getResearchIds(Entity entity) {
