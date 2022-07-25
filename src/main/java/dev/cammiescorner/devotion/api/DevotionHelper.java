@@ -73,6 +73,10 @@ public class DevotionHelper {
 		getAllSpells(entity).set(index, spell);
 	}
 
+	public static int getSelectedSpellIndex(Entity entity) {
+		return DevotionComponents.CURRENT_SPELL_COMPONENT.get(entity).getSelectedSpellIndex();
+	}
+
 	public static Spell getSelectedSpell(Entity entity) {
 		return DevotionComponents.CURRENT_SPELL_COMPONENT.get(entity).getSelectedSpell();
 	}

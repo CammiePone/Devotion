@@ -68,6 +68,9 @@ public class ClientEvents {
 						DrawableHelper.drawTexture(matrices, 0, 0, 0, 128, 24, 24, 256, 256);
 						matrices.pop();
 					}
+
+					if(DevotionHelper.getSelectedSpellIndex(player) != hoveredSpellIndex)
+						ChangeSpellPacket.send(hoveredSpellIndex);
 				}
 			}
 		});
@@ -85,10 +88,8 @@ public class ClientEvents {
 			if(client.player != null) {
 				PlayerEntity player = client.player;
 
-				if(DevotionHelper.isCasting(player) && DevotionKeyBinds.spellInvKey.matchesKey(key.getKeyCode(), key.getKeyCode())) {
+				if(DevotionHelper.isCasting(player) && DevotionKeyBinds.spellInvKey.matchesKey(key.getKeyCode(), key.getKeyCode()))
 					client.mouse.lockCursor();
-					ChangeSpellPacket.send(hoveredSpellIndex);
-				}
 			}
 		});
 	}

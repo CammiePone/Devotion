@@ -24,9 +24,15 @@ public class SpellCooldownComponent implements AutoSyncedComponent, ServerTickin
 
 	@Override
 	public void serverTick() {
-		for(Spell spell : Devotion.SPELL)
+		for(Spell spell : Devotion.SPELL) {
+			if(!spellCooldowns.containsKey(spell)) {
+				spellCooldowns.put(spell, 0);
+				continue;
+			}
+
 			if(getSpellCooldown(spell) > 0)
 				setSpellCooldown(spell, getSpellCooldown(spell) - 1);
+		}
 	}
 
 	@Override

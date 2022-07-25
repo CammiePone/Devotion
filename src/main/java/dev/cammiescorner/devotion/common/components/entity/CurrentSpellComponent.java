@@ -30,6 +30,10 @@ public class CurrentSpellComponent implements AutoSyncedComponent {
 		tag.putInt("SelectedSpell", selectedSpell);
 	}
 
+	public int getSelectedSpellIndex() {
+		return selectedSpell;
+	}
+
 	public Spell getSelectedSpell() {
 		return DevotionComponents.SPELL_INVENTORY_COMPONENT.get(entity).getAllSpells().get(selectedSpell);
 	}
