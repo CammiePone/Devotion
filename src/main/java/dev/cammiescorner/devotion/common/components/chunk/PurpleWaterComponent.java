@@ -30,10 +30,10 @@ public class PurpleWaterComponent implements AutoSyncedComponent {
 
 		waterMap.clear();
 		for(int i = 0; i < nbtList.size(); i++) {
-			NbtCompound map = nbtList.getCompound(i);
+			NbtCompound entry = nbtList.getCompound(i);
 			waterMap.put(
-					NbtHelper.toBlockPos(map.getCompound("WaterPos")),
-					NbtHelper.toBlockPos(map.getCompound("AltarPos"))
+					NbtHelper.toBlockPos(entry.getCompound("WaterPos")),
+					NbtHelper.toBlockPos(entry.getCompound("AltarPos"))
 			);
 		}
 	}
@@ -43,10 +43,10 @@ public class PurpleWaterComponent implements AutoSyncedComponent {
 		NbtList nbtList = new NbtList();
 
 		waterMap.forEach((waterPos, altarPos) -> {
-			NbtCompound map = new NbtCompound();
-			map.put("WaterPos", NbtHelper.fromBlockPos(waterPos));
-			map.put("AltarPos", NbtHelper.fromBlockPos(altarPos));
-			nbtList.add(map);
+			NbtCompound entry = new NbtCompound();
+			entry.put("WaterPos", NbtHelper.fromBlockPos(waterPos));
+			entry.put("AltarPos", NbtHelper.fromBlockPos(altarPos));
+			nbtList.add(entry);
 		});
 
 		tag.put("WaterMap", nbtList);

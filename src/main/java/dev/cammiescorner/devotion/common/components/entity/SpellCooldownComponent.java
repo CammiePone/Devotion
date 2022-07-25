@@ -33,9 +33,10 @@ public class SpellCooldownComponent implements AutoSyncedComponent, ServerTickin
 	public void readFromNbt(NbtCompound tag) {
 		NbtList nbtList = tag.getList("SpellCooldowns", NbtElement.COMPOUND_TYPE);
 
+		spellCooldowns.clear();
 		for(int i = 0; i < nbtList.size(); i++) {
-			NbtCompound compound = nbtList.getCompound(i);
-			spellCooldowns.put(Devotion.SPELL.get(new Identifier(compound.getString("Spell"))), compound.getInt("Cooldown"));
+			NbtCompound entry = nbtList.getCompound(i);
+			spellCooldowns.put(Devotion.SPELL.get(new Identifier(entry.getString("Spell"))), entry.getInt("Cooldown"));
 		}
 	}
 
@@ -44,10 +45,10 @@ public class SpellCooldownComponent implements AutoSyncedComponent, ServerTickin
 		NbtList nbtList = new NbtList();
 
 		spellCooldowns.forEach((spell, cooldown) -> {
-			NbtCompound compound = new NbtCompound();
-			compound.putString("Spell", Devotion.SPELL.getId(spell).toString());
-			compound.putInt("Cooldown", cooldown);
-			nbtList.add(compound);
+			NbtCompound entry = new NbtCompound();
+			entry.putString("Spell", Devotion.SPELL.getId(spell).toString());
+			entry.putInt("Cooldown", cooldown);
+			nbtList.add(entry);
 		});
 
 		tag.put("SpellCooldowns", nbtList);
