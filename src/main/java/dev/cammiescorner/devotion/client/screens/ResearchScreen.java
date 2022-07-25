@@ -39,13 +39,12 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 	private final double angle = Math.toRadians(72);
 	private final double offset = Math.PI * 0.5;
 	private final int distance = 64;
-	private final int z = 0;
 	private Vec2f mousePos = new Vec2f(0, 0);
 	private Vec2f lastPos = new Vec2f(0, 0);
 	private Vec2f lineStart;
 
 	public ResearchScreen(ResearchScreenHandler handler, PlayerInventory inventory, Text text) {
-		super(handler, inventory, text);
+		super(handler, inventory, Text.empty());
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		DrawableHelper.drawTexture(matrices, x, y, z, 0, 0, 384, 216, 384, 320);
+		DrawableHelper.drawTexture(matrices, x, y, 0, 0, 384, 216, 384, 320);
 	}
 
 	@Override
@@ -78,10 +77,10 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
 				RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 				RenderSystem.setShaderTexture(0, TEXTURE);
-				DrawableHelper.drawTexture(matrices, 256, 104, z, 120, 216, 24, 24, 384, 320);
+				DrawableHelper.drawTexture(matrices, 256, 104, 120, 216, 24, 24, 384, 320);
 
 				for(int i = 0; i < 5; i++)
-					DrawableHelper.drawTexture(matrices, pentagonX(256, i), pentagonY(104, i), z, i * 24, 216, 24, 24, 384, 320);
+					DrawableHelper.drawTexture(matrices, pentagonX(256, i), pentagonY(104, i), i * 24, 216, 24, 24, 384, 320);
 
 				List<OrderedText> agony = new ArrayList<>();
 				int posY = 0;

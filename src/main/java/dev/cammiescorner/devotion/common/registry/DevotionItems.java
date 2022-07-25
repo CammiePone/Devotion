@@ -16,7 +16,7 @@ public class DevotionItems {
 	public static final LinkedHashMap<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
 	//-----Items-----//
-	public static final Item GUIDE_BOOK = create("guide_book", new GuideBookItem());
+	public static final Item SCRIPTS_OF_DEVOTION = create("scripts_of_devotion", new GuideBookItem());
 	public static final Item RESEARCH_SCROLL = create("research_scroll", new ResearchScrollItem());
 	public static final Item ROUGH_FAE_STONE = create("rough_fae_stone", new FaeStoneItem());
 	public static final Item PASSABLE_FAE_STONE = create("passable_fae_stone", new FaeStoneItem());

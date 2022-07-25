@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.DevotionHelper;
 import dev.cammiescorner.devotion.api.events.client.KeyBindingCallback;
+import dev.cammiescorner.devotion.client.screens.GuideBookScreen;
 import dev.cammiescorner.devotion.client.screens.ResearchScreen;
 import dev.cammiescorner.devotion.common.packets.c2s.ChangeSpellPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SetCastingPacket;
@@ -27,6 +28,7 @@ public class ClientEvents {
 	@Environment(EnvType.CLIENT)
 	public static void events() {
 		HandledScreens.register(DevotionScreenHandlers.RESEARCH_SCREEN_HANDLER, ResearchScreen::new);
+		HandledScreens.register(DevotionScreenHandlers.GUIDE_BOOK_SCREEN_HANDLER, GuideBookScreen::new);
 
 		HudRenderCallback.EVENT.register((matrices, tickDelta) -> {
 			MinecraftClient client = MinecraftClient.getInstance();

@@ -1,10 +1,10 @@
 accessWidener	v1	    named
-accessible      field   com/mojang/blaze3d/framebuffer/Framebuffer                    clearColor      [F
-accessible      method  net/minecraft/client/render/RenderLayer                       of              (Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;Lcom/mojang/blaze3d/vertex/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
+accessible      field   com/mojang/blaze3d/framebuffer/Framebuffer                    clearColor           [F
+accessible      method  net/minecraft/client/render/RenderLayer                       of                   (Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;Lcom/mojang/blaze3d/vertex/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 accessible      class   net/minecraft/client/render/RenderLayer$MultiPhase
 accessible      class   net/minecraft/client/render/RenderLayer$MultiPhaseParameters
-accessible      method  net/minecraft/client/render/RenderLayer$MultiPhase            getPhases       ()Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
-accessible      field   net/minecraft/client/render/RenderLayer$MultiPhaseParameters  texture         Lnet/minecraft/client/render/RenderPhase$TextureBase;
-accessible      method  net/minecraft/client/render/RenderPhase$TextureBase           getId           ()Ljava/util/Optional;
-accessible      field   net/minecraft/structure/Structure                             blockInfoLists  Ljava/util/List;
-accessible      method  net/minecraft/recipe/ShapelessRecipe$Serializer               getIngredients  (Lcom/google/gson/JsonArray;)Lnet/minecraft/util/collection/DefaultedList;
+accessible      method  net/minecraft/client/render/RenderLayer$MultiPhase            getPhases            ()Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
+accessible      field   net/minecraft/client/render/RenderLayer$MultiPhaseParameters  texture              Lnet/minecraft/client/render/RenderPhase$TextureBase;
+accessible      method  net/minecraft/client/render/RenderPhase$TextureBase           getId                ()Ljava/util/Optional;
+accessible      field   net/minecraft/structure/Structure                             blockInfoLists       Ljava/util/List;
+accessible      method  net/minecraft/recipe/ShapelessRecipe$Serializer               getIngredients       (Lcom/google/gson/JsonArray;)Lnet/minecraft/util/collection/DefaultedList;

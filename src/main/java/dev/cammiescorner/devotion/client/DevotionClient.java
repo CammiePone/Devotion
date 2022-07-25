@@ -37,6 +37,7 @@ public class DevotionClient implements ClientModInitializer {
 	public static final Identifier CONJURER_MAGE_ROBES = Devotion.id("textures/entity/armor/conjurer_mage_robes.png");
 	public static final Identifier MANIPULATOR_MAGE_ROBES = Devotion.id("textures/entity/armor/manipulator_mage_robes.png");
 	public static long clientTick = 0;
+	public static double guideBookOffsetX = 0, guideBookOffsetY = 0;
 
 	@Override
 	public void onInitializeClient(ModContainer mod) {

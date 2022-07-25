@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "devotion:item/guide_book"
+        "layer0": "devotion:item/scripts_of_devotion"
     }
 }
