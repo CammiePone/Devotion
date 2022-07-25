@@ -1,14 +1,22 @@
 package dev.cammiescorner.devotion.common.components.entity;
 
+import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.registry.DevotionComponents;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.util.Identifier;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpellCooldownComponent implements AutoSyncedComponent, ServerTickingComponent {
 	private final LivingEntity entity;
-	private int spellCooldown = 0;
+	private final Map<Spell, Integer> spellCooldowns = new HashMap<>();
 
 	public SpellCooldownComponent(LivingEntity entity) {
 		this.entity = entity;
@@ -16,26 +24,41 @@ public class SpellCooldownComponent implements AutoSyncedComponent, ServerTickin
 
 	@Override
 	public void serverTick() {
-		if(getSpellCooldown() > 0)
-			setSpellCooldown(getSpellCooldown() - 1);
+		for(Spell spell : Devotion.SPELL)
+			if(getSpellCooldown(spell) > 0)
+				setSpellCooldown(spell, getSpellCooldown(spell) - 1);
 	}
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		spellCooldown = tag.getInt("SpellCooldown");
+		NbtList nbtList = tag.getList("SpellCooldowns", NbtElement.COMPOUND_TYPE);
+
+		for(int i = 0; i < nbtList.size(); i++) {
+			NbtCompound compound = nbtList.getCompound(i);
+			spellCooldowns.put(Devotion.SPELL.get(new Identifier(compound.getString("Spell"))), compound.getInt("Cooldown"));
+		}
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putInt("SpellCooldown", spellCooldown);
+		NbtList nbtList = new NbtList();
+
+		spellCooldowns.forEach((spell, cooldown) -> {
+			NbtCompound compound = new NbtCompound();
+			compound.putString("Spell", Devotion.SPELL.getId(spell).toString());
+			compound.putInt("Cooldown", cooldown);
+			nbtList.add(compound);
+		});
+
+		tag.put("SpellCooldowns", nbtList);
 	}
 
-	public int getSpellCooldown() {
-		return spellCooldown;
+	public int getSpellCooldown(Spell spell) {
+		return spellCooldowns.get(spell);
 	}
 
-	public void setSpellCooldown(int value) {
-		spellCooldown = value;
+	public void setSpellCooldown(Spell spell, int value) {
+		spellCooldowns.put(spell, value);
 		DevotionComponents.SPELL_COOLDOWN_COMPONENT.sync(entity);
 	}
 }

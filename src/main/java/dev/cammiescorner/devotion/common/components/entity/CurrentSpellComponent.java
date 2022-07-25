@@ -49,7 +49,7 @@ public class CurrentSpellComponent implements AutoSyncedComponent {
 			if(spell.getSpellComplexity() != SpellComplexity.UNIQUE) {
 				if(spell.isInstant()) {
 					DevotionHelper.drainAura(player, cost, false);
-					DevotionHelper.setSpellCooldown(entity, spell.getSpellCooldown());
+					DevotionHelper.setSpellCooldown(entity, spell, spell.getSpellCooldown());
 				}
 				else if(world.getTime() % 20 == 0)
 					DevotionHelper.drainAura(player, cost, false);

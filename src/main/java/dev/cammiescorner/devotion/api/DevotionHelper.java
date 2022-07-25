@@ -89,16 +89,16 @@ public class DevotionHelper {
 		DevotionComponents.CURRENT_SPELL_COMPONENT.get(entity).castCurrentSpell();
 	}
 
-	public static int getSpellCooldown(Entity entity) {
-		return DevotionComponents.SPELL_COOLDOWN_COMPONENT.get(entity).getSpellCooldown();
+	public static int getSpellCooldown(Entity entity, Spell spell) {
+		return DevotionComponents.SPELL_COOLDOWN_COMPONENT.get(entity).getSpellCooldown(spell);
 	}
 
-	public static void setSpellCooldown(Entity entity, int value) {
-		DevotionComponents.SPELL_COOLDOWN_COMPONENT.get(entity).setSpellCooldown(value);
+	public static void setSpellCooldown(Entity entity, Spell spell, int value) {
+		DevotionComponents.SPELL_COOLDOWN_COMPONENT.get(entity).setSpellCooldown(spell, value);
 	}
 
 	public static boolean canCastSpell(PlayerEntity player, Spell spell) {
-		return isCasting(player) && getSpellCooldown(player) <= 0 && drainAura(player, actualAuraCost(player, spell), true) && spell.getSpellType() != AuraType.NONE;
+		return isCasting(player) && getSpellCooldown(player, spell) <= 0 && drainAura(player, actualAuraCost(player, spell), true) && spell.getSpellType() != AuraType.NONE;
 	}
 
 	public static int actualAuraCost(PlayerEntity player, Spell spell) {
