@@ -64,8 +64,8 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
 		if(button == 0) {
-			offsetX = MathHelper.clamp(offsetX + deltaX, -190, 190);
-			offsetY = MathHelper.clamp(offsetY + deltaY, -125, 125);
+			offsetX = MathHelper.clamp(offsetX + deltaX, -175, 175);
+			offsetY = MathHelper.clamp(offsetY + deltaY, -110, 110);
 		}
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);

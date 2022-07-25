@@ -46,9 +46,21 @@ public class ClientEvents {
 					float angleBetween = (float) Math.toRadians(360D / spellCount);
 					Vec2f mousePos = new Vec2f(mouseX, mouseY);
 
-					hoveredSpellIndex = 10;
 					client.mouse.unlockCursor();
 					DrawableHelper.drawTexture(matrices, x, y, 0, 0, 128, 128, 256, 256);
+
+					matrices.push();
+					matrices.translate(x + 52, y + 52, 0);
+
+					if(mousePos.distanceSquared(new Vec2f(x + 64, y + 64)) <= 225) {
+						matrices.translate(12, 12, 0);
+						matrices.scale(1.25F, 1.25F, 1);
+						matrices.translate(-12, -12, 0);
+						hoveredSpellIndex = 10;
+					}
+
+					DrawableHelper.drawTexture(matrices, 0, 0, 0, 128, 24, 24, 256, 256);
+					matrices.pop();
 
 					for(int i = 0; i < spellCount; i++) {
 						int radialX = radialPosX(angleBetween, x + 64, i);
