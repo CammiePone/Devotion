@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -54,22 +55,31 @@ public class ResearchWidget extends PressableWidget {
 
 		Set<Identifier> playerResearch = DevotionHelper.getResearchIds(client.player);
 		int u;
+		int trueX = (int) (x + offsetX);
+		int trueY = (int) (y + offsetY);
 
 		if(playerResearch.contains(research.getId())) {
 			u = 60;
 			active = true;
+			visible = true;
 		}
 		else if(playerResearch.containsAll(research.getParentIds())) {
 			u = 30;
 			active = true;
+			visible = true;
 		}
 		else {
 			u = 0;
 			active = false;
+
+			if(research.isHidden())
+				visible = false;
 		}
 
 		// x - 131, y - 42
-		drawTexture(matrices, (int) (x + offsetX), (int) (y + offsetY), u, 0, width, height);
+		drawTexture(matrices, trueX, trueY, u, 0, width, height);
+
+		client.getItemRenderer().renderGuiItemIcon(new ItemStack(research.getIconItem()), trueX - (client.getWindow().getScaledWidth() - 378) / 2 + 7, trueY - (client.getWindow().getScaledHeight() - 250) / 2 + 6);
 
 		if(isHoveredOrFocused())
 			renderTooltip(matrices, mouseX, mouseY);

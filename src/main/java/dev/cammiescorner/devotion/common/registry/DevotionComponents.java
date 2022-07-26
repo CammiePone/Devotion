@@ -27,6 +27,7 @@ public class DevotionComponents implements EntityComponentInitializer, WorldComp
 	public static final ComponentKey<AuraAffinityComponent> AURA_AFFINITY_COMPONENT = createComponent("aura_affinity", AuraAffinityComponent.class);
 	public static final ComponentKey<UniqueSpellsComponent> UNIQUE_SPELLS_COMPONENT = createComponent("unique_spells", UniqueSpellsComponent.class);
 	public static final ComponentKey<ResearchComponent> RESEARCH_COMPONENT = createComponent("unlocked_research", ResearchComponent.class);
+	public static final ComponentKey<CanUseAuraComponent> CAN_USE_AURA_COMPONENT = createComponent("can_use_aura", CanUseAuraComponent.class);
 
 	public static final ComponentKey<AltarStructureComponent> ALTAR_STRUCTURE_COMPONENT = createComponent("altar_structure", AltarStructureComponent.class);
 	public static final ComponentKey<PurpleWaterComponent> PURPLE_WATER_COMPONENT = createComponent("purple_water", PurpleWaterComponent.class);
@@ -43,6 +44,7 @@ public class DevotionComponents implements EntityComponentInitializer, WorldComp
 		registry.beginRegistration(PlayerEntity.class, AURA_AFFINITY_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(AuraAffinityComponent::new);
 		registry.beginRegistration(PlayerEntity.class, UNIQUE_SPELLS_COMPONENT).respawnStrategy(RespawnCopyStrategy.NEVER_COPY).end(UniqueSpellsComponent::new);
 		registry.beginRegistration(PlayerEntity.class, RESEARCH_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(ResearchComponent::new);
+		registry.beginRegistration(PlayerEntity.class, CAN_USE_AURA_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(CanUseAuraComponent::new);
 	}
 
 	@Override

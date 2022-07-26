@@ -5,6 +5,7 @@ import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.common.recipes.AmethystAltarRecipe;
 import dev.cammiescorner.devotion.common.registry.DevotionRecipes;
+import net.minecraft.item.Item;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.server.MinecraftServer;
@@ -46,7 +47,8 @@ public class ResearchReloadListener extends JsonDataLoader implements Identifiab
 			JsonArray parents = JsonHelper.getArray(json, "parents", new JsonArray());
 			Set<Identifier> parentIds = new HashSet<>();
 			boolean hidden = JsonHelper.getBoolean(json, "hidden", false);
-			Research research = new Research(identifier, hidden);
+			Item item = JsonHelper.getItem(json, "item_icon");
+			Research research = new Research(identifier, hidden, item);
 
 			for(JsonElement parent : parents)
 				parentIds.add(new Identifier(JsonHelper.asString(parent, "research_id")));

@@ -1,5 +1,6 @@
 package dev.cammiescorner.devotion.common.components.entity;
 
+import dev.cammiescorner.devotion.api.DevotionHelper;
 import dev.cammiescorner.devotion.api.entity.DevotionAttributes;
 import dev.cammiescorner.devotion.common.registry.DevotionComponents;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -34,17 +35,19 @@ public class AuraComponent implements AutoSyncedComponent, ServerTickingComponen
 
 	@Override
 	public void serverTick() {
-		EntityAttributeInstance auraRegen = entity.getAttributeInstance(DevotionAttributes.AURA_REGEN);
-		EntityAttributeInstance auraLock = entity.getAttributeInstance(DevotionAttributes.AURA_LOCK);
-		this.auraLock = auraLock != null ? (int) auraLock.getValue() : 0;
+		if(DevotionHelper.canUseAura(entity)) {
+			EntityAttributeInstance auraRegen = entity.getAttributeInstance(DevotionAttributes.AURA_REGEN);
+			EntityAttributeInstance auraLock = entity.getAttributeInstance(DevotionAttributes.AURA_LOCK);
+			this.auraLock = auraLock != null ? (int) auraLock.getValue() : 0;
 
-		if(aura < MAX_AURA)
-			auraTimer++;
-		else
-			auraTimer = 0;
+			if(aura < MAX_AURA)
+				auraTimer++;
+			else
+				auraTimer = 0;
 
-		if(addAura(1, true) && auraTimer > 0 && auraRegen != null && auraTimer % (Math.ceil(auraRegen.getValue()) * 20) == 0)
-			addAura(1, false);
+			if(addAura(1, true) && auraTimer > 0 && auraRegen != null && auraTimer % (Math.ceil(auraRegen.getValue()) * 20) == 0)
+				addAura(1, false);
+		}
 	}
 
 	public int getAura() {

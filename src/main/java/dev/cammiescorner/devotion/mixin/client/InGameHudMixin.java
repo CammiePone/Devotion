@@ -28,29 +28,31 @@ public abstract class InGameHudMixin extends DrawableHelper {
 			ordinal = 1
 	))
 	public void devotion$renderCastingOverlay(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-		boolean isCasting = DevotionHelper.isCasting(getCameraPlayer());
-		int i = scaledWidth / 2;
-		Arm arm = getCameraPlayer().getMainArm();
+		if(DevotionHelper.canUseAura(getCameraPlayer())) {
+			boolean isCasting = DevotionHelper.isCasting(getCameraPlayer());
+			int i = scaledWidth / 2;
+			Arm arm = getCameraPlayer().getMainArm();
 
-		if(arm == Arm.LEFT) {
-			drawTexture(matrices, i - 121, scaledHeight - 23, 24, 22, 29, 24);
+			if(arm == Arm.LEFT) {
+				drawTexture(matrices, i - 121, scaledHeight - 23, 24, 22, 29, 24);
 
-			RenderSystem.setShaderTexture(0, ClientEvents.HUD_ELEMENTS);
-			drawTexture(matrices, i - 118, scaledHeight - 19, 128, 0, 16, 16);
-			RenderSystem.setShaderTexture(0, WIDGETS_TEXTURE);
+				RenderSystem.setShaderTexture(0, ClientEvents.HUD_ELEMENTS);
+				drawTexture(matrices, i - 118, scaledHeight - 19, 128, 0, 16, 16);
+				RenderSystem.setShaderTexture(0, WIDGETS_TEXTURE);
 
-			if(isCasting)
-				drawTexture(matrices, i - 122, scaledHeight - 23, 0, 22, 24, 22);
-		}
-		else {
-			drawTexture(matrices, i + 98, scaledHeight - 23, 24, 22, 29, 24);
+				if(isCasting)
+					drawTexture(matrices, i - 122, scaledHeight - 23, 0, 22, 24, 22);
+			}
+			else {
+				drawTexture(matrices, i + 98, scaledHeight - 23, 24, 22, 29, 24);
 
-			RenderSystem.setShaderTexture(0, ClientEvents.HUD_ELEMENTS);
-			drawTexture(matrices, i + 101, scaledHeight - 19, 128, 0, 16, 16);
-			RenderSystem.setShaderTexture(0, WIDGETS_TEXTURE);
+				RenderSystem.setShaderTexture(0, ClientEvents.HUD_ELEMENTS);
+				drawTexture(matrices, i + 101, scaledHeight - 19, 128, 0, 16, 16);
+				RenderSystem.setShaderTexture(0, WIDGETS_TEXTURE);
 
-			if(isCasting)
-				drawTexture(matrices, i + 97, scaledHeight - 23, 0, 22, 24, 22);
+				if(isCasting)
+					drawTexture(matrices, i + 97, scaledHeight - 23, 0, 22, 24, 22);
+			}
 		}
 	}
 }

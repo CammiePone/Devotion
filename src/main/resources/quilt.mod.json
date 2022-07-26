@@ -87,6 +87,7 @@
 		"devotion:aura_affinity",
 		"devotion:unique_spells",
 		"devotion:unlocked_research",
+		"devotion:can_use_aura",
 
 		"devotion:altar_structure",
 		"devotion:purple_water"

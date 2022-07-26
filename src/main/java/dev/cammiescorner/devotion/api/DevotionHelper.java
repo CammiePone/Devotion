@@ -25,6 +25,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class DevotionHelper {
+	public static boolean canUseAura(Entity entity) {
+		return DevotionComponents.CAN_USE_AURA_COMPONENT.get(entity).canUseAura();
+	}
+
+	public static void setCanUseAura(Entity entity, boolean canUseAura) {
+		DevotionComponents.CAN_USE_AURA_COMPONENT.get(entity).setCanUseAura(canUseAura);
+	}
+
 	public static int getAura(Entity entity) {
 		return DevotionComponents.AURA_COMPONENT.get(entity).getAura();
 	}
@@ -102,7 +110,7 @@ public class DevotionHelper {
 	}
 
 	public static boolean canCastSpell(PlayerEntity player, Spell spell) {
-		return isCasting(player) && getSpellCooldown(player, spell) <= 0 && drainAura(player, actualAuraCost(player, spell), true) && spell.getSpellType() != AuraType.NONE;
+		return canUseAura(player) && isCasting(player) && getSpellCooldown(player, spell) <= 0 && drainAura(player, actualAuraCost(player, spell), true) && spell.getSpellType() != AuraType.NONE;
 	}
 
 	public static int actualAuraCost(PlayerEntity player, Spell spell) {

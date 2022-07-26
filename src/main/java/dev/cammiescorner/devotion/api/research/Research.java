@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion.api.research;
 
 import dev.cammiescorner.devotion.Devotion;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 
 import java.util.HashSet;
@@ -9,14 +10,19 @@ import java.util.Set;
 public class Research {
 	private final Set<Research> parents = new HashSet<>();
 	private final Identifier id;
+	private final Item iconItem;
 	private final boolean isHidden;
 
-	public Research(Identifier id, boolean isHidden) {
+	public Research(Identifier id, boolean isHidden, Item iconItem) {
 		this.id = id;
 		this.isHidden = isHidden;
+		this.iconItem = iconItem;
 	}
 
 	public static Research getById(Identifier id) {
+		if(!Devotion.RESEARCH.containsKey(id))
+			return null;
+
 		return Devotion.RESEARCH.get(id);
 	}
 
@@ -35,6 +41,10 @@ public class Research {
 
 	public Identifier getId() {
 		return id;
+	}
+
+	public Item getIconItem() {
+		return iconItem;
 	}
 
 	public String getTranslationKey() {
