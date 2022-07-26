@@ -51,7 +51,6 @@ public class ResearchWidget extends PressableWidget {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-//		matrices.translate(offsetX, offsetY, 0);
 
 		Set<Identifier> playerResearch = DevotionHelper.getResearchIds(client.player);
 		int u;
@@ -76,9 +75,7 @@ public class ResearchWidget extends PressableWidget {
 				visible = false;
 		}
 
-		// x - 131, y - 42
 		drawTexture(matrices, trueX, trueY, u, 0, width, height);
-
 		client.getItemRenderer().renderGuiItemIcon(new ItemStack(research.getIconItem()), trueX - (client.getWindow().getScaledWidth() - 378) / 2 + 7, trueY - (client.getWindow().getScaledHeight() - 250) / 2 + 6);
 
 		if(isHoveredOrFocused())

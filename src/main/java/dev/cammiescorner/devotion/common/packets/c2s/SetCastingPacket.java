@@ -25,7 +25,8 @@ public class SetCastingPacket {
 		boolean casting = buf.readBoolean();
 
 		server.execute(() -> {
-			DevotionHelper.setCasting(player, casting);
+			if(DevotionHelper.canUseAura(player))
+				DevotionHelper.setCasting(player, casting);
 		});
 	}
 }

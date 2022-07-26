@@ -33,7 +33,7 @@ public class ClientEvents {
 		HudRenderCallback.EVENT.register((matrices, tickDelta) -> {
 			MinecraftClient client = MinecraftClient.getInstance();
 
-			if(client.player != null) {
+			if(client.player != null && DevotionHelper.canUseAura(client.player)) {
 				RenderSystem.setShaderTexture(0, ClientEvents.HUD_ELEMENTS);
 				PlayerEntity player = client.player;
 
@@ -88,7 +88,7 @@ public class ClientEvents {
 		});
 
 		ClientTickEvents.START.register(client -> {
-			if(client.player != null)
+			if(client.player != null && DevotionHelper.canUseAura(client.player))
 				SetCastingPacket.send(DevotionKeyBinds.castingMode.isPressed());
 		});
 
@@ -97,7 +97,7 @@ public class ClientEvents {
 		KeyBindingCallback.UNPRESSED.register((key, modifiers) -> {
 			MinecraftClient client = MinecraftClient.getInstance();
 
-			if(client.player != null) {
+			if(client.player != null && DevotionHelper.canUseAura(client.player)) {
 				PlayerEntity player = client.player;
 
 				if(DevotionHelper.isCasting(player) && DevotionKeyBinds.spellInvKey.matchesKey(key.getKeyCode(), key.getKeyCode()))
