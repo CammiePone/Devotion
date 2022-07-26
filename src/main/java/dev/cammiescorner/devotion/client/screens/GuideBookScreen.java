@@ -8,7 +8,6 @@ import dev.cammiescorner.devotion.common.screens.GuideBookScreenHandler;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -39,8 +38,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		offsetX = DevotionClient.guideBookOffsetX;
 		offsetY = DevotionClient.guideBookOffsetY;
 		addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println("beep")));
-		addArtificeChild(new ResearchWidget(x + 124, y + 110, Devotion.id("temp2"), widget -> System.out.println("boop")));
-		addDrawableChild(new ButtonWidget(x + 142, y + 200, 100, 20, Text.translatable("lectern." + Devotion.MOD_ID + ".take_scroll"), buttonWidget -> {}));
+		addArtificeChild(new ResearchWidget(x + 214, y + 110, Devotion.id("temp2"), widget -> System.out.println("boop")));
 	}
 
 	@Override
@@ -62,25 +60,33 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
 		if(client != null) {
 			// TODO draw research tree
+			boolean isArtificeTab = tabId.equals(Devotion.id("artifice"));
+			boolean isSpellsTab = tabId.equals(Devotion.id("spells"));
+			boolean isCultsTab = tabId.equals(Devotion.id("cults"));
 			int scale = (int) client.getWindow().getScaleFactor();
 			RenderSystem.enableScissor((x + 16) * scale, (y + 16) * scale, 346 * scale, 218 * scale);
+			matrices.push();
+			matrices.translate(-x, -y, 0);
 
-			if(tabId.equals(Devotion.id("artifice")))
-				for(ResearchWidget widget : artificeDrawables) {
-					widget.setOffset(offsetX, offsetY);
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				}
-			if(tabId.equals(Devotion.id("spells")))
-				for(ResearchWidget widget : spellDrawables) {
-					widget.setOffset(offsetX, offsetY);
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				}
-			if(tabId.equals(Devotion.id("cults")))
-				for(ResearchWidget widget : cultDrawables) {
-					widget.setOffset(offsetX, offsetY);
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				}
+			for(ResearchWidget widget : artificeDrawables) {
+				widget.setOffset(offsetX, offsetY);
+				widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+				widget.visible = isArtificeTab;
+			}
 
+			for(ResearchWidget widget : spellDrawables) {
+				widget.setOffset(offsetX, offsetY);
+				widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+				widget.visible = isSpellsTab;
+			}
+
+			for(ResearchWidget widget : cultDrawables) {
+				widget.setOffset(offsetX, offsetY);
+				widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+				widget.visible = isCultsTab;
+			}
+
+			matrices.pop();
 			RenderSystem.disableScissor();
 		}
 
