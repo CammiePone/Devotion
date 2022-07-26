@@ -3,6 +3,7 @@ package dev.cammiescorner.devotion.client.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.client.DevotionClient;
+import dev.cammiescorner.devotion.client.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.common.screens.GuideBookScreenHandler;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -13,8 +14,15 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	public static final Identifier TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_frame.png");
+	private final List<ResearchWidget> artificeDrawables = new ArrayList<>();
+	private final List<ResearchWidget> spellDrawables = new ArrayList<>();
+	private final List<ResearchWidget> cultDrawables = new ArrayList<>();
+	public Identifier tabId = Devotion.id("artifice");
 	public double offsetX, offsetY;
 
 	public GuideBookScreen(GuideBookScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
@@ -28,6 +36,8 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		y = (height - 250) / 2;
 		offsetX = DevotionClient.guideBookOffsetX;
 		offsetY = DevotionClient.guideBookOffsetY;
+		addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println("beep")));
+		addArtificeChild(new ResearchWidget(x + 124, y + 110, Devotion.id("temp2"), widget -> System.out.println("boop")));
 	}
 
 	@Override
@@ -51,10 +61,23 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 			// TODO draw research tree
 			int scale = (int) client.getWindow().getScaleFactor();
 			RenderSystem.enableScissor((x + 16) * scale, (y + 16) * scale, 346 * scale, 218 * scale);
-			matrices.push();
-			matrices.translate(offsetX, offsetY, 0);
-			DrawableHelper.drawTexture(matrices, 174, 110, 384, 0, 30, 30, 512, 512);
-			matrices.pop();
+
+			if(tabId.equals(Devotion.id("artifice")))
+				for(ResearchWidget widget : artificeDrawables) {
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+					widget.setOffset(offsetX, offsetY);
+				}
+			if(tabId.equals(Devotion.id("spells")))
+				for(ResearchWidget widget : spellDrawables) {
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+					widget.setOffset(offsetX, offsetY);
+				}
+			if(tabId.equals(Devotion.id("cults")))
+				for(ResearchWidget widget : cultDrawables) {
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+					widget.setOffset(offsetX, offsetY);
+				}
+
 			RenderSystem.disableScissor();
 		}
 
@@ -64,10 +87,25 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
 		if(button == 0) {
-			offsetX = MathHelper.clamp(offsetX + deltaX, -175, 175);
-			offsetY = MathHelper.clamp(offsetY + deltaY, -110, 110);
+			offsetX = MathHelper.clamp(offsetX + deltaX, -172, 172);
+			offsetY = MathHelper.clamp(offsetY + deltaY, -108, 108);
 		}
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
+
+	public <T extends ResearchWidget> T addArtificeChild(T drawable) {
+		artificeDrawables.add(drawable);
+		return this.addSelectableChild(drawable);
+	}
+
+	public <T extends ResearchWidget> T addSpellChild(T drawable) {
+		spellDrawables.add(drawable);
+		return this.addSelectableChild(drawable);
+	}
+
+	public <T extends ResearchWidget> T addCultChild(T drawable) {
+		cultDrawables.add(drawable);
+		return this.addSelectableChild(drawable);
 	}
 }
