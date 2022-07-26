@@ -6,7 +6,9 @@ import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.common.screens.GuideBookScreenHandler;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -38,6 +40,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		offsetY = DevotionClient.guideBookOffsetY;
 		addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println("beep")));
 		addArtificeChild(new ResearchWidget(x + 124, y + 110, Devotion.id("temp2"), widget -> System.out.println("boop")));
+		addDrawableChild(new ButtonWidget(x + 142, y + 200, 100, 20, Text.translatable("lectern." + Devotion.MOD_ID + ".take_scroll"), buttonWidget -> {}));
 	}
 
 	@Override
@@ -64,23 +67,26 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 
 			if(tabId.equals(Devotion.id("artifice")))
 				for(ResearchWidget widget : artificeDrawables) {
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
 					widget.setOffset(offsetX, offsetY);
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
 				}
 			if(tabId.equals(Devotion.id("spells")))
 				for(ResearchWidget widget : spellDrawables) {
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
 					widget.setOffset(offsetX, offsetY);
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
 				}
 			if(tabId.equals(Devotion.id("cults")))
 				for(ResearchWidget widget : cultDrawables) {
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
 					widget.setOffset(offsetX, offsetY);
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
 				}
 
 			RenderSystem.disableScissor();
 		}
 
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+		RenderSystem.setShaderTexture(0, TEXTURE);
 		DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, 378, 250, 512, 512);
 	}
 
@@ -92,6 +98,25 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		}
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
+
+	@Override
+	protected void remove(Element child) {
+		super.remove(child);
+
+		if(child instanceof ResearchWidget) {
+			artificeDrawables.remove(child);
+			spellDrawables.remove(child);
+			cultDrawables.remove(child);
+		}
+	}
+
+	@Override
+	protected void clearChildren() {
+		super.clearChildren();
+		artificeDrawables.clear();
+		spellDrawables.clear();
+		cultDrawables.clear();
 	}
 
 	public <T extends ResearchWidget> T addArtificeChild(T drawable) {

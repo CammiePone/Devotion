@@ -1,9 +1,9 @@
 package dev.cammiescorner.devotion.client.widgets;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.DevotionHelper;
 import dev.cammiescorner.devotion.api.research.Research;
-import dev.cammiescorner.devotion.client.screens.GuideBookScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier;
 import java.util.Set;
 
 public class ResearchWidget extends PressableWidget {
+	public static final Identifier TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_icons.png");
 	private final MinecraftClient client = MinecraftClient.getInstance();
 	private final Research research;
 	private final PressAction pressAction;
@@ -47,34 +48,31 @@ public class ResearchWidget extends PressableWidget {
 	@Override
 	public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderTexture(0, GuideBookScreen.TEXTURE);
+		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-		matrices.push();
-		matrices.translate(offsetX, offsetY, 0);
+//		matrices.translate(offsetX, offsetY, 0);
 
 		Set<Identifier> playerResearch = DevotionHelper.getResearchIds(client.player);
 		int u;
 
 		if(playerResearch.contains(research.getId())) {
-			u = 444;
+			u = 60;
 			active = true;
 		}
 		else if(playerResearch.containsAll(research.getParentIds())) {
-			u = 414;
+			u = 30;
 			active = true;
 		}
 		else {
-			u = 384;
+			u = 0;
 			active = false;
 		}
 
 		// x - 131, y - 42
-		drawTexture(matrices, x, y, u, 0, width, height, 512, 512);
+		drawTexture(matrices, (int) (x + offsetX), (int) (y + offsetY), u, 0, width, height);
 
 		if(isHoveredOrFocused())
 			renderTooltip(matrices, mouseX, mouseY);
-
-		matrices.pop();
 	}
 
 	@Override
