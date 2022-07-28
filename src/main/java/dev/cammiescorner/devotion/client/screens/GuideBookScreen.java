@@ -3,6 +3,7 @@ package dev.cammiescorner.devotion.client.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.events.client.ResearchWidgetCallback;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.widgets.ResearchWidget;
@@ -40,10 +41,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		y = (height - 250) / 2;
 		offsetX = DevotionClient.guideBookOffsetX;
 		offsetY = DevotionClient.guideBookOffsetY;
-		addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println("beep")));
-		addArtificeChild(new ResearchWidget(x + 234, y + 90, Devotion.id("temp2"), widget -> System.out.println("boop")));
-		addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp3"), widget -> System.out.println("baap")));
-		addArtificeChild(new ResearchWidget(x + 174, y + 60, Devotion.id("temp3"), widget -> System.out.println("baap")));
+		ResearchWidgetCallback.ADD_WIDGETS.invoker().addWidgets(this, x, y);
 	}
 
 	@Override
@@ -72,7 +70,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 
 			if(tabId.equals(Devotion.id("artifice"))) {
 				for(ResearchWidget widget : artificeDrawables)
-					for(ResearchWidget parent : getParents(widget))
+					for(ResearchWidget parent : getParents(widget, artificeDrawables))
 						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
 
 				for(ResearchWidget widget : artificeDrawables) {
@@ -82,8 +80,8 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 			}
 
 			if(tabId.equals(Devotion.id("spells"))) {
-				for(ResearchWidget widget : artificeDrawables)
-					for(ResearchWidget parent : getParents(widget))
+				for(ResearchWidget widget : spellDrawables)
+					for(ResearchWidget parent : getParents(widget, spellDrawables))
 						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
 
 				for(ResearchWidget widget : spellDrawables) {
@@ -93,8 +91,8 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 			}
 
 			if(tabId.equals(Devotion.id("cults"))) {
-				for(ResearchWidget widget : artificeDrawables)
-					for(ResearchWidget parent : getParents(widget))
+				for(ResearchWidget widget : cultDrawables)
+					for(ResearchWidget parent : getParents(widget, cultDrawables))
 						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
 
 				for(ResearchWidget widget : cultDrawables) {
@@ -110,7 +108,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		DrawableHelper.drawTexture(matrices, 0, 0, 101, 0, 0, 378, 250, 512, 512);
+		DrawableHelper.drawTexture(matrices, 0, 0, 10, 0, 0, 378, 250, 512, 512);
 	}
 
 	@Override
@@ -166,6 +164,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		float dx = MathHelper.cos(angle) * 2;
 		float dy = MathHelper.sin(angle) * 2;
 
+
 		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		bufferBuilder.vertex(matrix, x2 - dx, y2 - dy, 0).color(0).next();
 		bufferBuilder.vertex(matrix, x2 + dx, y2 + dy, 0).color(0).next();
@@ -174,15 +173,15 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		BufferRenderer.drawWithShader(bufferBuilder.end());
 	}
 
-	private List<ResearchWidget> getParents(ResearchWidget widget) {
+	private List<ResearchWidget> getParents(ResearchWidget widget, List<ResearchWidget> drawables) {
 		List<ResearchWidget> parents = new ArrayList<>();
 
 		if(widget.visible) {
 			Research research = widget.getResearch();
 
-			for(ResearchWidget drawable : artificeDrawables)
-				if(drawable.visible && research.getParents().contains(drawable.getResearch()))
-					parents.add(drawable);
+			for(ResearchWidget parent : drawables)
+				if(parent.visible && research.getParents().contains(parent.getResearch()))
+					parents.add(parent);
 		}
 
 		return parents;

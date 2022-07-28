@@ -26,6 +26,17 @@ public class ResearchWidget extends PressableWidget {
 		super(x, y, 30, 30, Text.empty());
 		this.research = Research.getById(researchId);
 		this.pressAction = pressAction;
+
+		if(research != null) {
+			Set<Identifier> playerResearch = DevotionHelper.getResearchIds(client.player);
+
+			if(playerResearch.contains(research.getId()))
+				visible = true;
+			else if(playerResearch.containsAll(research.getParentIds()))
+				visible = true;
+			else if(research.isHidden())
+				visible = false;
+		}
 	}
 
 	@Override

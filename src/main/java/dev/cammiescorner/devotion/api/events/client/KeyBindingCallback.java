@@ -1,11 +1,10 @@
 package dev.cammiescorner.devotion.api.events.client;
 
 import com.mojang.blaze3d.platform.InputUtil;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
+import org.quiltmc.qsl.base.api.event.Event;
 
 public class KeyBindingCallback {
-	public static final Event<UnpressedEvent> UNPRESSED = EventFactory.createArrayBacked(UnpressedEvent.class, callbacks -> (key, modifier) -> {
+	public static final Event<UnpressedEvent> UNPRESSED = Event.create(UnpressedEvent.class, callbacks -> (key, modifier) -> {
 		for(UnpressedEvent callback : callbacks)
 			callback.unpress(key, modifier);
 	});

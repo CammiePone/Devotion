@@ -4,8 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.DevotionHelper;
 import dev.cammiescorner.devotion.api.events.client.KeyBindingCallback;
+import dev.cammiescorner.devotion.api.events.client.ResearchWidgetCallback;
 import dev.cammiescorner.devotion.client.screens.GuideBookScreen;
 import dev.cammiescorner.devotion.client.screens.ResearchScreen;
+import dev.cammiescorner.devotion.client.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.common.packets.c2s.ChangeSpellPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SetCastingPacket;
 import dev.cammiescorner.devotion.common.registry.DevotionKeyBinds;
@@ -103,6 +105,13 @@ public class ClientEvents {
 				if(DevotionHelper.isCasting(player) && DevotionKeyBinds.spellInvKey.matchesKey(key.getKeyCode(), key.getKeyCode()))
 					client.mouse.lockCursor();
 			}
+		});
+
+		ResearchWidgetCallback.ADD_WIDGETS.register((screen, x, y) -> {
+			screen.addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println("beep")));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 90, Devotion.id("temp2"), widget -> System.out.println("boop")));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp3"), widget -> System.out.println("baap")));
+			screen.addArtificeChild(new ResearchWidget(x + 174, y + 60, Devotion.id("temp3"), widget -> System.out.println("baap")));
 		});
 	}
 
