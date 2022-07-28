@@ -1,7 +1,9 @@
 package dev.cammiescorner.devotion.client.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.common.screens.GuideBookScreenHandler;
@@ -14,6 +16,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,9 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		offsetX = DevotionClient.guideBookOffsetX;
 		offsetY = DevotionClient.guideBookOffsetY;
 		addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println("beep")));
-		addArtificeChild(new ResearchWidget(x + 214, y + 110, Devotion.id("temp2"), widget -> System.out.println("boop")));
+		addArtificeChild(new ResearchWidget(x + 234, y + 90, Devotion.id("temp2"), widget -> System.out.println("boop")));
+		addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp3"), widget -> System.out.println("baap")));
+		addArtificeChild(new ResearchWidget(x + 174, y + 60, Devotion.id("temp3"), widget -> System.out.println("baap")));
 	}
 
 	@Override
@@ -60,30 +65,42 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
 		if(client != null) {
 			// TODO draw research tree
-			boolean isArtificeTab = tabId.equals(Devotion.id("artifice"));
-			boolean isSpellsTab = tabId.equals(Devotion.id("spells"));
-			boolean isCultsTab = tabId.equals(Devotion.id("cults"));
 			int scale = (int) client.getWindow().getScaleFactor();
 			RenderSystem.enableScissor((x + 16) * scale, (y + 16) * scale, 346 * scale, 218 * scale);
 			matrices.push();
 			matrices.translate(-x, -y, 0);
 
-			for(ResearchWidget widget : artificeDrawables) {
-				widget.setOffset(offsetX, offsetY);
-				widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				widget.visible = isArtificeTab;
+			if(tabId.equals(Devotion.id("artifice"))) {
+				for(ResearchWidget widget : artificeDrawables)
+					for(ResearchWidget parent : getParents(widget))
+						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
+
+				for(ResearchWidget widget : artificeDrawables) {
+					widget.setOffset(offsetX, offsetY);
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+				}
 			}
 
-			for(ResearchWidget widget : spellDrawables) {
-				widget.setOffset(offsetX, offsetY);
-				widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				widget.visible = isSpellsTab;
+			if(tabId.equals(Devotion.id("spells"))) {
+				for(ResearchWidget widget : artificeDrawables)
+					for(ResearchWidget parent : getParents(widget))
+						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
+
+				for(ResearchWidget widget : spellDrawables) {
+					widget.setOffset(offsetX, offsetY);
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+				}
 			}
 
-			for(ResearchWidget widget : cultDrawables) {
-				widget.setOffset(offsetX, offsetY);
-				widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				widget.visible = isCultsTab;
+			if(tabId.equals(Devotion.id("cults"))) {
+				for(ResearchWidget widget : artificeDrawables)
+					for(ResearchWidget parent : getParents(widget))
+						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
+
+				for(ResearchWidget widget : cultDrawables) {
+					widget.setOffset(offsetX, offsetY);
+					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
+				}
 			}
 
 			matrices.pop();
@@ -93,7 +110,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, 378, 250, 512, 512);
+		DrawableHelper.drawTexture(matrices, 0, 0, 101, 0, 0, 378, 250, 512, 512);
 	}
 
 	@Override
@@ -138,5 +155,36 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	public <T extends ResearchWidget> T addCultChild(T drawable) {
 		cultDrawables.add(drawable);
 		return this.addSelectableChild(drawable);
+	}
+
+	private void drawLine(MatrixStack matrices, float x1, float y1, float x2, float y2) {
+		RenderSystem.setShader(GameRenderer::getPositionShader);
+		RenderSystem.setShaderColor(0.224F, 0.196F, 0.175F, 1F);
+		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
+		Matrix4f matrix = matrices.peek().getPosition();
+		float angle = (float) (Math.atan2(y2 - y1, x2 - x1) - (Math.PI * 0.5));
+		float dx = MathHelper.cos(angle) * 2;
+		float dy = MathHelper.sin(angle) * 2;
+
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+		bufferBuilder.vertex(matrix, x2 - dx, y2 - dy, 0).color(0).next();
+		bufferBuilder.vertex(matrix, x2 + dx, y2 + dy, 0).color(0).next();
+		bufferBuilder.vertex(matrix, x1 + dx, y1 + dy, 0).color(0).next();
+		bufferBuilder.vertex(matrix, x1 - dx, y1 - dy, 0).color(0).next();
+		BufferRenderer.drawWithShader(bufferBuilder.end());
+	}
+
+	private List<ResearchWidget> getParents(ResearchWidget widget) {
+		List<ResearchWidget> parents = new ArrayList<>();
+
+		if(widget.visible) {
+			Research research = widget.getResearch();
+
+			for(ResearchWidget drawable : artificeDrawables)
+				if(drawable.visible && research.getParents().contains(drawable.getResearch()))
+					parents.add(drawable);
+		}
+
+		return parents;
 	}
 }

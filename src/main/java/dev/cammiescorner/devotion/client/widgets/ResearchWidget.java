@@ -39,20 +39,31 @@ public class ResearchWidget extends PressableWidget {
 	}
 
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		if(visible) {
-			hovered = mouseX >= x + offsetX && mouseY >= y + offsetY && mouseX < x + offsetX + width && mouseY < y + offsetY + height;
-			renderButton(matrices, mouseX, mouseY, delta);
-		}
+	public void onPress() {
+		pressAction.onPress(this);
 	}
 
 	@Override
-	public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		Set<Identifier> playerResearch = DevotionHelper.getResearchIds(client.player);
+
+		if(playerResearch.contains(research.getId()))
+			visible = true;
+		else if(playerResearch.containsAll(research.getParentIds()))
+			visible = true;
+		else if(research.isHidden())
+			visible = false;
+
+		if(visible) {
+			hovered = mouseX >= x + offsetX && mouseY >= y + offsetY && mouseX < x + offsetX + width && mouseY < y + offsetY + height;
+			renderButton(matrices, mouseX, mouseY, delta, playerResearch);
+		}
+	}
+
+	public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta, Set<Identifier> playerResearch) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-
-		Set<Identifier> playerResearch = DevotionHelper.getResearchIds(client.player);
 		int u;
 		int trueX = (int) (x + offsetX);
 		int trueY = (int) (y + offsetY);
@@ -60,19 +71,14 @@ public class ResearchWidget extends PressableWidget {
 		if(playerResearch.contains(research.getId())) {
 			u = 60;
 			active = true;
-			visible = true;
 		}
 		else if(playerResearch.containsAll(research.getParentIds())) {
 			u = 30;
 			active = true;
-			visible = true;
 		}
 		else {
 			u = 0;
 			active = false;
-
-			if(research.isHidden())
-				visible = false;
 		}
 
 		drawTexture(matrices, trueX, trueY, u, 0, width, height);
@@ -82,9 +88,12 @@ public class ResearchWidget extends PressableWidget {
 			renderTooltip(matrices, mouseX, mouseY);
 	}
 
-	@Override
-	public void onPress() {
-		pressAction.onPress(this);
+	public int getRealX() {
+		return (int) (x + offsetX);
+	}
+
+	public int getRealY() {
+		return (int) (y + offsetY);
 	}
 
 	public void setOffset(double x, double y) {
