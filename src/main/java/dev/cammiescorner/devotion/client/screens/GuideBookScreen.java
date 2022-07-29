@@ -18,6 +18,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec2f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +109,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		DrawableHelper.drawTexture(matrices, 0, 0, 10, 0, 0, 378, 250, 512, 512);
+		DrawableHelper.drawTexture(matrices, 0, 0, 101, 0, 0, 378, 250, 512, 512);
 	}
 
 	@Override
@@ -161,16 +162,24 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
 		Matrix4f matrix = matrices.peek().getPosition();
 		float angle = (float) (Math.atan2(y2 - y1, x2 - x1) - (Math.PI * 0.5));
-		float dx = MathHelper.cos(angle) * 2;
-		float dy = MathHelper.sin(angle) * 2;
+		int segmentCount = 16;
+		Vec2f pos1 = new Vec2f(x1, y1);
+		Vec2f pos2 = new Vec2f(x2, y2);
 
+		if(pos1.x == pos2.x || pos1.y == pos2.y)
+			segmentCount = 1;
 
-		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-		bufferBuilder.vertex(matrix, x2 - dx, y2 - dy, 0).color(0).next();
-		bufferBuilder.vertex(matrix, x2 + dx, y2 + dy, 0).color(0).next();
-		bufferBuilder.vertex(matrix, x1 + dx, y1 + dy, 0).color(0).next();
-		bufferBuilder.vertex(matrix, x1 - dx, y1 - dy, 0).color(0).next();
-		BufferRenderer.drawWithShader(bufferBuilder.end());
+		for(int i = 1; i <= segmentCount; i++) {
+			float dx = MathHelper.cos(i * angle / segmentCount) * 2;
+			float dy = MathHelper.sin(i * angle / segmentCount) * 2;
+
+			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+			bufferBuilder.vertex(matrix, x2 - dx, y2 - dy, 0).color(0).next();
+			bufferBuilder.vertex(matrix, x2 + dx, y2 + dy, 0).color(0).next();
+			bufferBuilder.vertex(matrix, x1 + dx, y1 + dy, 0).color(0).next();
+			bufferBuilder.vertex(matrix, x1 - dx, y1 - dy, 0).color(0).next();
+			BufferRenderer.drawWithShader(bufferBuilder.end());
+		}
 	}
 
 	private List<ResearchWidget> getParents(ResearchWidget widget, List<ResearchWidget> drawables) {

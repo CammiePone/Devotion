@@ -108,10 +108,11 @@ public class ClientEvents {
 		});
 
 		ResearchWidgetCallback.ADD_WIDGETS.register((screen, x, y) -> {
-			screen.addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println("beep")));
-			screen.addArtificeChild(new ResearchWidget(x + 234, y + 90, Devotion.id("temp2"), widget -> System.out.println("boop")));
-			screen.addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp3"), widget -> System.out.println("baap")));
-			screen.addArtificeChild(new ResearchWidget(x + 174, y + 60, Devotion.id("temp3"), widget -> System.out.println("baap")));
+			screen.addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 90, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 294, y + 90, Devotion.id("temp4"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 294, y + 130, Devotion.id("temp5"), widget -> System.out.println(widget.getResearch().getId())));
 		});
 	}
 

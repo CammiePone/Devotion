@@ -61,6 +61,9 @@ public class ResearchScrollItem extends Item {
 			ItemStack stack = player.getStackInHand(hand);
 			NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
 
+//			for(Identifier identifier : Devotion.RESEARCH.keySet())
+//				DevotionHelper.revokeResearchById(player, identifier, false);
+
 			if(!tag.contains("RiddleList")) {
 				List<Identifier> researchIds = Devotion.RESEARCH.keySet().stream().toList();
 				NbtList nbtList = new NbtList();

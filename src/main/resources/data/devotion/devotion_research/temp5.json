@@ -1,0 +1,6 @@
+{
+    "item_icon": "minecraft:enchanted_book",
+    "parents": [
+        "devotion:temp3"
+    ]
+}

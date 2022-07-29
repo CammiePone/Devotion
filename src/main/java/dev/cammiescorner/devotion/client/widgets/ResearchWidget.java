@@ -30,12 +30,20 @@ public class ResearchWidget extends PressableWidget {
 		if(research != null) {
 			Set<Identifier> playerResearch = DevotionHelper.getResearchIds(client.player);
 
-			if(playerResearch.contains(research.getId()))
+			if(playerResearch.contains(research.getId())) {
+				active = true;
 				visible = true;
-			else if(playerResearch.containsAll(research.getParentIds()))
+			}
+			else if(playerResearch.containsAll(research.getParentIds())) {
+				active = true;
 				visible = true;
-			else if(research.isHidden())
-				visible = false;
+			}
+			else {
+				active = false;
+
+				if(research.isHidden() || research.getParents().stream().anyMatch(Research::isHidden))
+					visible = false;
+			}
 		}
 	}
 
@@ -62,7 +70,7 @@ public class ResearchWidget extends PressableWidget {
 			visible = true;
 		else if(playerResearch.containsAll(research.getParentIds()))
 			visible = true;
-		else if(research.isHidden())
+		else if(research.isHidden() || research.getParents().stream().anyMatch(Research::isHidden))
 			visible = false;
 
 		if(visible) {
