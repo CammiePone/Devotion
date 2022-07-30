@@ -48,7 +48,8 @@ public class ResearchReloadListener extends JsonDataLoader implements Identifiab
 			Set<Identifier> parentIds = new HashSet<>();
 			boolean hidden = JsonHelper.getBoolean(json, "hidden", false);
 			Item item = JsonHelper.getItem(json, "item_icon");
-			Research research = new Research(identifier, hidden, item);
+			Research.Difficulty difficulty = Research.Difficulty.valueOf(JsonHelper.getString(json, "difficulty").toUpperCase(Locale.ROOT));
+			Research research = new Research(identifier, difficulty, hidden, item);
 
 			for(JsonElement parent : parents)
 				parentIds.add(new Identifier(JsonHelper.asString(parent, "research_id")));

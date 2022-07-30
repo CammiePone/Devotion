@@ -111,15 +111,15 @@ public class ClientEvents {
 		});
 
 		ResearchWidgetCallback.ADD_WIDGETS.register((screen, x, y) -> {
-			screen.addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("root"), screen, ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 144, y + 170, Devotion.id("root"), screen, ClientEvents::researchWidgetClick));
 			screen.addArtificeChild(new ResearchWidget(x + 204, y + 170, Devotion.id("research"), screen, ClientEvents::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 204, y + 50, Devotion.id("amethyst_altar"), screen, ClientEvents::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 84, y + 70, Devotion.id("mage_armour"), screen, ClientEvents::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 84, y + 6, Devotion.id("enhancement_mage_armour"), screen, ClientEvents::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 144, y + 51, Devotion.id("transmutation_mage_armour"), screen, ClientEvents::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 121, y + 121, Devotion.id("conjuration_mage_armour"), screen, ClientEvents::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 47, y + 121, Devotion.id("manipulation_mage_armour"), screen, ClientEvents::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 24, y + 51, Devotion.id("emission_mage_armour"), screen, ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 174, y + 111, Devotion.id("amethyst_altar"), screen, ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 54, y + 130, Devotion.id("mage_armour"), screen, ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 54, y + 66, Devotion.id("enhancement_mage_armour"), screen, ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 114, y + 111, Devotion.id("transmutation_mage_armour"), screen, ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 91, y + 181, Devotion.id("conjuration_mage_armour"), screen, ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 17, y + 181, Devotion.id("manipulation_mage_armour"), screen, ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + -6, y + 111, Devotion.id("emission_mage_armour"), screen, ClientEvents::researchWidgetClick));
 		});
 	}
 

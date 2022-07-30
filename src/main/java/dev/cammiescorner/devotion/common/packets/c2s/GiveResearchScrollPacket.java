@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion.common.packets.c2s;
 
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.items.ResearchScrollItem;
 import dev.cammiescorner.devotion.common.registry.DevotionItems;
@@ -47,10 +48,12 @@ public class GiveResearchScrollPacket {
 			}
 
 			if(bl) {
+				Research research = Research.getById(researchId);
+				Research.Difficulty difficulty = research != null ? research.getDifficulty() : Research.Difficulty.EASY;
 				ItemStack stack = new ItemStack(DevotionItems.RESEARCH_SCROLL);
 				NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
 				NbtList nbtList = new NbtList();
-				int maxRiddles = player.getRandom().nextInt(5) + 4;
+				int maxRiddles = difficulty == Research.Difficulty.EASY ? 4 : difficulty == Research.Difficulty.NORMAL ? 6 : 8;
 
 				for(Pair<AuraType, Integer> pair : ResearchScrollItem.generateRiddleList(player.getRandom(), maxRiddles)) {
 					NbtCompound compound = new NbtCompound();

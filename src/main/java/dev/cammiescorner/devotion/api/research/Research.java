@@ -10,19 +10,18 @@ import java.util.Set;
 public class Research {
 	private final Set<Research> parents = new HashSet<>();
 	private final Identifier id;
+	private final Difficulty difficulty;
 	private final Item iconItem;
 	private final boolean isHidden;
 
-	public Research(Identifier id, boolean isHidden, Item iconItem) {
+	public Research(Identifier id, Difficulty difficulty, boolean isHidden, Item iconItem) {
 		this.id = id;
+		this.difficulty = difficulty;
 		this.isHidden = isHidden;
 		this.iconItem = iconItem;
 	}
 
 	public static Research getById(Identifier id) {
-		if(!Devotion.RESEARCH.containsKey(id))
-			return null;
-
 		return Devotion.RESEARCH.get(id);
 	}
 
@@ -43,6 +42,10 @@ public class Research {
 		return id;
 	}
 
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+
 	public Item getIconItem() {
 		return iconItem;
 	}
@@ -58,5 +61,9 @@ public class Research {
 	public void setParents(Set<Research> parents) {
 		this.parents.clear();
 		this.parents.addAll(parents);
+	}
+
+	public enum Difficulty {
+		EASY, NORMAL, HARD
 	}
 }

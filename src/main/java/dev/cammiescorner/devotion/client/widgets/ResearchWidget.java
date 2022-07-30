@@ -104,11 +104,17 @@ public class ResearchWidget extends PressableWidget {
 		}
 
 		drawTexture(matrices, x, y, u, 0, width, height);
-		modelViewMatrix.push();
-		modelViewMatrix.translate(offsetX, offsetY, 0);
-		client.getItemRenderer().renderGuiItemIcon(stack, x - screenX + 7, y - screenY + 7);
-		modelViewMatrix.pop();
-		RenderSystem.applyModelViewMatrix();
+
+		if(!research.getParents().stream().filter(parent -> playerResearch.containsAll(parent.getParentIds())).toList().isEmpty() || research.getParents().isEmpty()) {
+			modelViewMatrix.push();
+			modelViewMatrix.translate(offsetX, offsetY, 0);
+			client.getItemRenderer().renderGuiItemIcon(stack, x - screenX + 7, y - screenY + 7);
+			modelViewMatrix.pop();
+			RenderSystem.applyModelViewMatrix();
+		}
+		else {
+			drawTexture(matrices, x + 7, y + 7, 0, 32, 16, 16);
+		}
 
 		if(isHoveredOrFocused())
 			renderTooltip(matrices, mouseX, mouseY);

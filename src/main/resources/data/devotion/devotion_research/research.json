@@ -1,6 +1,4 @@
 {
     "item_icon": "devotion:research_scroll",
-    "parents": [
-        "devotion:root"
-    ]
+    "difficulty": "easy"
 }

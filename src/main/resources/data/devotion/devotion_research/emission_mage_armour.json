@@ -1,5 +1,6 @@
 {
     "item_icon": "devotion:emitter_mage_hood",
+    "difficulty": "hard",
     "parents": [
         "devotion:mage_armour"
     ]

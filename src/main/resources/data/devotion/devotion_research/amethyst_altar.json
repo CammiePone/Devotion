@@ -1,6 +1,8 @@
 {
     "item_icon": "devotion:amethyst_altar",
+    "difficulty": "easy",
     "parents": [
-        "devotion:root"
+        "devotion:root",
+        "devotion:research"
     ]
 }
