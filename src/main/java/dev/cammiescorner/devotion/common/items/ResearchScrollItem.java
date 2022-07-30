@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -61,27 +60,6 @@ public class ResearchScrollItem extends Item {
 			ItemStack stack = player.getStackInHand(hand);
 			NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
 
-//			for(Identifier identifier : Devotion.RESEARCH.keySet())
-//				DevotionHelper.revokeResearchById(player, identifier, false);
-
-			if(!tag.contains("RiddleList")) {
-				List<Identifier> researchIds = Devotion.RESEARCH.keySet().stream().toList();
-				NbtList nbtList = new NbtList();
-				int maxRiddles = player.getRandom().nextInt(5) + 4;
-
-				for(Pair<AuraType, Integer> pair : generateRiddleList(player.getRandom(), maxRiddles)) {
-					NbtCompound compound = new NbtCompound();
-					compound.putInt("AuraTypeIndex", pair.getLeft().ordinal());
-					compound.putInt("RiddleIndex", pair.getRight());
-
-					nbtList.add(compound);
-				}
-
-				tag.put("RiddleList", nbtList);
-				tag.putString("ResearchId", researchIds.get(player.getRandom().nextInt(researchIds.size())).toString());
-				return TypedActionResult.success(stack);
-			}
-
 			if(tag.getBoolean("Completed")) {
 				Identifier researchId = new Identifier(tag.getString("ResearchId"));
 				Research research = Research.getById(researchId);
@@ -108,6 +86,9 @@ public class ResearchScrollItem extends Item {
 					return TypedActionResult.fail(stack);
 				}
 			}
+			else {
+				return TypedActionResult.fail(stack);
+			}
 		}
 
 		return super.use(world, player, hand);
@@ -121,7 +102,7 @@ public class ResearchScrollItem extends Item {
 	/**
 	 * @author UpcraftLP
 	 */
-	public List<Pair<AuraType, Integer>> generateRiddleList(RandomGenerator random, int maxRiddleLength) {
+	public static List<Pair<AuraType, Integer>> generateRiddleList(RandomGenerator random, int maxRiddleLength) {
 		List<Graph.Node<AuraType>> path = new ArrayList<>();
 		HashSet<Graph.Edge<AuraType>> visitedEdges = new HashSet<>();
 

@@ -8,16 +8,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 
 public class GuideBookScreenHandler extends ScreenHandler {
-	private final PlayerInventory inventory;
-
 	public GuideBookScreenHandler(int syncId, PlayerInventory inventory) {
 		super(DevotionScreenHandlers.GUIDE_BOOK_SCREEN_HANDLER, syncId);
-		this.inventory = inventory;
 	}
 
 	@Override
 	public ItemStack transferSlot(PlayerEntity player, int index) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

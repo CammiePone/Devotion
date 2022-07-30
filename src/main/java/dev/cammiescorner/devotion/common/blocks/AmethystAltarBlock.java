@@ -93,11 +93,6 @@ public class AmethystAltarBlock extends Block implements Waterloggable, BlockEnt
 								continue;
 							}
 
-							itemEntity = player.dropItem(altarStack, false);
-
-							if(itemEntity != null)
-								itemEntity.setDespawnImmediately();
-
 							player.world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1F) * 2F);
 							altar.removeStack(i);
 

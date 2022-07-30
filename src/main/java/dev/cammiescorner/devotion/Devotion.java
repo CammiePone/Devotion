@@ -10,10 +10,7 @@ import dev.cammiescorner.devotion.api.spells.Spell;
 import dev.cammiescorner.devotion.common.CommonEvents;
 import dev.cammiescorner.devotion.common.data.ResearchReloadListener;
 import dev.cammiescorner.devotion.common.integration.DevotionConfig;
-import dev.cammiescorner.devotion.common.packets.c2s.CastSpellPacket;
-import dev.cammiescorner.devotion.common.packets.c2s.ChangeSpellPacket;
-import dev.cammiescorner.devotion.common.packets.c2s.SaveScrollDataPacket;
-import dev.cammiescorner.devotion.common.packets.c2s.SetCastingPacket;
+import dev.cammiescorner.devotion.common.packets.c2s.*;
 import dev.cammiescorner.devotion.common.registry.*;
 import eu.midnightdust.lib.config.MidnightConfig;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -92,6 +89,7 @@ public class Devotion implements ModInitializer {
 
 		ServerPlayNetworking.registerGlobalReceiver(CastSpellPacket.ID, CastSpellPacket::handler);
 		ServerPlayNetworking.registerGlobalReceiver(ChangeSpellPacket.ID, ChangeSpellPacket::handler);
+		ServerPlayNetworking.registerGlobalReceiver(GiveResearchScrollPacket.ID, GiveResearchScrollPacket::handler);
 		ServerPlayNetworking.registerGlobalReceiver(SetCastingPacket.ID, SetCastingPacket::handler);
 		ServerPlayNetworking.registerGlobalReceiver(SaveScrollDataPacket.ID, SaveScrollDataPacket::handler);
 

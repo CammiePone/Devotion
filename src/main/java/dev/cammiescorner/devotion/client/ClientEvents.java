@@ -9,6 +9,7 @@ import dev.cammiescorner.devotion.client.screens.GuideBookScreen;
 import dev.cammiescorner.devotion.client.screens.ResearchScreen;
 import dev.cammiescorner.devotion.client.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.common.packets.c2s.ChangeSpellPacket;
+import dev.cammiescorner.devotion.common.packets.c2s.GiveResearchScrollPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SetCastingPacket;
 import dev.cammiescorner.devotion.common.registry.DevotionKeyBinds;
 import dev.cammiescorner.devotion.common.registry.DevotionScreenHandlers;
@@ -19,6 +20,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec2f;
 import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
@@ -108,29 +111,36 @@ public class ClientEvents {
 		});
 
 		ResearchWidgetCallback.ADD_WIDGETS.register((screen, x, y) -> {
-			// middle
-			screen.addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println(widget.getResearch().getId())));
-
-			// top
-			screen.addArtificeChild(new ResearchWidget(x + 154, y + 50, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 234, y + 50, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 194, y + 50, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
-
-			// right
-			screen.addArtificeChild(new ResearchWidget(x + 234, y + 90, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 234, y + 170, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
-
-			// bottom
-			screen.addArtificeChild(new ResearchWidget(x + 154, y + 170, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 114, y + 170, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 194, y + 170, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
-
-			// left
-			screen.addArtificeChild(new ResearchWidget(x + 114, y + 90, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 114, y + 50, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 114, y + 130, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp2"), ClientEvents::researchWidgetClick));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 90, Devotion.id("temp3"), ClientEvents::researchWidgetClick));
 		});
+	}
+
+	private static void researchWidgetClick(ResearchWidget widget) {
+		PlayerEntity player = MinecraftClient.getInstance().player;
+		boolean bl = true;
+
+		if(player != null) {
+			Identifier researchId = widget.getResearch().getId();
+
+			if(DevotionHelper.getResearchIds(player).contains(researchId)) {
+				return;
+			}
+
+			for(int i = 0; i < player.getInventory().size(); i++) {
+				ItemStack stack = player.getInventory().getStack(i);
+				NbtCompound tag = stack.getOrCreateSubNbt(Devotion.MOD_ID);
+
+				if(tag.getString("ResearchId").equals(researchId.toString())) {
+					bl = false;
+					break;
+				}
+			}
+
+			if(bl)
+				GiveResearchScrollPacket.send(researchId);
+		}
 	}
 
 	private static int radialPosX(double angle, int x, int index) {
