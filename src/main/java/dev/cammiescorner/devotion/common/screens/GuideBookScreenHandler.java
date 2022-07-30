@@ -6,10 +6,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 
 public class GuideBookScreenHandler extends ScreenHandler {
 	public GuideBookScreenHandler(int syncId, PlayerInventory inventory) {
 		super(DevotionScreenHandlers.GUIDE_BOOK_SCREEN_HANDLER, syncId);
+
+		// fixes mojank
+		for(int i = 0; i < 36; i++)
+			addSlot(new Slot(inventory, i, -500, -500));
 	}
 
 	@Override
