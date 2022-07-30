@@ -83,9 +83,11 @@ public class ResearchWidget extends PressableWidget {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+		ItemStack stack = new ItemStack(research.getIconItem());
+		MatrixStack modelViewMatrix = RenderSystem.getModelViewStack();
 		int u;
-		int trueX = (int) (x + offsetX);
-		int trueY = (int) (y + offsetY);
+		int screenX = (client.getWindow().getScaledWidth() - 378) / 2;
+		int screenY = (client.getWindow().getScaledHeight() - 250) / 2;
 
 		if(playerResearch.contains(research.getId())) {
 			u = 60;
@@ -100,19 +102,23 @@ public class ResearchWidget extends PressableWidget {
 			active = false;
 		}
 
-		drawTexture(matrices, trueX, trueY, u, 0, width, height);
-		client.getItemRenderer().renderGuiItemIcon(new ItemStack(research.getIconItem()), trueX - (client.getWindow().getScaledWidth() - 378) / 2 + 7, trueY - (client.getWindow().getScaledHeight() - 250) / 2 + 6);
+		drawTexture(matrices, x, y, u, 0, width, height);
+		modelViewMatrix.push();
+		modelViewMatrix.translate(offsetX, offsetY, 0);
+		client.getItemRenderer().renderGuiItemIcon(stack, x - screenX + 7, y - screenY + 7);
+		modelViewMatrix.pop();
+		RenderSystem.applyModelViewMatrix();
 
 		if(isHoveredOrFocused())
 			renderTooltip(matrices, mouseX, mouseY);
 	}
 
-	public int getRealX() {
-		return (int) (x + offsetX);
+	public double getRealX() {
+		return x + offsetX;
 	}
 
-	public int getRealY() {
-		return (int) (y + offsetY);
+	public double getRealY() {
+		return y + offsetY;
 	}
 
 	public void setOffset(double x, double y) {

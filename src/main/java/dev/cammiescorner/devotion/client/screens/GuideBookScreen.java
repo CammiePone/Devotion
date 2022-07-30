@@ -63,16 +63,15 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	@Override
 	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
 		if(client != null) {
-			// TODO draw research tree
 			int scale = (int) client.getWindow().getScaleFactor();
 			RenderSystem.enableScissor((x + 16) * scale, (y + 16) * scale, 346 * scale, 218 * scale);
 			matrices.push();
-			matrices.translate(-x, -y, 0);
+			matrices.translate(-x + offsetX, -y + offsetY, 0);
 
 			if(tabId.equals(Devotion.id("artifice"))) {
 				for(ResearchWidget widget : artificeDrawables)
 					for(ResearchWidget parent : getParents(widget, artificeDrawables))
-						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
+						drawLine(matrices, parent.x + 15, parent.y + 15, widget.x + 15, widget.y + 15);
 
 				for(ResearchWidget widget : artificeDrawables) {
 					widget.setOffset(offsetX, offsetY);
@@ -219,7 +218,7 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 			bufferBuilder.vertex(matrix, c1.x - dx, c1.y - dy, 0).color(0).next();
 			BufferRenderer.drawWithShader(bufferBuilder.end());
 
-			prevDelta = delta;
+			prevDelta = delta - 0.004F;
 		}
 	}
 
