@@ -21,6 +21,9 @@
 		}
 	],
 	"power": 20,
+    "research": [
+        "devotion:amethyst_altar"
+    ],
 	"result": {
 		"type": "devotion:restore_aura"
 	}

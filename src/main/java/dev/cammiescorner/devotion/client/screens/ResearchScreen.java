@@ -79,8 +79,11 @@ public class ResearchScreen extends HandledScreen<ResearchScreenHandler> {
 				RenderSystem.setShaderTexture(0, TEXTURE);
 				DrawableHelper.drawTexture(matrices, 256, 104, 120, 216, 24, 24, 384, 320);
 
-				for(int i = 0; i < 5; i++)
+				for(int i = 0; i < 5; i++) {
 					DrawableHelper.drawTexture(matrices, pentagonX(256, i), pentagonY(104, i), i * 24, 216, 24, 24, 384, 320);
+
+					System.out.println(pentagonX(104, i) + ", " + pentagonY(150, i));
+				}
 
 				List<OrderedText> agony = new ArrayList<>();
 				int posY = 0;

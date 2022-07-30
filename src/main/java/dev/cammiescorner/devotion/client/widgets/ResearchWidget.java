@@ -5,6 +5,7 @@ import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.DevotionHelper;
 import dev.cammiescorner.devotion.api.research.Research;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.render.GameRenderer;
@@ -22,7 +23,7 @@ public class ResearchWidget extends PressableWidget {
 	private final PressAction pressAction;
 	private double offsetX = 0, offsetY = 0;
 
-	public ResearchWidget(int x, int y, Identifier researchId, PressAction pressAction) {
+	public ResearchWidget(int x, int y, Identifier researchId, Screen screen, PressAction pressAction) {
 		super(x, y, 30, 30, Text.empty());
 		this.research = Research.getById(researchId);
 		this.pressAction = pressAction;
@@ -75,11 +76,11 @@ public class ResearchWidget extends PressableWidget {
 
 		if(visible) {
 			hovered = mouseX >= x + offsetX && mouseY >= y + offsetY && mouseX < x + offsetX + width && mouseY < y + offsetY + height;
-			renderButton(matrices, mouseX, mouseY, delta, playerResearch);
+			renderButton(matrices, mouseX, mouseY, playerResearch);
 		}
 	}
 
-	public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta, Set<Identifier> playerResearch) {
+	public void renderButton(MatrixStack matrices, int mouseX, int mouseY, Set<Identifier> playerResearch) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);

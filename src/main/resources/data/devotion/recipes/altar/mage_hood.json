@@ -21,6 +21,9 @@
         }
 	],
 	"power": 8,
+    "research": [
+        "devotion:mage_armour"
+    ],
 	"result": {
 		"type": "devotion:craft_item",
 		"item": "devotion:mage_hood"

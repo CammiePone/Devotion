@@ -11,9 +11,6 @@
             "item": "minecraft:gunpowder"
         }
     ],
-    "research": [
-        "devotion:temp1"
-    ],
     "power": 5,
     "result": {
         "type": "devotion:summon_entity",
