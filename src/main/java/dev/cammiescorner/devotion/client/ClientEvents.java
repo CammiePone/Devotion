@@ -108,11 +108,28 @@ public class ClientEvents {
 		});
 
 		ResearchWidgetCallback.ADD_WIDGETS.register((screen, x, y) -> {
+			// middle
 			screen.addArtificeChild(new ResearchWidget(x + 174, y + 110, Devotion.id("temp1"), widget -> System.out.println(widget.getResearch().getId())));
+
+			// top
+			screen.addArtificeChild(new ResearchWidget(x + 154, y + 50, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 50, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 194, y + 50, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
+
+			// right
 			screen.addArtificeChild(new ResearchWidget(x + 234, y + 90, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 294, y + 90, Devotion.id("temp4"), widget -> System.out.println(widget.getResearch().getId())));
-			screen.addArtificeChild(new ResearchWidget(x + 294, y + 130, Devotion.id("temp5"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 170, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 234, y + 130, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
+
+			// bottom
+			screen.addArtificeChild(new ResearchWidget(x + 154, y + 170, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 114, y + 170, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 194, y + 170, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
+
+			// left
+			screen.addArtificeChild(new ResearchWidget(x + 114, y + 90, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 114, y + 50, Devotion.id("temp3"), widget -> System.out.println(widget.getResearch().getId())));
+			screen.addArtificeChild(new ResearchWidget(x + 114, y + 130, Devotion.id("temp2"), widget -> System.out.println(widget.getResearch().getId())));
 		});
 	}
 

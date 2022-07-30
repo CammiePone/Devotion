@@ -161,25 +161,70 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		RenderSystem.setShaderColor(0.224F, 0.196F, 0.175F, 1F);
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
 		Matrix4f matrix = matrices.peek().getPosition();
+		Vec2f startPos = new Vec2f(x1, y1);
+		Vec2f midPos = new Vec2f(x1 + (x2 - x1) * 0.5F, y1 + (y2 - y1) * 0.5F);
+		Vec2f endPos = new Vec2f(x2, y2);
 		float angle = (float) (Math.atan2(y2 - y1, x2 - x1) - (Math.PI * 0.5));
-		int segmentCount = 16;
-		Vec2f pos1 = new Vec2f(x1, y1);
-		Vec2f pos2 = new Vec2f(x2, y2);
+		float prevDelta = 0;
+		int segmentCount = 8;
 
-		if(pos1.x == pos2.x || pos1.y == pos2.y)
+		if(startPos.x == endPos.x || startPos.y == endPos.y)
 			segmentCount = 1;
 
+		if(segmentCount > 1) {
+			float offset = MathHelper.sqrt(startPos.distanceSquared(endPos)) * 0.25F;
+			float angleDeg = (float) Math.toDegrees(angle) + 270;
+
+			// top
+			if(angleDeg < 90 && angleDeg > 45)
+				midPos = midPos.add(new Vec2f(-offset, 0));
+			if(angleDeg < 135 && angleDeg > 90)
+				midPos = midPos.add(new Vec2f(offset, 0));
+
+			// right
+			if(angleDeg < 180 && angleDeg > 135)
+				midPos = midPos.add(new Vec2f(0, -offset));
+			if(angleDeg < 225 && angleDeg > 180)
+				midPos = midPos.add(new Vec2f(0, offset));
+
+			// bottom
+			if(angleDeg < 270 && angleDeg > 225)
+				midPos = midPos.add(new Vec2f(offset, 0));
+			if(angleDeg < 315 && angleDeg > 270)
+				midPos = midPos.add(new Vec2f(-offset, 0));
+
+			// left
+			if(angleDeg < 360 && angleDeg > 315)
+				midPos = midPos.add(new Vec2f(0, offset));
+			if(angleDeg < 45 && angleDeg > 0)
+				midPos = midPos.add(new Vec2f(0, -offset));
+		}
+
 		for(int i = 1; i <= segmentCount; i++) {
-			float dx = MathHelper.cos(i * angle / segmentCount) * 2;
-			float dy = MathHelper.sin(i * angle / segmentCount) * 2;
+			float delta = i / (float) segmentCount;
+			Vec2f a1 = lerp(prevDelta, startPos, midPos);
+			Vec2f b1 = lerp(prevDelta, midPos, endPos);
+			Vec2f c1 = lerp(prevDelta, a1, b1);
+			Vec2f a2 = lerp(delta, startPos, midPos);
+			Vec2f b2 = lerp(delta, midPos, endPos);
+			Vec2f c2 = lerp(delta, a2, b2);
+			float angle2 = (float) (MathHelper.atan2(c2.y - c1.y, c2.x - c1.x) - (Math.PI * 0.5));
+			float dx = MathHelper.cos(angle2) * 2;
+			float dy = MathHelper.sin(angle2) * 2;
 
 			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-			bufferBuilder.vertex(matrix, x2 - dx, y2 - dy, 0).color(0).next();
-			bufferBuilder.vertex(matrix, x2 + dx, y2 + dy, 0).color(0).next();
-			bufferBuilder.vertex(matrix, x1 + dx, y1 + dy, 0).color(0).next();
-			bufferBuilder.vertex(matrix, x1 - dx, y1 - dy, 0).color(0).next();
+			bufferBuilder.vertex(matrix, c2.x - dx, c2.y - dy, 0).color(0).next();
+			bufferBuilder.vertex(matrix, c2.x + dx, c2.y + dy, 0).color(0).next();
+			bufferBuilder.vertex(matrix, c1.x + dx, c1.y + dy, 0).color(0).next();
+			bufferBuilder.vertex(matrix, c1.x - dx, c1.y - dy, 0).color(0).next();
 			BufferRenderer.drawWithShader(bufferBuilder.end());
+
+			prevDelta = delta;
 		}
+	}
+
+	private Vec2f lerp(float delta, Vec2f pos1, Vec2f pos2) {
+		return pos1.multiply(1 - delta).add(pos2.multiply(delta));
 	}
 
 	private List<ResearchWidget> getParents(ResearchWidget widget, List<ResearchWidget> drawables) {
