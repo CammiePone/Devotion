@@ -3,17 +3,17 @@ package dev.cammiescorner.devotion.client.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.api.events.client.ResearchWidgetCallback;
+import dev.cammiescorner.devotion.api.events.client.GuideBookScreenCallback;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.widgets.ResearchWidget;
-import dev.cammiescorner.devotion.common.screens.GuideBookScreenHandler;
+import dev.cammiescorner.devotion.client.widgets.TabWidget;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -21,18 +21,22 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec2f;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
-public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
+public class GuideBookScreen extends Screen {
 	public static final Identifier TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_frame.png");
+	private final LinkedHashMap<Identifier, Item> tabs = new LinkedHashMap<>();
+	private final List<TabWidget> tabDrawables = new ArrayList<>();
 	private final List<ResearchWidget> artificeDrawables = new ArrayList<>();
 	private final List<ResearchWidget> spellDrawables = new ArrayList<>();
 	private final List<ResearchWidget> cultDrawables = new ArrayList<>();
 	public Identifier tabId = Devotion.id("artifice");
+	public int x, y;
 	public double offsetX, offsetY;
 
-	public GuideBookScreen(GuideBookScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
-		super(screenHandler, playerInventory, Text.empty());
+	public GuideBookScreen() {
+		super(Text.empty());
 	}
 
 	@Override
@@ -42,7 +46,22 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		y = (height - 250) / 2;
 		offsetX = DevotionClient.guideBookOffsetX;
 		offsetY = DevotionClient.guideBookOffsetY;
-		ResearchWidgetCallback.ADD_WIDGETS.invoker().addWidgets(this, x, y);
+		GuideBookScreenCallback.ADD_RESEARCH.invoker().addWidgets(this, x, y);
+		GuideBookScreenCallback.ADD_TAB.invoker().addTabs(tabs);
+
+		// 13 is the max number of tabs along the top
+		for(int i = 0; i < tabs.keySet().size(); i++) {
+			if(i >= 26)
+				break;
+
+			Identifier tabId = tabs.keySet().stream().toList().get(i);
+			Item item = tabs.get(tabId);
+
+			if(i < 13)
+				addTabChild(new TabWidget(x + 21 + (26 * i), y + 2, true, tabId, item, this::clickTab));
+			else
+				addTabChild(new TabWidget(x + 21 + (26 * (i - 13)), y + 209, false, tabId, item, this::clickTab));
+		}
 	}
 
 	@Override
@@ -53,62 +72,88 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+	public boolean isPauseScreen() {
+		return false;
+	}
+
+	@Override
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		int scale = (int) client.getWindow().getScaleFactor();
+		MatrixStack modelViewMatrix = RenderSystem.getModelViewStack();
+
+		drawBackground(matrices);
+		modelViewMatrix.push();
+		modelViewMatrix.translate(x, y, 0);
+		RenderSystem.applyModelViewMatrix();
+		RenderSystem.enableScissor((x + 16) * scale, (y + 16) * scale, 346 * scale, 218 * scale);
+		super.render(matrices, mouseX, mouseY, delta);
+		drawWidgets(matrices, mouseX, mouseY, delta);
+		RenderSystem.disableScissor();
+		modelViewMatrix.pop();
+		RenderSystem.applyModelViewMatrix();
+
+		drawForeground(matrices);
+	}
+
+	protected void drawBackground(MatrixStack matrices) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		DrawableHelper.drawTexture(matrices, x, y, 0, 256, 378, 250, 512, 512);
 	}
 
-	@Override
-	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-		if(client != null) {
-			int scale = (int) client.getWindow().getScaleFactor();
-			RenderSystem.enableScissor((x + 16) * scale, (y + 16) * scale, 346 * scale, 218 * scale);
-			matrices.push();
-			matrices.translate(-x + offsetX, -y + offsetY, 0);
-
-			if(tabId.equals(Devotion.id("artifice"))) {
-				for(ResearchWidget widget : artificeDrawables)
-					for(ResearchWidget parent : getParents(widget, artificeDrawables))
-						drawLine(matrices, parent.x + 15, parent.y + 15, widget.x + 15, widget.y + 15);
-
-				for(ResearchWidget widget : artificeDrawables) {
-					widget.setOffset(offsetX, offsetY);
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				}
-			}
-
-			if(tabId.equals(Devotion.id("spells"))) {
-				for(ResearchWidget widget : spellDrawables)
-					for(ResearchWidget parent : getParents(widget, spellDrawables))
-						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
-
-				for(ResearchWidget widget : spellDrawables) {
-					widget.setOffset(offsetX, offsetY);
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				}
-			}
-
-			if(tabId.equals(Devotion.id("cults"))) {
-				for(ResearchWidget widget : cultDrawables)
-					for(ResearchWidget parent : getParents(widget, cultDrawables))
-						drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
-
-				for(ResearchWidget widget : cultDrawables) {
-					widget.setOffset(offsetX, offsetY);
-					widget.render(matrices, mouseX, mouseY, client.getTickDelta());
-				}
-			}
-
-			matrices.pop();
-			RenderSystem.disableScissor();
-		}
-
+	protected void drawForeground(MatrixStack matrices) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		DrawableHelper.drawTexture(matrices, 0, 0, 101, 0, 0, 378, 250, 512, 512);
+		DrawableHelper.drawTexture(matrices, x, y, 110, 0, 0, 378, 250, 512, 512);
+	}
+
+	protected void drawWidgets(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		matrices.push();
+		matrices.translate(-x + offsetX, -y + offsetY, 0);
+
+		if(tabId.equals(Devotion.id("artifice"))) {
+			for(ResearchWidget widget : artificeDrawables)
+				for(ResearchWidget parent : getParents(widget, artificeDrawables))
+					drawLine(matrices, parent.x + 15, parent.y + 15, widget.x + 15, widget.y + 15);
+
+			for(ResearchWidget widget : artificeDrawables) {
+				widget.setOffset(offsetX, offsetY);
+				widget.render(matrices, mouseX, mouseY, delta);
+			}
+		}
+
+		if(tabId.equals(Devotion.id("spells"))) {
+			for(ResearchWidget widget : spellDrawables)
+				for(ResearchWidget parent : getParents(widget, spellDrawables))
+					drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
+
+			for(ResearchWidget widget : spellDrawables) {
+				widget.setOffset(offsetX, offsetY);
+				widget.render(matrices, mouseX, mouseY, delta);
+			}
+		}
+
+		if(tabId.equals(Devotion.id("cults"))) {
+			for(ResearchWidget widget : cultDrawables)
+				for(ResearchWidget parent : getParents(widget, cultDrawables))
+					drawLine(matrices, (float) (parent.x + offsetX + 15), (float) (parent.y + offsetY + 15), (float) (widget.x + offsetX + 15), (float) (widget.y + offsetY + 15));
+
+			for(ResearchWidget widget : cultDrawables) {
+				widget.setOffset(offsetX, offsetY);
+				widget.render(matrices, mouseX, mouseY, delta);
+			}
+		}
+
+		matrices.pop();
+		matrices.push();
+		matrices.translate(-x, -y, 0);
+
+		for(TabWidget widget : tabDrawables)
+			widget.render(matrices, mouseX, mouseY, delta);
+
+		matrices.pop();
 	}
 
 	@Override
@@ -125,6 +170,9 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	protected void remove(Element child) {
 		super.remove(child);
 
+		if(child instanceof TabWidget)
+			tabDrawables.remove(child);
+
 		if(child instanceof ResearchWidget) {
 			artificeDrawables.remove(child);
 			spellDrawables.remove(child);
@@ -135,24 +183,30 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 	@Override
 	protected void clearChildren() {
 		super.clearChildren();
+		tabDrawables.clear();
 		artificeDrawables.clear();
 		spellDrawables.clear();
 		cultDrawables.clear();
 	}
 
+	private <T extends TabWidget> T addTabChild(T drawable) {
+		tabDrawables.add(drawable);
+		return addSelectableChild(drawable);
+	}
+
 	public <T extends ResearchWidget> T addArtificeChild(T drawable) {
 		artificeDrawables.add(drawable);
-		return this.addSelectableChild(drawable);
+		return addSelectableChild(drawable);
 	}
 
 	public <T extends ResearchWidget> T addSpellChild(T drawable) {
 		spellDrawables.add(drawable);
-		return this.addSelectableChild(drawable);
+		return addSelectableChild(drawable);
 	}
 
 	public <T extends ResearchWidget> T addCultChild(T drawable) {
 		cultDrawables.add(drawable);
-		return this.addSelectableChild(drawable);
+		return addSelectableChild(drawable);
 	}
 
 	private void drawLine(MatrixStack matrices, float x1, float y1, float x2, float y2) {
@@ -238,5 +292,9 @@ public class GuideBookScreen extends HandledScreen<GuideBookScreenHandler> {
 		}
 
 		return parents;
+	}
+
+	private void clickTab(TabWidget widget) {
+		tabId = widget.getTabId();
 	}
 }

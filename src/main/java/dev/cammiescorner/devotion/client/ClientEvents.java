@@ -3,14 +3,15 @@ package dev.cammiescorner.devotion.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.DevotionHelper;
+import dev.cammiescorner.devotion.api.events.client.GuideBookScreenCallback;
 import dev.cammiescorner.devotion.api.events.client.KeyBindingCallback;
-import dev.cammiescorner.devotion.api.events.client.ResearchWidgetCallback;
-import dev.cammiescorner.devotion.client.screens.GuideBookScreen;
 import dev.cammiescorner.devotion.client.screens.ResearchScreen;
 import dev.cammiescorner.devotion.client.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.common.packets.c2s.ChangeSpellPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.GiveResearchScrollPacket;
 import dev.cammiescorner.devotion.common.packets.c2s.SetCastingPacket;
+import dev.cammiescorner.devotion.common.registry.DevotionBlocks;
+import dev.cammiescorner.devotion.common.registry.DevotionItems;
 import dev.cammiescorner.devotion.common.registry.DevotionKeyBinds;
 import dev.cammiescorner.devotion.common.registry.DevotionScreenHandlers;
 import net.fabricmc.api.EnvType;
@@ -33,7 +34,6 @@ public class ClientEvents {
 	@Environment(EnvType.CLIENT)
 	public static void events() {
 		HandledScreens.register(DevotionScreenHandlers.RESEARCH_SCREEN_HANDLER, ResearchScreen::new);
-		HandledScreens.register(DevotionScreenHandlers.GUIDE_BOOK_SCREEN_HANDLER, GuideBookScreen::new);
 
 		HudRenderCallback.EVENT.register((matrices, tickDelta) -> {
 			MinecraftClient client = MinecraftClient.getInstance();
@@ -110,7 +110,7 @@ public class ClientEvents {
 			}
 		});
 
-		ResearchWidgetCallback.ADD_WIDGETS.register((screen, x, y) -> {
+		GuideBookScreenCallback.ADD_RESEARCH.register((screen, x, y) -> {
 			screen.addArtificeChild(new ResearchWidget(x + 144, y + 170, Devotion.id("root"), screen, ClientEvents::researchWidgetClick));
 			screen.addArtificeChild(new ResearchWidget(x + 204, y + 170, Devotion.id("research"), screen, ClientEvents::researchWidgetClick));
 			screen.addArtificeChild(new ResearchWidget(x + 174, y + 111, Devotion.id("amethyst_altar"), screen, ClientEvents::researchWidgetClick));
@@ -120,6 +120,12 @@ public class ClientEvents {
 			screen.addArtificeChild(new ResearchWidget(x + 91, y + 181, Devotion.id("conjuration_mage_armour"), screen, ClientEvents::researchWidgetClick));
 			screen.addArtificeChild(new ResearchWidget(x + 17, y + 181, Devotion.id("manipulation_mage_armour"), screen, ClientEvents::researchWidgetClick));
 			screen.addArtificeChild(new ResearchWidget(x + -6, y + 111, Devotion.id("emission_mage_armour"), screen, ClientEvents::researchWidgetClick));
+		});
+
+		GuideBookScreenCallback.ADD_TAB.register(tabMap -> {
+			tabMap.put(Devotion.id("artifice"), DevotionItems.MAGE_HOOD);
+			tabMap.put(Devotion.id("spells"), DevotionBlocks.AMETHYST_ALTAR.asItem());
+			tabMap.put(Devotion.id("cults"), DevotionItems.TIME_CULTIST_HOOD);
 		});
 	}
 

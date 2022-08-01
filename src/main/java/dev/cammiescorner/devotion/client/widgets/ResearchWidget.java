@@ -20,12 +20,14 @@ public class ResearchWidget extends PressableWidget {
 	public static final Identifier TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_icons.png");
 	private final MinecraftClient client = MinecraftClient.getInstance();
 	private final Research research;
+	private final Screen screen;
 	private final PressAction pressAction;
 	private double offsetX = 0, offsetY = 0;
 
 	public ResearchWidget(int x, int y, Identifier researchId, Screen screen, PressAction pressAction) {
 		super(x, y, 30, 30, Text.empty());
 		this.research = Research.getById(researchId);
+		this.screen = screen;
 		this.pressAction = pressAction;
 
 		if(research != null) {
@@ -118,14 +120,6 @@ public class ResearchWidget extends PressableWidget {
 
 		if(isHoveredOrFocused())
 			renderTooltip(matrices, mouseX, mouseY);
-	}
-
-	public double getRealX() {
-		return x + offsetX;
-	}
-
-	public double getRealY() {
-		return y + offsetY;
 	}
 
 	public void setOffset(double x, double y) {

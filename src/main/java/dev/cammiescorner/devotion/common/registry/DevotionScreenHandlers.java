@@ -1,7 +1,6 @@
 package dev.cammiescorner.devotion.common.registry;
 
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.common.screens.GuideBookScreenHandler;
 import dev.cammiescorner.devotion.common.screens.ResearchScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.screen.ScreenHandlerType;
@@ -16,7 +15,6 @@ public class DevotionScreenHandlers {
 
 	//-----Screen Handlers-----//
 	public static final ScreenHandlerType<ResearchScreenHandler> RESEARCH_SCREEN_HANDLER = create("research_screen_handler", new ExtendedScreenHandlerType<>((syncId, inventory, buf) -> new ResearchScreenHandler(syncId, inventory, buf.readItemStack())));
-	public static final ScreenHandlerType<GuideBookScreenHandler> GUIDE_BOOK_SCREEN_HANDLER = create("guide_book_screen_handler", new ScreenHandlerType<>(GuideBookScreenHandler::new));
 
 	//-----Registry-----//
 	public static void register() {
