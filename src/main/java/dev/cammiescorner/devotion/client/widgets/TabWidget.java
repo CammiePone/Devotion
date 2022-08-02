@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 
 public class TabWidget extends PressableWidget {
 	public static final Identifier TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_icons.png");
@@ -45,23 +46,25 @@ public class TabWidget extends PressableWidget {
 				u = 24;
 
 				if(isHoveredOrFocused())
-					yPos = Math.min(17, yPos + 1);
+					yPos = Math.min(10, yPos + 1);
 				else
 					yPos = Math.max(0, yPos - 1);
 			}
 			else {
-				yPos = 17;
+				yPos = 10;
 			}
 		}
+
+		float lerp = MathHelper.lerp((float) yPos / 10F, 0F, 17F);
 
 		matrices.push();
 
 		if(top) {
-			matrices.translate(0, yPos, 0);
+			matrices.translate(0, lerp, 0);
 			drawTexture(matrices, x, y - 14, 104 + u, 0, width, height);
 		}
 		else {
-			matrices.translate(0, -yPos, 0);
+			matrices.translate(0, -lerp, 0);
 			drawTexture(matrices, x, y + 16, 152 + u, 0, width, height);
 		}
 
@@ -70,11 +73,11 @@ public class TabWidget extends PressableWidget {
 		modelViewMatrix.push();
 
 		if(top) {
-			modelViewMatrix.translate(0, yPos, 0);
+			modelViewMatrix.translate(0, lerp, 0);
 			client.getItemRenderer().renderGuiItemIcon(new ItemStack(item), x - screenX + 4, y - screenY - 1);
 		}
 		else {
-			modelViewMatrix.translate(0, -yPos, 0);
+			modelViewMatrix.translate(0, -lerp, 0);
 			client.getItemRenderer().renderGuiItemIcon(new ItemStack(item), x - screenX + 4, y - screenY + 24);
 		}
 
