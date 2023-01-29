@@ -102,6 +102,10 @@ public class AmethystAltarBlock extends Block implements Waterloggable, BlockEnt
 						return ActionResult.success(world.isClient);
 					}
 				}
+				else if(player.isSneaking()) {
+					altar.hideSchematic(!altar.isSchematicHidden());
+					return ActionResult.success(world.isClient);
+				}
 			}
 			else {
 				if(altar.isCompleted())

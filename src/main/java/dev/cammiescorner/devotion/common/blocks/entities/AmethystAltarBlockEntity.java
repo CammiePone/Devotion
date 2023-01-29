@@ -46,7 +46,7 @@ public class AmethystAltarBlockEntity extends BlockEntity implements Inventory {
 			new BlockPos(0, 1, 3), new BlockPos(-3, 1, 3), new BlockPos(-3, 1, 0), new BlockPos(-3, 1, -3)
 	);
 	private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(10, ItemStack.EMPTY);
-	private boolean crafting, completed;
+	private boolean crafting, completed, hideSchematic;
 	private int power, craftingTime, amethystIndex;
 	private AmethystAltarRecipe recipe;
 	private Identifier recipeId;
@@ -223,6 +223,7 @@ public class AmethystAltarBlockEntity extends BlockEntity implements Inventory {
 		Inventories.readNbt(nbt, inventory);
 		completed = nbt.getBoolean("Completed");
 		crafting = nbt.getBoolean("Active");
+		hideSchematic = nbt.getBoolean("HideSchematic");
 		power = nbt.getInt("Power");
 		craftingTime = nbt.getInt("CraftingTime");
 		amethystIndex = nbt.getInt("AmethystIndex");
@@ -243,6 +244,7 @@ public class AmethystAltarBlockEntity extends BlockEntity implements Inventory {
 		Inventories.writeNbt(nbt, inventory);
 		nbt.putBoolean("Completed", completed);
 		nbt.putBoolean("Active", crafting);
+		nbt.putBoolean("HideSchematic", hideSchematic);
 		nbt.putInt("Power", power);
 		nbt.putInt("CraftingTime", craftingTime);
 		nbt.putInt("AmethystIndex", amethystIndex);
@@ -322,6 +324,14 @@ public class AmethystAltarBlockEntity extends BlockEntity implements Inventory {
 		}
 
 		notifyListeners();
+	}
+
+	public boolean isSchematicHidden() {
+		return hideSchematic;
+	}
+
+	public void hideSchematic(boolean hide) {
+		this.hideSchematic = hide;
 	}
 
 	public void checkMultiblock() {

@@ -43,7 +43,7 @@ public class AmethystAltarBlockEntityRenderer implements BlockEntityRenderer<Ame
 		World world = altar.getWorld();
 		int filledSlots = altar.filledSlots();
 
-		if(world != null) {
+		if(world != null && !altar.isSchematicHidden()) {
 			double time = DevotionClient.clientTick + tickDelta;
 			HashMap<BlockPos, BlockState> structureMap = DevotionHelper.getStructureMap(world);
 			BlockPos altarOffset = DevotionHelper.getAltarOffset(world);

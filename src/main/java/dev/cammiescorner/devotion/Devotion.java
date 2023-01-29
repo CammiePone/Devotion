@@ -54,7 +54,7 @@ public class Devotion implements ModInitializer {
 			Graph.Node<AuraType> node = graph.nodes.get(i);
 
 			for(int j = 0; j < graph.nodes.size(); j++) {
-				if (i == j)
+				if(i == j)
 					continue; // do not loop back to self
 
 				Graph.Node<AuraType> target = graph.nodes.get(j);

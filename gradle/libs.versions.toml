@@ -2,7 +2,7 @@
 # The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
 minecraft = "1.19"
 quilt_mappings = "1.19+build.1"
-quilt_loader = "0.17.1-beta.6"
+quilt_loader = "0.17.2-beta.2"
 quilted_fabric_api = "2.0.0-beta.9+0.58.0-1.19"
 cca = "5.0.1"
 modmenu = "4.0.0"
@@ -10,7 +10,7 @@ satin = "1.9.0"
 early_features = "1.1.0"
 blabber = "0.3.0"
 midnightlib = "0.5.2"
-mixinextras = "0.0.11"
+mixinextras = "0.1.0"
 lucko_perms = "0.1-SNAPSHOT"
 
 [libraries]
