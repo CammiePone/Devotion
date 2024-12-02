@@ -21,7 +21,7 @@ public class AuraComponent implements AutoSyncedComponent {
 
 	public AuraComponent(LivingEntity entity) {
 		this.entity = entity;
-		this.primaryAuraType = AuraType.NONE; // TODO make primaryAuraType random on first spawn
+		this.primaryAuraType = AuraType.values()[entity.getRandom().nextInt(AuraType.values().length)];
 
 		for(AuraType auraType : AuraType.values())
 			aura.put(auraType, MAX_AURA * auraType.getAffinityMultiplier(primaryAuraType));
@@ -29,17 +29,19 @@ public class AuraComponent implements AutoSyncedComponent {
 
 	@Override
 	public void readFromNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
-		aura.clear();
+		if(tag.contains("AuraMap", Tag.TAG_COMPOUND)) {
+			aura.clear();
 
-		ListTag listTag = tag.getList("AuraMap", Tag.TAG_COMPOUND);
+			ListTag listTag = tag.getList("AuraMap", Tag.TAG_COMPOUND);
 
-		for(int i = 0; i < listTag.size(); i++) {
-			CompoundTag compoundTag = listTag.getCompound(i);
-
-			aura.put(AuraType.byName(compoundTag.getString("AuraType")), compoundTag.getFloat("AuraAmount"));
+			for(int i = 0; i < listTag.size(); i++) {
+				CompoundTag compoundTag = listTag.getCompound(i);
+				aura.put(AuraType.byName(compoundTag.getString("AuraType")), compoundTag.getFloat("AuraAmount"));
+			}
 		}
 
-		primaryAuraType = AuraType.byName(tag.getString("PrimaryAuraType"));
+		if(tag.contains("PrimaryAuraType", Tag.TAG_STRING))
+			primaryAuraType = AuraType.byName(tag.getString("PrimaryAuraType"));
 	}
 
 	@Override

@@ -3,9 +3,10 @@ package dev.cammiescorner.devotion.client.renderers.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import dev.cammiescorner.devotion.client.ClientHelper;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
+import dev.cammiescorner.devotion.client.AltarErrorFx;
 import dev.cammiescorner.devotion.common.blocks.entities.AltarFocusBlockEntity;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -17,13 +18,16 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+
+import static dev.cammiescorner.devotion.client.DevotionClient.client;
 
 public class AltarFocusRenderer implements BlockEntityRenderer<AltarFocusBlockEntity> {
 	private final ItemRenderer itemRenderer;
@@ -94,51 +98,51 @@ public class AltarFocusRenderer implements BlockEntityRenderer<AltarFocusBlockEn
 	}
 
 	private void renderHologram(Level level, BlockPos blockPos, Block blockToRender, PoseStack poseStack, float scale, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean renderBlock) {
-		poseStack.pushPose();
-
 		if(renderBlock) {
 			BlockState state = blockToRender.defaultBlockState();
 			BakedModel model = dispatcher.getBlockModel(state);
-			VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucentCull(model.getParticleIcon().atlasLocation()));
+			VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS));
 
 			poseStack.translate(0.5, 0.5, 0.5);
 			poseStack.scale(scale, scale, scale);
 			poseStack.translate(-0.5, -0.5, -0.5);
 
-			for(Direction direction : Direction.values())
-				for(BakedQuad quad : model.getQuads(state, direction, RandomSource.create(42L)))
-					consumer.putBulkData(poseStack.last(), quad, 1f, 1f, 1f, 0.75f, packedLight, packedOverlay);
+			for(Direction direction : Direction.values()) {
+				random.setSeed(42L);
+
+				for(BakedQuad quad : model.getQuads(state, direction, random))
+					consumer.putBulkData(poseStack.last(), quad, 1f, 1f, 1f, 0.75f, LightTexture.FULL_BRIGHT, packedOverlay);
+			}
+
+			random.setSeed(42L);
+
+			for(BakedQuad quad : model.getQuads(state, null, random))
+				consumer.putBulkData(poseStack.last(), quad, 1f, 1f, 1f, 0.75f, LightTexture.FULL_BRIGHT, packedOverlay);
 		}
 		else if(level.getBlockState(blockPos) instanceof BlockState blockState && !blockState.is(blockToRender)) {
+			VertexConsumer consumer = bufferSource.getBuffer(AltarErrorFx.withTexture(InventoryMenu.BLOCK_ATLAS));
+			BakedModel model = dispatcher.getBlockModel(blockState);
+			Vec3 offset = blockState.getOffset(level, blockPos);
+			Vec3 traaaaannnnnnssssss = client.gameRenderer.getMainCamera().getPosition().subtract(blockPos.getCenter().add(offset)).normalize().scale(0.005);
+
+			poseStack.translate(offset.x(), offset.y(), offset.z());
+			poseStack.translate(traaaaannnnnnssssss.x(), traaaaannnnnnssssss.y(), traaaaannnnnnssssss.z());
 			poseStack.translate(0.5, 0.5, 0.5);
 			poseStack.scale(1.001f, 1.001f, 1.001f);
 			poseStack.translate(-0.5, -0.5, -0.5);
 
-			VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucent(ClientHelper.WHITE_TEXTURE));
-			BakedModel model = dispatcher.getBlockModel(blockState);
-
 			for(Direction direction : Direction.values()) {
-				BlockPos posToSide = blockPos.offset(direction.getNormal());
-				BlockState stateToSide = level.getBlockState(posToSide);
+				random.setSeed(42L);
 
-				if(stateToSide.isFaceSturdy(level, posToSide, direction.getOpposite(), SupportType.FULL))
-					continue;
-
-				for(BakedQuad quad : model.getQuads(blockState, null, random))
-					consumer.putBulkData(poseStack.last(), quad, 1f, 0f, 0f, 0.5f, packedLight, packedOverlay);
-
-//				switch(direction) {
-//					case SOUTH -> renderSide(consumer, pose, Direction.SOUTH, scale, 0f, 1f, 0f, 1f, 1f, 1f, 1f, 1f, packedLight, packedOverlay);
-//					case NORTH -> renderSide(consumer, pose, Direction.NORTH, scale, 0f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, packedLight, packedOverlay);
-//					case EAST -> renderSide(consumer, pose, Direction.EAST, scale, 1f, 1f, 1f, 0f, 0f, 1f, 1f, 0f, packedLight, packedOverlay);
-//					case WEST -> renderSide(consumer, pose, Direction.WEST, scale, 0f, 0f, 0f, 1f, 0f, 1f, 1f, 0f, packedLight, packedOverlay);
-//					case DOWN -> renderSide(consumer, pose, Direction.DOWN, scale, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 1f, packedLight, packedOverlay);
-//					case UP -> renderSide(consumer, pose, Direction.UP, scale, 0f, 1f, 1f, 1f, 1f, 1f, 0f, 0f, packedLight, packedOverlay);
-//				}
+				for(BakedQuad quad : model.getQuads(blockState, direction, random))
+					consumer.putBulkData(poseStack.last(), quad, 1f, 0f, 0f, 0.33f, LightTexture.FULL_BRIGHT, packedOverlay);
 			}
-		}
 
-		poseStack.popPose();
+			random.setSeed(42L);
+
+			for(BakedQuad quad : model.getQuads(blockState, null, random))
+				consumer.putBulkData(poseStack.last(), quad, 1f, 0f, 0f, 0.33f, LightTexture.FULL_BRIGHT, packedOverlay);
+		}
 	}
 
 	public static void renderSide(VertexConsumer consumer, PoseStack.Pose pose, Direction direction, float scale, float x1, float x2, float y1, float y2, float z1, float z2, float z3, float z4, int packedLight, int packedOverlay) {

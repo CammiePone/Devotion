@@ -10,6 +10,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -17,13 +18,13 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import java.util.*;
 
 public class AuraAttachment implements INBTSerializable<CompoundTag> {
-	public static final float MAX_AURA = 100;
 	private static final Set<Class<? extends Entity>> AURA_PROVIDERS = new HashSet<>();
+	public static final float MAX_AURA = 100;
 	private final Map<AuraType, Float> aura = new HashMap<>();
 	private AuraType primaryAuraType;
 
 	public AuraAttachment() {
-		this.primaryAuraType = AuraType.NONE; // TODO make primaryAuraType random on first spawn
+		this.primaryAuraType = AuraType.values()[RandomSource.create().nextInt(AuraType.values().length)];
 
 		for(AuraType auraType : AuraType.values())
 			this.aura.put(auraType, MAX_AURA * auraType.getAffinityMultiplier(primaryAuraType));
@@ -31,17 +32,19 @@ public class AuraAttachment implements INBTSerializable<CompoundTag> {
 
 	@Override
 	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-		aura.clear();
+		if(tag.contains("AuraMap", Tag.TAG_COMPOUND)) {
+			aura.clear();
 
-		ListTag listTag = tag.getList("AuraMap", Tag.TAG_COMPOUND);
+			ListTag listTag = tag.getList("AuraMap", Tag.TAG_COMPOUND);
 
-		for(int i = 0; i < listTag.size(); i++) {
-			CompoundTag compoundTag = listTag.getCompound(i);
-
-			aura.put(AuraType.byName(compoundTag.getString("AuraType")), compoundTag.getFloat("AuraAmount"));
+			for(int i = 0; i < listTag.size(); i++) {
+				CompoundTag compoundTag = listTag.getCompound(i);
+				aura.put(AuraType.byName(compoundTag.getString("AuraType")), compoundTag.getFloat("AuraAmount"));
+			}
 		}
 
-		primaryAuraType = AuraType.byName(tag.getString("PrimaryAuraType"));
+		if(tag.contains("PrimaryAuraType", Tag.TAG_STRING))
+			primaryAuraType = AuraType.byName(tag.getString("PrimaryAuraType"));
 	}
 
 	@Override
