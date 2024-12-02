@@ -1,8 +1,8 @@
 package dev.cammiescorner.devotion.neoforge.entrypoints;
 
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.neoforge.common.capabilities.entity.AuraAttachment;
-import dev.cammiescorner.devotion.neoforge.common.capabilities.entity.KnownResearchAttachment;
+import dev.cammiescorner.devotion.neoforge.common.attachments.entity.AuraAttachment;
+import dev.cammiescorner.devotion.neoforge.common.attachments.entity.KnownResearchAttachment;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;

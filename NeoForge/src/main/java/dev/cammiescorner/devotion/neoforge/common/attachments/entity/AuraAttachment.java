@@ -1,4 +1,4 @@
-package dev.cammiescorner.devotion.neoforge.common.capabilities.entity;
+package dev.cammiescorner.devotion.neoforge.common.attachments.entity;
 
 import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.api.spells.AuraType;
@@ -19,12 +19,13 @@ import java.util.*;
 
 public class AuraAttachment implements INBTSerializable<CompoundTag> {
 	private static final Set<Class<? extends Entity>> AURA_PROVIDERS = new HashSet<>();
+	private static final RandomSource random = RandomSource.create();
 	public static final float MAX_AURA = 100;
 	private final Map<AuraType, Float> aura = new HashMap<>();
 	private AuraType primaryAuraType;
 
 	public AuraAttachment() {
-		this.primaryAuraType = AuraType.values()[RandomSource.create().nextInt(AuraType.values().length)];
+		this.primaryAuraType = AuraType.values()[random.nextInt(AuraType.values().length)];
 
 		for(AuraType auraType : AuraType.values())
 			this.aura.put(auraType, MAX_AURA * auraType.getAffinityMultiplier(primaryAuraType));

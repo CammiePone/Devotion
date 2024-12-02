@@ -1,4 +1,4 @@
-package dev.cammiescorner.devotion.neoforge.common.capabilities.entity;
+package dev.cammiescorner.devotion.neoforge.common.attachments.entity;
 
 import com.google.common.collect.ImmutableSet;
 import commonnetwork.api.Network;

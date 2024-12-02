@@ -1,7 +1,7 @@
 package dev.cammiescorner.devotion.neoforge.common;
 
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.neoforge.common.capabilities.entity.AuraAttachment;
+import dev.cammiescorner.devotion.neoforge.common.attachments.entity.AuraAttachment;
 import dev.cammiescorner.devotion.neoforge.entrypoints.NeoMain;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
