@@ -29,9 +29,7 @@ public class AuraAttachment implements INBTSerializable<CompoundTag> {
 
 	public AuraAttachment(IAttachmentHolder holder) {
 		this.entity = holder instanceof LivingEntity entity ? entity : null;
-		this.primaryAuraType = AuraType.NONE;
-		// FIXME for whatever reason this breaks the aura shader AND changes every time the player dies
-//		this.primaryAuraType = AuraType.values()[random.nextInt(AuraType.values().length)];
+		this.primaryAuraType = AuraType.values()[random.nextInt(AuraType.values().length)];
 
 		for(AuraType auraType : AuraType.values())
 			this.aura.put(auraType, MAX_AURA * auraType.getAffinityMultiplier(primaryAuraType));
@@ -39,7 +37,7 @@ public class AuraAttachment implements INBTSerializable<CompoundTag> {
 
 	@Override
 	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-		if(tag.contains("AuraMap", Tag.TAG_COMPOUND)) {
+		if(tag.contains("AuraMap", Tag.TAG_LIST)) {
 			aura.clear();
 
 			ListTag listTag = tag.getList("AuraMap", Tag.TAG_COMPOUND);
