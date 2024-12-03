@@ -24,6 +24,7 @@ import dev.cammiescorner.devotion.common.registries.DevotionData;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.cammiescorner.devotion.common.registries.DevotionMenus;
 import dev.cammiescorner.velvet.api.event.EntitiesPreRenderCallback;
+import dev.cammiescorner.velvet.api.event.PostWorldRenderCallbackV3;
 import dev.cammiescorner.velvet.api.event.ShaderEffectRenderCallback;
 import dev.upcraft.sparkweave.api.client.event.*;
 import dev.upcraft.sparkweave.api.entrypoint.ClientEntryPoint;
@@ -106,6 +107,8 @@ public class DevotionClient implements ClientEntryPoint {
 			screen.addArtificeChild(new ResearchWidget(x + 91, y + 181, Devotion.id("conjuration_mage_armor"), DevotionClient::researchWidgetClick));
 			screen.addArtificeChild(new ResearchWidget(x + 17, y + 181, Devotion.id("manipulation_mage_armor"), DevotionClient::researchWidgetClick));
 		});
+
+		PostWorldRenderCallbackV3.EVENT.register(AuraEffectManager.INSTANCE);
 	}
 
 	private static void researchWidgetClick(ResearchWidget widget) {

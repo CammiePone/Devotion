@@ -44,7 +44,8 @@ public class AuraEffectManager implements EntitiesPreRenderCallback, ShaderEffec
 	public final ManagedCoreShader auraCoreShader = ShaderEffectManager.getInstance().manageCoreShader(Devotion.id("rendertype_aura"));
 	private final ManagedShaderEffect auraPostShader = ShaderEffectManager.getInstance().manage(Devotion.id("shaders/post/aura.json"), this::assignDepthTexture);
 	private final ManagedRenderTarget auraRenderTarget = auraPostShader.getTarget("auras");
-	private final UniformMat4 uniformInverseTransformMatrix = auraPostShader.findUniformMat4("InverseTransformMatrix");
+	private final UniformMat4 uniformProjectionMatrix = auraPostShader.findUniformMat4("ProjectionMatrix");
+	private final UniformMat4 uniformModelViewMatrix = auraPostShader.findUniformMat4("ModelViewMatrix");
 	private final Uniform3f uniformCameraPosition = auraPostShader.findUniform3f("CameraPosition");
 	private final Uniform3f uniformCenter = auraPostShader.findUniform3f("Center");
 	private final Matrix4f projectionMatrix = new Matrix4f();
@@ -63,7 +64,7 @@ public class AuraEffectManager implements EntitiesPreRenderCallback, ShaderEffec
 			auraPostShader.setUniformValue("DevotionTransStepGranularity", DevotionConfig.Client.auraGradiant);
 			auraPostShader.setUniformValue("DevotionBlobsStepGranularity", DevotionConfig.Client.auraSharpness);
 			auraPostShader.setUniformValue("DevotionTime", getTime(tickDelta));
-			auraPostShader.setUniformValue("DepthSampler", ((ReadableDepthRenderTarget) client.getMainRenderTarget()).getStillDepthMap());
+			auraPostShader.setSamplerUniform("DepthSampler", ((ReadableDepthRenderTarget) client.getMainRenderTarget()).getStillDepthMap());
 			auraPostShader.setUniformValue("ViewPort", 0, 0, client.getWindow().getWidth(), client.getWindow().getHeight());
 			auraPostShader.render(tickDelta);
 			client.getMainRenderTarget().bindWrite(true);
@@ -79,7 +80,9 @@ public class AuraEffectManager implements EntitiesPreRenderCallback, ShaderEffec
 		Vec3 cameraPos = camera.getPosition();
 		Entity entity = camera.getEntity();
 
-		uniformInverseTransformMatrix.set(GlMatrices.getInverseTransformMatrix(projectionMatrix));
+		this.projectionMatrix.set(modelViewMat);
+		uniformProjectionMatrix.set(modelViewMat);
+		uniformModelViewMatrix.set(projectionMat);
 		uniformCameraPosition.set((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z);
 		uniformCenter.set((float) Mth.lerp(entity.getX(), entity.xo, tickDelta), (float) Mth.lerp(entity.getY(), entity.yo, tickDelta), (float) Mth.lerp(entity.getZ(), entity.zo, tickDelta));
 	}
