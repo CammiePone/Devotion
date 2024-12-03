@@ -7,6 +7,7 @@ import dev.cammiescorner.devotion.api.research.BookEntry;
 import dev.cammiescorner.devotion.api.research.BookTab;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
+import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundAuraPacket;
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundKnownResearchPacket;
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundRefreshResearchScreenPacket;
@@ -15,6 +16,7 @@ import dev.cammiescorner.devotion.common.registries.*;
 import dev.cammiescorner.devotion.common.screens.providers.ResearchMenuProvider;
 import dev.upcraft.sparkweave.api.entrypoint.MainEntryPoint;
 import dev.upcraft.sparkweave.api.event.CommandEvents;
+import dev.upcraft.sparkweave.api.event.EntityTickEvents;
 import dev.upcraft.sparkweave.api.event.ItemMenuInteractionEvent;
 import dev.upcraft.sparkweave.api.event.RegisterCustomLecternMenuEvent;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
@@ -25,6 +27,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
@@ -109,6 +112,14 @@ public class Devotion implements MainEntryPoint {
 			}
 
 			return false;
+		});
+
+		EntityTickEvents.endTick(LivingEntity.class).register((entity, level) -> {
+			// TODO decide on how long it should take for aura to regenerate. currently takes 20 minutes to go from 0 to 100
+			if(!level.isClientSide() && MainHelper.lastTimeAuraChanged(entity) % 240 == 0) {
+				for(AuraType auraType : AuraType.values())
+					MainHelper.regenAura(entity, auraType, 1, false);
+			}
 		});
 	}
 

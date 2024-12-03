@@ -17,8 +17,8 @@ asm = "9.7"
 jetbrains_annotations = "25.0.0"
 
 # other dependencies
-sparkweave = "0.506.0" # https://www.curseforge.com/minecraft/mc-mods/sparkweave/files/all
-velvet = "0.1.1" # https://www.curseforge.com/minecraft/mc-mods/velvet/files/all
+sparkweave = "0.507.0" # https://www.curseforge.com/minecraft/mc-mods/sparkweave/files/all
+velvet = "0.4.1" # https://www.curseforge.com/minecraft/mc-mods/velvet/files/all
 common_network = "1.0.17-beta.2-1.21.1" # https://www.curseforge.com/minecraft/mc-mods/common-network/files/all
 resourcefulconfig = "3.0.4" # https://www.curseforge.com/minecraft/mc-mods/resourceful-config/files/all
 emi = "1.1.14+1.21.1" # https://www.curseforge.com/minecraft/mc-mods/emi/files/all

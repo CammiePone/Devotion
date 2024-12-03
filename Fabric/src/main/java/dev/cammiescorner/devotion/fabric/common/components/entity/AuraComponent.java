@@ -18,6 +18,7 @@ public class AuraComponent implements AutoSyncedComponent {
 	private final LivingEntity entity;
 	private final Map<AuraType, Float> aura = new HashMap<>();
 	private AuraType primaryAuraType;
+	private long lastTimeAuraChanged;
 
 	public AuraComponent(LivingEntity entity) {
 		this.entity = entity;
@@ -42,6 +43,8 @@ public class AuraComponent implements AutoSyncedComponent {
 
 		if(tag.contains("PrimaryAuraType", Tag.TAG_STRING))
 			primaryAuraType = AuraType.byName(tag.getString("PrimaryAuraType"));
+
+		lastTimeAuraChanged = tag.getLong("LastTimeAuraChanged");
 	}
 
 	@Override
@@ -58,9 +61,10 @@ public class AuraComponent implements AutoSyncedComponent {
 
 		tag.put("AuraMap", listTag);
 		tag.putString("PrimaryAuraType", primaryAuraType.getSerializedName());
+		tag.putLong("LastTimeAuraChanged", lastTimeAuraChanged);
 	}
 
-	public Map<AuraType, Float> getAllAura() {
+	public Map<AuraType, Float> getAllAuraValues() {
 		return Map.copyOf(aura);
 	}
 
@@ -70,7 +74,12 @@ public class AuraComponent implements AutoSyncedComponent {
 
 	public void setAura(AuraType auraType, float amount) {
 		aura.put(auraType, Mth.clamp(amount, 0, MAX_AURA * auraType.getAffinityMultiplier(primaryAuraType)));
+		lastTimeAuraChanged = entity.level().getGameTime();
 		entity.syncComponent(DevotionComponents.AURA);
+	}
+
+	public long getLastTimeAuraChanged() {
+		return lastTimeAuraChanged;
 	}
 
 	public AuraType getPrimaryAuraType() {

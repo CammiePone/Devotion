@@ -34,6 +34,11 @@ public class FabricDuck implements Duck {
 	}
 
 	@Override
+	public long lastTimeAuraChanged(LivingEntity entity) {
+		return DevotionComponents.AURA.isProvidedBy(entity) ? entity.getComponent(DevotionComponents.AURA).getLastTimeAuraChanged() : 0L;
+	}
+
+	@Override
 	public float getAuraAlpha(LivingEntity entity, AuraType auraType) {
 		return DevotionComponents.AURA.isProvidedBy(entity) ? entity.getComponent(DevotionComponents.AURA).getAuraAlpha() : 1f;
 	}

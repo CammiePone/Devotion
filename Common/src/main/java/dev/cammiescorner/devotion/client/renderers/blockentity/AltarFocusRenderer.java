@@ -3,8 +3,8 @@ package dev.cammiescorner.devotion.client.renderers.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
-import dev.cammiescorner.devotion.client.AltarErrorFx;
 import dev.cammiescorner.devotion.common.blocks.entities.AltarFocusBlockEntity;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -120,7 +120,7 @@ public class AltarFocusRenderer implements BlockEntityRenderer<AltarFocusBlockEn
 				consumer.putBulkData(poseStack.last(), quad, 1f, 1f, 1f, 0.75f, LightTexture.FULL_BRIGHT, packedOverlay);
 		}
 		else if(level.getBlockState(blockPos) instanceof BlockState blockState && !blockState.is(blockToRender)) {
-			VertexConsumer consumer = bufferSource.getBuffer(AltarErrorFx.withTexture(InventoryMenu.BLOCK_ATLAS));
+			VertexConsumer consumer = bufferSource.getBuffer(DevotionClient.altarError(InventoryMenu.BLOCK_ATLAS));
 			BakedModel model = dispatcher.getBlockModel(blockState);
 			Vec3 offset = blockState.getOffset(level, blockPos);
 			Vec3 traaaaannnnnnssssss = client.gameRenderer.getMainCamera().getPosition().subtract(blockPos.getCenter().add(offset)).normalize().scale(0.005);

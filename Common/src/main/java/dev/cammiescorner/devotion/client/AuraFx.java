@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.VertexFormatElement;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.DevotionConfig;
 import dev.cammiescorner.velvet.api.event.EntitiesPreRenderCallback;
-import dev.cammiescorner.velvet.api.event.PostWorldRenderCallbackV3;
+import dev.cammiescorner.velvet.api.event.PostLevelRenderCallback;
 import dev.cammiescorner.velvet.api.event.ShaderEffectRenderCallback;
 import dev.cammiescorner.velvet.api.experimental.ReadableDepthRenderTarget;
 import dev.cammiescorner.velvet.api.managed.ManagedCoreShader;
@@ -18,7 +18,6 @@ import dev.cammiescorner.velvet.api.managed.ManagedShaderEffect;
 import dev.cammiescorner.velvet.api.managed.ShaderEffectManager;
 import dev.cammiescorner.velvet.api.managed.uniform.Uniform3f;
 import dev.cammiescorner.velvet.api.managed.uniform.UniformMat4;
-import dev.cammiescorner.velvet.api.util.GlMatrices;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -39,16 +38,15 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL30.GL_DEPTH_ATTACHMENT;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 
-public class AuraEffectManager implements EntitiesPreRenderCallback, ShaderEffectRenderCallback, PostWorldRenderCallbackV3 {
-	public static final AuraEffectManager INSTANCE = new AuraEffectManager();
-	public final ManagedCoreShader auraCoreShader = ShaderEffectManager.getInstance().manageCoreShader(Devotion.id("rendertype_aura"));
+public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCallback, PostLevelRenderCallback {
+	public static final AuraFx INSTANCE = new AuraFx();
+	private final ManagedCoreShader auraCoreShader = ShaderEffectManager.getInstance().manageCoreShader(Devotion.id("rendertype_aura"));
 	private final ManagedShaderEffect auraPostShader = ShaderEffectManager.getInstance().manage(Devotion.id("shaders/post/aura.json"), this::assignDepthTexture);
 	private final ManagedRenderTarget auraRenderTarget = auraPostShader.getTarget("auras");
 	private final UniformMat4 uniformProjectionMatrix = auraPostShader.findUniformMat4("ProjectionMatrix");
 	private final UniformMat4 uniformModelViewMatrix = auraPostShader.findUniformMat4("ModelViewMatrix");
 	private final Uniform3f uniformCameraPosition = auraPostShader.findUniform3f("CameraPosition");
 	private final Uniform3f uniformCenter = auraPostShader.findUniform3f("Center");
-	private final Matrix4f projectionMatrix = new Matrix4f();
 	private boolean auraBufferCleared;
 	private float time = 0f;
 	private float lastTickDelta = 0f;
@@ -64,8 +62,8 @@ public class AuraEffectManager implements EntitiesPreRenderCallback, ShaderEffec
 			auraPostShader.setUniformValue("DevotionTransStepGranularity", DevotionConfig.Client.auraGradiant);
 			auraPostShader.setUniformValue("DevotionBlobsStepGranularity", DevotionConfig.Client.auraSharpness);
 			auraPostShader.setUniformValue("DevotionTime", getTime(tickDelta));
-			auraPostShader.setSamplerUniform("DepthSampler", ((ReadableDepthRenderTarget) client.getMainRenderTarget()).getStillDepthMap());
-			auraPostShader.setUniformValue("ViewPort", 0, 0, client.getWindow().getWidth(), client.getWindow().getHeight());
+			auraPostShader.setSamplerUniform("DevotionDepthSampler", ReadableDepthRenderTarget.getStillDepthMap(client.getMainRenderTarget()));
+			auraPostShader.setUniformValue("DevotionViewPort", 0, 0, client.getWindow().getWidth(), client.getWindow().getHeight());
 			auraPostShader.render(tickDelta);
 			client.getMainRenderTarget().bindWrite(true);
 			RenderSystem.enableBlend();
@@ -76,13 +74,12 @@ public class AuraEffectManager implements EntitiesPreRenderCallback, ShaderEffec
 	}
 
 	@Override
-	public void onWorldRendered(PoseStack posingStack, Matrix4f projectionMat, Matrix4f modelViewMat, Camera camera, float tickDelta) {
+	public void onLevelRendered(PoseStack posingStack, Matrix4f modelViewMat, Matrix4f projectionMat, Camera camera, float tickDelta) {
 		Vec3 cameraPos = camera.getPosition();
 		Entity entity = camera.getEntity();
 
-		this.projectionMatrix.set(modelViewMat);
-		uniformProjectionMatrix.set(modelViewMat);
-		uniformModelViewMatrix.set(projectionMat);
+		uniformProjectionMatrix.set(projectionMat);
+		uniformModelViewMatrix.set(modelViewMat);
 		uniformCameraPosition.set((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z);
 		uniformCenter.set((float) Mth.lerp(entity.getX(), entity.xo, tickDelta), (float) Mth.lerp(entity.getY(), entity.yo, tickDelta), (float) Mth.lerp(entity.getZ(), entity.zo, tickDelta));
 	}
@@ -178,13 +175,13 @@ public class AuraEffectManager implements EntitiesPreRenderCallback, ShaderEffec
 	 */
 	private static final class AuraRenderType extends RenderType {
 		// have to extend RenderLayer to access a few of these things
-		private static final OutputStateShard AURA_TARGET = new OutputStateShard("devotion:aura_target", AuraEffectManager.INSTANCE::beginAuraRenderTargetUse, AuraEffectManager.INSTANCE::endAuraRenderTargetUse);
+		private static final OutputStateShard AURA_TARGET = new OutputStateShard("devotion:aura_target", AuraFx.INSTANCE::beginAuraRenderTargetUse, AuraFx.INSTANCE::endAuraRenderTargetUse);
 		public static final VertexFormat POSITION_COLOR_TEX = VertexFormat.builder()
 			.add("Position", VertexFormatElement.POSITION)
 			.add("Color", VertexFormatElement.COLOR)
 			.add("UV0", VertexFormatElement.UV0)
 			.build();
-		private static final Function<ResourceLocation, RenderType> AURA_TYPE = Util.memoize(id -> RenderType.create("aura", POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, true, CompositeState.builder().setShaderState(new ShaderStateShard(AuraEffectManager.INSTANCE.auraCoreShader::getProgram)).setWriteMaskState(COLOR_WRITE).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setOutputState(AURA_TARGET).setTextureState(new TextureStateShard(id, false, false)).createCompositeState(false)));
+		private static final Function<ResourceLocation, RenderType> AURA_TYPE = Util.memoize(id -> RenderType.create("aura", POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, true, CompositeState.builder().setShaderState(new ShaderStateShard(AuraFx.INSTANCE.auraCoreShader::getProgram)).setWriteMaskState(COLOR_WRITE).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setOutputState(AURA_TARGET).setTextureState(new TextureStateShard(id, false, false)).createCompositeState(false)));
 		private static final RenderType DEFAULT_AURA_TYPE = AURA_TYPE.apply(ClientHelper.WHITE_TEXTURE);
 
 		// no need to create instances of this

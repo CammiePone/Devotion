@@ -13,6 +13,8 @@ public interface Duck {
 
 	void setAura(LivingEntity entity, AuraType auraType, float amount);
 
+	long lastTimeAuraChanged(LivingEntity entity);
+
 	AuraType getPrimaryAuraType(LivingEntity entity);
 
 	void setPrimaryAuraType(LivingEntity entity, AuraType primaryAuraType);

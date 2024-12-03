@@ -1,5 +1,6 @@
 package dev.cammiescorner.devotion.client;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.events.ScriptsOfDevotionScreenCallback;
@@ -24,12 +25,15 @@ import dev.cammiescorner.devotion.common.registries.DevotionData;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.cammiescorner.devotion.common.registries.DevotionMenus;
 import dev.cammiescorner.velvet.api.event.EntitiesPreRenderCallback;
-import dev.cammiescorner.velvet.api.event.PostWorldRenderCallbackV3;
+import dev.cammiescorner.velvet.api.event.PostLevelRenderCallback;
 import dev.cammiescorner.velvet.api.event.ShaderEffectRenderCallback;
+import dev.cammiescorner.velvet.api.managed.ManagedCoreShader;
+import dev.cammiescorner.velvet.api.managed.ShaderEffectManager;
 import dev.upcraft.sparkweave.api.client.event.*;
 import dev.upcraft.sparkweave.api.entrypoint.ClientEntryPoint;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +42,7 @@ import net.minecraft.world.item.Item;
 import java.util.function.Supplier;
 
 public class DevotionClient implements ClientEntryPoint {
+	private static final ManagedCoreShader ALTAR_ERROR_SHADER = ShaderEffectManager.getInstance().manageCoreShader(Devotion.id("rendertype_altar_error"), DefaultVertexFormat.NEW_ENTITY);
 	private static final ResourceLocation BASIC_MAGE_ROBES = Devotion.id("textures/entity/armor/basic_mage_robes.png");
 	private static final ResourceLocation ENHANCER_MAGE_ROBES = Devotion.id("textures/entity/armor/enhancer_mage_robes.png");
 	private static final ResourceLocation TRANSMUTER_MAGE_ROBES = Devotion.id("textures/entity/armor/transmuter_mage_robes.png");
@@ -49,8 +54,9 @@ public class DevotionClient implements ClientEntryPoint {
 
 	@Override
 	public void onInitializeClient(ModContainer mod) {
-		EntitiesPreRenderCallback.EVENT.register(AuraEffectManager.INSTANCE);
-		ShaderEffectRenderCallback.EVENT.register(AuraEffectManager.INSTANCE);
+		EntitiesPreRenderCallback.EVENT.register(AuraFx.INSTANCE);
+		ShaderEffectRenderCallback.EVENT.register(AuraFx.INSTANCE);
+		PostLevelRenderCallback.EVENT.register(AuraFx.INSTANCE);
 
 		RegisterLayerDefinitionsEvent.EVENT.register(event -> {
 			event.registerModelLayers(MageRobesModel.MODEL_LAYER, MageRobesModel::createBodyLayer);
@@ -107,8 +113,6 @@ public class DevotionClient implements ClientEntryPoint {
 			screen.addArtificeChild(new ResearchWidget(x + 91, y + 181, Devotion.id("conjuration_mage_armor"), DevotionClient::researchWidgetClick));
 			screen.addArtificeChild(new ResearchWidget(x + 17, y + 181, Devotion.id("manipulation_mage_armor"), DevotionClient::researchWidgetClick));
 		});
-
-		PostWorldRenderCallbackV3.EVENT.register(AuraEffectManager.INSTANCE);
 	}
 
 	private static void researchWidgetClick(ResearchWidget widget) {
@@ -122,5 +126,9 @@ public class DevotionClient implements ClientEntryPoint {
 
 			Network.getNetworkHandler().sendToServer(new ServerboundGiveResearchScrollPacket(researchKey));
 		}
+	}
+
+	public static RenderType altarError(ResourceLocation texture) {
+		return ALTAR_ERROR_SHADER.getRenderType(RenderType.entityTranslucentCull(texture));
 	}
 }

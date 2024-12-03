@@ -28,6 +28,10 @@ public class MainHelper {
 		duck.setPrimaryAuraType(entity, auraType);
 	}
 
+	public static long lastTimeAuraChanged(LivingEntity entity) {
+		return duck.lastTimeAuraChanged(entity);
+	}
+
 	public static float getAuraAlpha(LivingEntity entity, AuraType auraType) {
 		return duck.getAuraAlpha(entity, auraType);
 	}

@@ -1,7 +1,7 @@
 package dev.cammiescorner.devotion.client.renderers;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.cammiescorner.devotion.client.AuraEffectManager;
+import dev.cammiescorner.devotion.client.AuraFx;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -24,17 +24,17 @@ public class AuraVertexBufferSource implements MultiBufferSource {
 	@Override
 	public VertexConsumer getBuffer(RenderType renderType) {
 		if(renderType.outline().isPresent())
-			return new AuraVertexConsumer(bufferSource.getBuffer(AuraEffectManager.getRenderType(renderType)), red, green, blue, alpha);
+			return new AuraVertexConsumer(bufferSource.getBuffer(AuraFx.getRenderType(renderType)), red, green, blue, alpha);
 		else
 			return new DummyVertexConsumer();
 	}
 
 	public AuraVertexConsumer getBuffer(ResourceLocation texture) {
-		return new AuraVertexConsumer(bufferSource.getBuffer(AuraEffectManager.getRenderType(texture)), red, green, blue, alpha);
+		return new AuraVertexConsumer(bufferSource.getBuffer(AuraFx.getRenderType(texture)), red, green, blue, alpha);
 	}
 
 	public AuraVertexConsumer getBuffer() {
-		return new AuraVertexConsumer(bufferSource.getBuffer(AuraEffectManager.getRenderType()), red, green, blue, alpha);
+		return new AuraVertexConsumer(bufferSource.getBuffer(AuraFx.getRenderType()), red, green, blue, alpha);
 	}
 
 	public static class AuraVertexConsumer implements VertexConsumer {

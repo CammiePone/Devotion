@@ -24,7 +24,6 @@ public class NeoDuck implements Duck {
 			return;
 
 		entity.getData(NeoMain.AURA).setAura(auraType, amount);
-		AuraAttachment.sync(entity);
 	}
 
 	@Override
@@ -38,7 +37,11 @@ public class NeoDuck implements Duck {
 			return;
 
 		entity.getData(NeoMain.AURA).setPrimaryAuraType(primaryAuraType);
-		AuraAttachment.sync(entity);
+	}
+
+	@Override
+	public long lastTimeAuraChanged(LivingEntity entity) {
+		return AuraAttachment.isAuraProvider(entity) ? entity.getData(NeoMain.AURA).getLastTimeAuraChanged() : 0L;
 	}
 
 	@Override
