@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 public class NeoMain {
 	private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Devotion.MOD_ID);
 
+	// TODO make aura copy over only the primary aura type upon dying
 	public static final Supplier<AttachmentType<AuraAttachment>> AURA = ATTACHMENT_TYPES.register(
 		"aura", () -> AttachmentType.serializable(AuraAttachment::new).copyOnDeath().build()
 	);
