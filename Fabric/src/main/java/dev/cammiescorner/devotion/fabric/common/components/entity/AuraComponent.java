@@ -24,7 +24,7 @@ public class AuraComponent implements AutoSyncedComponent {
 		this.entity = entity;
 		this.primaryAuraType = AuraType.NONE;
 		// FIXME for whatever reason this breaks the aura shader AND changes every time the player dies
-		this.primaryAuraType = AuraType.values()[entity.getRandom().nextInt(AuraType.values().length)];
+//		this.primaryAuraType = AuraType.values()[entity.getRandom().nextInt(AuraType.values().length)];
 
 		for(AuraType auraType : AuraType.values())
 			aura.put(auraType, MAX_AURA * auraType.getAffinityMultiplier(primaryAuraType));
