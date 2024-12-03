@@ -17,12 +17,13 @@ uniform ivec4 ViewPort;
 
 out vec4 fragColor;
 
-vec4 screenToWorld(mat4 matr, in float depth, in vec2 uv){
+vec4 screenToWorld(mat4 matr, in float depth, in vec2 uv) {
     vec4 coord = vec4(uv, depth, 1.0) * 2.0 - 1.0;
     coord = inverse(matr) * coord;
     coord.xyz /= coord.w; // linearize
     return coord;
 }
+
 vec3 worldToScreen(mat4 matr, in vec4 screenCoord) {
     vec4 coord = screenCoord;
     coord.xyz *= coord.w; // de-linearize
