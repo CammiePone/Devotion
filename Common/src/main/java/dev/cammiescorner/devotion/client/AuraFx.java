@@ -62,8 +62,8 @@ public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCall
 			auraPostShader.setUniformValue("DevotionTransStepGranularity", DevotionConfig.Client.auraGradiant);
 			auraPostShader.setUniformValue("DevotionBlobsStepGranularity", DevotionConfig.Client.auraSharpness);
 			auraPostShader.setUniformValue("DevotionTime", getTime(tickDelta));
-			auraPostShader.setSamplerUniform("DevotionDepthSampler", ReadableDepthRenderTarget.getStillDepthMap(client.getMainRenderTarget()));
-			auraPostShader.setUniformValue("DevotionViewPort", 0, 0, client.getWindow().getWidth(), client.getWindow().getHeight());
+			auraPostShader.setSamplerUniform("DepthSampler", ReadableDepthRenderTarget.getStillDepthMap(client.getMainRenderTarget()));
+			auraPostShader.setUniformValue("ViewPort", 0, 0, client.getWindow().getWidth(), client.getWindow().getHeight());
 			auraPostShader.render(tickDelta);
 			client.getMainRenderTarget().bindWrite(true);
 			RenderSystem.enableBlend();
