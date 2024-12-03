@@ -24,8 +24,7 @@ public class DevotionComponents implements EntityComponentInitializer, Scoreboar
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		// TODO make aura copy over only the primary aura type upon dying
-		registry.beginRegistration(Player.class, AURA).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(AuraComponent::new);
+		registry.beginRegistration(Player.class, AURA).respawnStrategy(RespawnCopyStrategy.LOSSLESS_ONLY).end(AuraComponent::new);
 		registry.beginRegistration(Player.class, KNOWN_RESEARCH).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(KnownResearchComponent::new);
 	}
 

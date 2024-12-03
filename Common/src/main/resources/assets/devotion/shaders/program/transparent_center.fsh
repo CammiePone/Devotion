@@ -32,8 +32,7 @@ vec3 worldToScreen(mat4 matr, in vec4 screenCoord) {
     return coord.xyz;
 }
 
-// TODO I cannot, for the life of me, remember what i did last time to accidentally change the thickness of the bands
-void main(){
+void main() {
     vec4 center = texture(DiffuseSampler, texCoord);
     float distanceToTransparency = 1.0;
 
