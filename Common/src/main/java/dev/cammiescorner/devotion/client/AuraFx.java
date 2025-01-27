@@ -16,7 +16,6 @@ import dev.cammiescorner.velvet.api.managed.ManagedCoreShader;
 import dev.cammiescorner.velvet.api.managed.ManagedRenderTarget;
 import dev.cammiescorner.velvet.api.managed.ManagedShaderEffect;
 import dev.cammiescorner.velvet.api.managed.ShaderEffectManager;
-import dev.cammiescorner.velvet.api.managed.uniform.Uniform3f;
 import dev.cammiescorner.velvet.api.managed.uniform.UniformMat4;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;
@@ -24,9 +23,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
@@ -43,10 +39,7 @@ public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCall
 	private final ManagedCoreShader auraCoreShader = ShaderEffectManager.getInstance().manageCoreShader(Devotion.id("rendertype_aura"));
 	private final ManagedShaderEffect auraPostShader = ShaderEffectManager.getInstance().manage(Devotion.id("shaders/post/aura.json"), this::assignDepthTexture);
 	private final ManagedRenderTarget auraRenderTarget = auraPostShader.getTarget("auras");
-	private final UniformMat4 uniformProjectionMatrix = auraPostShader.findUniformMat4("ProjectionMatrix");
-	private final UniformMat4 uniformModelViewMatrix = auraPostShader.findUniformMat4("ModelViewMatrix");
-	private final Uniform3f uniformCameraPosition = auraPostShader.findUniform3f("CameraPosition");
-	private final Uniform3f uniformCenter = auraPostShader.findUniform3f("Center");
+	private final UniformMat4 uniformProjectionMatrix = auraPostShader.findUniformMat4("DevotionProjectionMatrix");
 	private boolean auraBufferCleared;
 	private float time = 0f;
 	private float lastTickDelta = 0f;
@@ -63,7 +56,6 @@ public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCall
 			auraPostShader.setUniformValue("DevotionBlobsStepGranularity", DevotionConfig.Client.auraSharpness);
 			auraPostShader.setUniformValue("DevotionTime", getTime(tickDelta));
 			auraPostShader.setSamplerUniform("DepthSampler", ReadableDepthRenderTarget.getStillDepthMap(client.getMainRenderTarget()));
-			auraPostShader.setUniformValue("ViewPort", 0, 0, client.getWindow().getWidth(), client.getWindow().getHeight());
 			auraPostShader.render(tickDelta);
 			client.getMainRenderTarget().bindWrite(true);
 			RenderSystem.enableBlend();
@@ -71,17 +63,6 @@ public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCall
 			auraRenderTarget.draw(client.getWindow().getWidth(), client.getWindow().getHeight(), false);
 			RenderSystem.disableBlend();
 		}
-	}
-
-	@Override
-	public void onLevelRendered(PoseStack posingStack, Matrix4f modelViewMat, Matrix4f projectionMat, Camera camera, float tickDelta) {
-		Vec3 cameraPos = camera.getPosition();
-		Entity entity = camera.getEntity();
-
-		uniformProjectionMatrix.set(projectionMat);
-		uniformModelViewMatrix.set(modelViewMat);
-		uniformCameraPosition.set((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z);
-		uniformCenter.set((float) Mth.lerp(entity.getX(), entity.xo, tickDelta), (float) Mth.lerp(entity.getY(), entity.yo, tickDelta), (float) Mth.lerp(entity.getZ(), entity.zo, tickDelta));
 	}
 
 	/**
@@ -102,6 +83,11 @@ public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCall
 				auraBufferCleared = true;
 			}
 		}
+	}
+
+	@Override
+	public void onLevelRendered(PoseStack posingStack, Matrix4f modelViewMat, Matrix4f projectionMat, Camera camera, float tickDelta) {
+		uniformProjectionMatrix.set(projectionMat);
 	}
 
 	/**

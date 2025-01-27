@@ -12,11 +12,7 @@
 		{ "name": "OutSize",                      "type": "float",     "count": 2,  "values": [ 1.0, 1.0 ] },
 		{ "name": "BaseSize",                     "type": "float",     "count": 2,  "values": [ 1920.0, 1080.0 ] },
 		{ "name": "Radius",                       "type": "float",     "count": 1,  "values": [ 50.0 ] },
-		{ "name": "ViewPort",                     "type": "int",       "count": 4,  "values": [ 0, 0, 1080, 720 ] },
-		{ "name": "CameraPosition",               "type": "float",     "count": 3,  "values": [ 0.0, 0.0, 0.0 ]},
-		{ "name": "Center",                       "type": "float",     "count": 3,  "values": [ 0.0, 0.0, 0.0 ]},
-		{ "name": "ProjectionMatrix",             "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
-		{ "name": "ModelViewMatrix",              "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+		{ "name": "DevotionProjectionMatrix",     "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
 		{ "name": "DevotionTransStepGranularity", "type": "float",     "count": 1,  "values": [ 3.0 ] }
 	]
 }

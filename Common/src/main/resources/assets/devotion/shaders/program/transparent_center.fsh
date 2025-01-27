@@ -9,11 +9,7 @@ in vec4 vPosition;
 
 uniform float Radius;
 uniform float DevotionTransStepGranularity;
-uniform vec3 CameraPosition;
-uniform vec3 Center;
-uniform mat4 ProjectionMatrix;
-uniform mat4 ModelViewMatrix;
-uniform ivec4 ViewPort;
+uniform mat4 DevotionProjectionMatrix;
 
 out vec4 fragColor;
 
@@ -42,9 +38,9 @@ void main() {
     }
 
     float sceneDepth = texture(DepthSampler, texCoord).x;
-    vec4 pixelPosition = screenToWorld(ProjectionMatrix, sceneDepth, texCoord.xy);
+    vec4 pixelPosition = screenToWorld(DevotionProjectionMatrix, sceneDepth, texCoord.xy);
     vec4 offsetPosition = pixelPosition + vec4(1, 1, 0, 0);
-    vec3 offsetCoord = worldToScreen(ProjectionMatrix, offsetPosition);
+    vec3 offsetCoord = worldToScreen(DevotionProjectionMatrix, offsetPosition);
 
     vec2 texelOffset = offsetCoord.xy - texCoord.xy;
     texelOffset /= 170.0;
