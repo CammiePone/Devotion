@@ -1,7 +1,7 @@
 #version 150
 
 uniform sampler2D DiffuseSampler;
-uniform sampler2D DepthSampler;
+//uniform sampler2D DepthSampler;
 
 in vec2 texCoord;
 in vec2 oneTexel;
@@ -37,8 +37,8 @@ void main() {
         return;
     }
 
-    float sceneDepth = texture(DepthSampler, texCoord).x;
-    vec4 pixelPosition = screenToWorld(DevotionProjectionMatrix, sceneDepth, texCoord.xy);
+//    float sceneDepth = texture(DepthSampler, texCoord).x;
+    vec4 pixelPosition = screenToWorld(DevotionProjectionMatrix, 0.99, texCoord.xy);
     vec4 offsetPosition = pixelPosition + vec4(1, 1, 0, 0);
     vec3 offsetCoord = worldToScreen(DevotionProjectionMatrix, offsetPosition);
 
