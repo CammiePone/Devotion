@@ -11,7 +11,7 @@ out vec2 texCoord;
 out vec2 oneTexel;
 out vec4 vPosition;
 
-void main(){
+void main() {
     vec4 outPos = ProjMat * vec4(Position.xy, 0.0, 1.0);
     vec2 sizeFactor = InSize / BaseSize;
 
