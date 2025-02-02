@@ -1,11 +1,11 @@
 #version 150
 
-in vec4 Position;
-
 uniform mat4 ProjMat;
 uniform vec2 InSize;
 uniform vec2 OutSize;
 uniform vec2 BaseSize;
+
+in vec4 Position;
 
 out vec2 texCoord;
 out vec2 oneTexel;

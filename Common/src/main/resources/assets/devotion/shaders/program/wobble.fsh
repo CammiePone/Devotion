@@ -1,15 +1,13 @@
 #version 150
 
 uniform sampler2D DiffuseSampler;
+uniform vec2 InSize;
+uniform vec2 DevotionFrequency;
+uniform vec2 DevotionWobbleAmount;
+uniform float DevotionTime;
 
 in vec2 texCoord;
 in vec2 oneTexel;
-
-uniform vec2 InSize;
-
-uniform float DevotionTime;
-uniform vec2 DevotionFrequency;
-uniform vec2 DevotionWobbleAmount;
 
 out vec4 fragColor;
 

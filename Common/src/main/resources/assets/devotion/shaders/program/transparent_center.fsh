@@ -1,15 +1,13 @@
 #version 150
 
 uniform sampler2D DiffuseSampler;
-//uniform sampler2D DepthSampler;
+uniform mat4 DevotionProjectionMatrix;
+uniform float Radius;
+uniform float DevotionTransStepGranularity;
 
 in vec2 texCoord;
 in vec2 oneTexel;
 in vec4 vPosition;
-
-uniform float Radius;
-uniform float DevotionTransStepGranularity;
-uniform mat4 DevotionProjectionMatrix;
 
 out vec4 fragColor;
 
@@ -37,15 +35,13 @@ void main() {
         return;
     }
 
-//    float sceneDepth = texture(DepthSampler, texCoord).x;
     vec4 pixelPosition = screenToWorld(DevotionProjectionMatrix, 0.99, texCoord.xy);
     vec4 offsetPosition = pixelPosition + vec4(1, 1, 0, 0);
     vec3 offsetCoord = worldToScreen(DevotionProjectionMatrix, offsetPosition);
-
     vec2 texelOffset = offsetCoord.xy - texCoord.xy;
-    texelOffset /= 170.0;
-
     float step = max(1.0, ceil(Radius / DevotionTransStepGranularity));
+
+    texelOffset /= 170.0;
 
     for(float u = 0.0; u <= Radius; u += step) {
         for(float v = 0.0; v <= Radius; v += step) {
