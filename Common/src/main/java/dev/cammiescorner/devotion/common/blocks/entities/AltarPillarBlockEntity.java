@@ -104,6 +104,14 @@ public class AltarPillarBlockEntity extends BlockEntity {
 		return containedAuraType;
 	}
 
+	public float getAuraAlpha() {
+		return getStoredAura() / MAX_AURA;
+	}
+
+	public float getStoredAura() {
+		return storedAura;
+	}
+
 	public boolean addAura(float amount, boolean simulate) {
 		if(storedAura < MAX_AURA) {
 			if(!simulate) {

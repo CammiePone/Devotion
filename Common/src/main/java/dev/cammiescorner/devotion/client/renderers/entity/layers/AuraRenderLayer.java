@@ -30,7 +30,7 @@ public class AuraRenderLayer<T extends LivingEntity, M extends EntityModel<T>> e
 		float aura = MainHelper.getAura(entity, primaryAuraType);
 		float scale = 1f;
 
-		if(aura > 0f) {
+		if(aura > 0f || true) {
 			EntityDimensions dimensions = entity.getDimensions(entity.getPose());
 			AuraVertexBufferSource auraBufferSource = new AuraVertexBufferSource(bufferSource, auraColor.getRedI(), auraColor.getGreenI(), auraColor.getBlueI(), (int) (MainHelper.getAuraAlpha(entity, primaryAuraType) * 255));
 
