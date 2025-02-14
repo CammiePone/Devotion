@@ -25,11 +25,11 @@ vec3 worldToScreen(mat4 matr, in vec4 screenCoord) {
     return coord.xyz;
 }
 
-void main(){
+void main() {
     vec4 alpha = texture(DiffuseSampler, texCoord);
     vec4 maxVal = alpha;
     vec4 pixelPosition = screenToWorld(DevotionProjectionMatrix, 0.99, texCoord.xy);
-    vec4 offsetPosition = pixelPosition + vec4(1, 1, 0, 0);
+    vec4 offsetPosition = pixelPosition + vec4(1, 1, 0, 0); // TODO I want to be modifying the xy of this vec4 depending on distance of the reference pixel i think?
     vec3 offsetCoord = worldToScreen(DevotionProjectionMatrix, offsetPosition);
     vec2 texelOffset = offsetCoord.xy - texCoord.xy;
     float step = max(1, ceil(Radius / DevotionBlobsStepGranularity));
