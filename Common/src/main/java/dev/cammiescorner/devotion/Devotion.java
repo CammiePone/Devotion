@@ -3,6 +3,8 @@ package dev.cammiescorner.devotion;
 import com.teamresourceful.resourcefulconfig.api.loader.Configurator;
 import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.api.Graph;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistryKeys;
 import dev.cammiescorner.devotion.api.spells.AuraAffinity;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.MainHelper;
@@ -65,6 +67,8 @@ public class Devotion implements MainEntryPoint {
 	public void onInitialize(ModContainer mod) {
 		CONFIGURATOR.register(DevotionConfig.class);
 		RegistryService registryService = RegistryService.get();
+		DevotionRegistryKeys.init();
+		DevotionRegistries.init();
 
 		// Registries that add gameplay features (e.g. items, blocks, and entities)
 		DevotionStaffCores.STAFF_CORES.accept(registryService);

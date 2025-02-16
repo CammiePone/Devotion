@@ -19,4 +19,8 @@ public class DevotionRegistryKeys {
 	public static final ResourceKey<Registry<BookEntry>> BOOK_ENTRY = ResourceKey.createRegistryKey(Devotion.id("book_entry"));
 	public static final ResourceKey<Registry<AltarAction>> ALTAR_ACTION = ResourceKey.createRegistryKey(Devotion.id("altar_action"));
 	public static final ResourceKey<Registry<ConfiguredAltarAction>> CONFIGURED_ALTAR_ACTION = ResourceKey.createRegistryKey(Devotion.id("configured_altar_action"));
+
+	public static void init() {
+
+	}
 }

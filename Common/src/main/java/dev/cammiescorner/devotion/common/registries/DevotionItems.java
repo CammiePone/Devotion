@@ -2,10 +2,7 @@ package dev.cammiescorner.devotion.common.registries;
 
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.spells.AuraType;
-import dev.cammiescorner.devotion.common.items.MageRobesItem;
-import dev.cammiescorner.devotion.common.items.ResearchScrollItem;
-import dev.cammiescorner.devotion.common.items.ScriptsOfDevotionItem;
-import dev.cammiescorner.devotion.common.items.StaffItem;
+import dev.cammiescorner.devotion.common.items.*;
 import dev.upcraft.sparkweave.api.registry.RegistryHandler;
 import dev.upcraft.sparkweave.api.registry.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -17,7 +14,9 @@ public class DevotionItems {
 
 	public static final RegistrySupplier<Item> SCRIPTS_OF_DEVOTION = ITEMS.register("scripts_of_devotion", ScriptsOfDevotionItem::new);
 	public static final RegistrySupplier<Item> RESEARCH_SCROLL = ITEMS.register("research_scroll", ResearchScrollItem::new);
-	public static final RegistrySupplier<Item> STAFF = ITEMS.register("staff", () -> new StaffItem(DevotionStaffCores.WOODEN_CORE.get(), DevotionStaffCaps.IRON_CAP.get()));
+	public static final RegistrySupplier<Item> STAFF_CORE = ITEMS.register("staff_core", StaffCoreItem::new);
+	public static final RegistrySupplier<Item> STAFF_CAP = ITEMS.register("staff_cap", StaffCapItem::new);
+	public static final RegistrySupplier<Item> STAFF = ITEMS.register("staff", StaffItem::new);
 
 	public static final RegistrySupplier<Item> BASIC_MAGE_HOOD = ITEMS.register("basic_mage_hood", () -> new MageRobesItem(ArmorItem.Type.HELMET, new Item.Properties().component(DevotionData.CLOSED_HOOD.get(), false)));
 	public static final RegistrySupplier<Item> BASIC_MAGE_ROBE = ITEMS.register("basic_mage_robe", () -> new MageRobesItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
