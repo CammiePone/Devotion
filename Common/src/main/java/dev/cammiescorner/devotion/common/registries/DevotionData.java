@@ -4,7 +4,8 @@ import com.mojang.serialization.Codec;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.research.RiddleData;
-import dev.cammiescorner.devotion.api.wands.WandCap;
+import dev.cammiescorner.devotion.api.staves.StaffCap;
+import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.upcraft.sparkweave.api.registry.RegistryHandler;
 import dev.upcraft.sparkweave.api.registry.RegistrySupplier;
 import net.minecraft.core.Holder;
@@ -17,9 +18,15 @@ import java.util.List;
 public class DevotionData {
 	public static final RegistryHandler<DataComponentType<?>> DATA_COMPONENTS = RegistryHandler.create(Registries.DATA_COMPONENT_TYPE, Devotion.MOD_ID);
 
-	public static final RegistrySupplier<DataComponentType<Holder<WandCap>>> WAND_CAPS = DATA_COMPONENTS.register("wand_caps", () -> DataComponentType.<Holder<WandCap>>builder()
-		.persistent(WandCap.CODEC)
-		.networkSynchronized(WandCap.STREAM_CODEC)
+	public static final RegistrySupplier<DataComponentType<Holder<StaffCore>>> STAFF_CORE = DATA_COMPONENTS.register("staff_core", () -> DataComponentType.<Holder<StaffCore>>builder()
+		.persistent(StaffCore.CODEC)
+		.networkSynchronized(StaffCore.STREAM_CODEC)
+		.cacheEncoding()
+		.build()
+	);
+	public static final RegistrySupplier<DataComponentType<Holder<StaffCap>>> STAFF_CAPS = DATA_COMPONENTS.register("staff_caps", () -> DataComponentType.<Holder<StaffCap>>builder()
+		.persistent(StaffCap.CODEC)
+		.networkSynchronized(StaffCap.STREAM_CODEC)
 		.cacheEncoding()
 		.build()
 	);
