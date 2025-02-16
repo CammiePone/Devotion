@@ -11,4 +11,12 @@ import net.minecraft.resources.RegistryFixedCodec;
 public record StaffCap(boolean inert, boolean hasGlint) {
 	public static final Codec<Holder<StaffCap>> CODEC = RegistryFixedCodec.create(DevotionRegistries.STAFF_CAP);
 	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<StaffCap>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistries.STAFF_CAP);
+
+	public StaffCap() {
+		this(false, false);
+	}
+
+	public StaffCap(boolean inert) {
+		this(inert, !inert);
+	}
 }
