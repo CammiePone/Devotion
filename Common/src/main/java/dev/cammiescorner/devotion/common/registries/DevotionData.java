@@ -24,7 +24,7 @@ public class DevotionData {
 		.cacheEncoding()
 		.build()
 	);
-	public static final RegistrySupplier<DataComponentType<Holder<StaffCap>>> STAFF_CAPS = DATA_COMPONENTS.register("staff_caps", () -> DataComponentType.<Holder<StaffCap>>builder()
+	public static final RegistrySupplier<DataComponentType<Holder<StaffCap>>> STAFF_CAP = DATA_COMPONENTS.register("staff_cap", () -> DataComponentType.<Holder<StaffCap>>builder()
 		.persistent(StaffCap.CODEC)
 		.networkSynchronized(StaffCap.STREAM_CODEC)
 		.cacheEncoding()

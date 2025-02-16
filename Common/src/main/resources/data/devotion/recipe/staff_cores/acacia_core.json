@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"  L",
+		" L ",
+		"L  "
+	],
+	"key": {
+		"L": {
+			"item": "minecraft:stripped_acacia_log"
+		}
+	},
+	"result": {
+		"id": "devotion:staff_core",
+		"components": {
+			"devotion:staff_core": "devotion:acacia"
+		}
+	}
+}

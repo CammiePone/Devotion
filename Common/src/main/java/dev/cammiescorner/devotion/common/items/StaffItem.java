@@ -7,6 +7,6 @@ import net.minecraft.world.item.Item;
 
 public class StaffItem extends Item {
 	public StaffItem() {
-		super(new Properties().stacksTo(1).component(DevotionData.STAFF_CORE.get(), DevotionStaffCores.OAK_CORE.holder()).component(DevotionData.STAFF_CAPS.get(), DevotionStaffCaps.IRON_CAP.holder()));
+		super(new Properties().stacksTo(1).component(DevotionData.STAFF_CORE.get(), DevotionStaffCores.OAK_CORE.holder()).component(DevotionData.STAFF_CAP.get(), DevotionStaffCaps.IRON_CAP.holder()));
 	}
 }

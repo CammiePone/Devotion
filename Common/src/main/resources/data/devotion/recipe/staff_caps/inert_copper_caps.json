@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"NNN",
+		"N N"
+	],
+	"key": {
+		"N": {
+			"tag": "c:nuggets/copper"
+		}
+	},
+	"result": {
+		"id": "devotion:staff_cap",
+		"count": 2,
+		"components": {
+			"devotion:staff_cap": "devotion:inert_copper"
+		}
+	}
+}
