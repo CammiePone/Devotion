@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.client.renderers.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cammiescorner.devotion.api.spells.AuraType;
+import dev.cammiescorner.devotion.client.ClientHelper;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
 import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.MainHelper;
@@ -30,7 +31,7 @@ public class AuraRenderLayer<T extends LivingEntity, M extends EntityModel<T>> e
 		float aura = MainHelper.getAura(entity, primaryAuraType);
 		float scale = 1f;
 
-		if(aura > 0f || true) {
+		if(aura > 0f && ClientHelper.shouldRenderAura(entity)) {
 			EntityDimensions dimensions = entity.getDimensions(entity.getPose());
 			AuraVertexBufferSource auraBufferSource = new AuraVertexBufferSource(bufferSource, auraColor.getRedI(), auraColor.getGreenI(), auraColor.getBlueI(), (int) (MainHelper.getAuraAlpha(entity, primaryAuraType) * 255));
 

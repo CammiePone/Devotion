@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cammiescorner.devotion.api.spells.AuraType;
+import dev.cammiescorner.devotion.client.ClientHelper;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
 import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.MainHelper;
@@ -35,7 +36,7 @@ public abstract class ItemInHandRendererMixin {
 		AuraType primaryAuraType = MainHelper.getPrimaryAuraType(player);
 		float aura = MainHelper.getAura(player, primaryAuraType);
 
-		if(aura > 0) {
+		if(aura > 0 && ClientHelper.shouldRenderAura(player)) {
 			Color auraColor = primaryAuraType.getColor();
 			float alpha = MainHelper.getAuraAlpha(player, primaryAuraType);
 
@@ -52,7 +53,7 @@ public abstract class ItemInHandRendererMixin {
 		AuraType primaryAuraType = MainHelper.getPrimaryAuraType(player);
 		float aura = MainHelper.getAura(player, primaryAuraType);
 
-		if(aura > 0) {
+		if(aura > 0 && ClientHelper.shouldRenderAura(player)) {
 			Color auraColor = primaryAuraType.getColor();
 			float alpha = MainHelper.getAuraAlpha(player, primaryAuraType);
 
