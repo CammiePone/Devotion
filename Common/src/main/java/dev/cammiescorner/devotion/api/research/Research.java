@@ -2,7 +2,7 @@ package dev.cammiescorner.devotion.api.research;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.cammiescorner.devotion.api.registries.DevotionRegistryKeys;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -20,26 +20,26 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public record Research(ItemStack icon, Research.Difficulty difficulty, boolean isHidden, Set<ResourceLocation> parentIds) {
-	public static final Codec<Holder<Research>> CODEC = RegistryFixedCodec.create(DevotionRegistryKeys.RESEARCH);
+	public static final Codec<Holder<Research>> CODEC = RegistryFixedCodec.create(DevotionRegistries.RESEARCH);
 	public static final Codec<Research> DIRECT_CODEC = RecordCodecBuilder.create(researchInstance -> researchInstance.group(
 		ItemStack.CODEC.fieldOf("item_icon").forGetter(Research::icon),
 		Difficulty.CODEC.fieldOf("difficulty").forGetter(Research::difficulty),
 		Codec.BOOL.optionalFieldOf("hidden", false).forGetter(Research::isHidden),
 		ResourceLocation.CODEC.listOf().xmap(Set::copyOf, List::copyOf).optionalFieldOf("parents", Set.of()).forGetter(Research::parentIds)
 	).apply(researchInstance, Research::new));
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Research>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistryKeys.RESEARCH);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Research>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistries.RESEARCH);
 
 	public static Research get(ResourceLocation id, RegistryAccess access) {
-		return access.registry(DevotionRegistryKeys.RESEARCH).orElseThrow().get(id);
+		return access.registry(DevotionRegistries.RESEARCH).orElseThrow().get(id);
 	}
 
 	public ResourceLocation getId(RegistryAccess access) {
-		return access.registry(DevotionRegistryKeys.RESEARCH).orElseThrow().getKey(this);
+		return access.registry(DevotionRegistries.RESEARCH).orElseThrow().getKey(this);
 	}
 
 	public Set<Research> getParents(HolderLookup.Provider provider) {
-		HolderLookup.RegistryLookup<Research> lookup = provider.lookupOrThrow(DevotionRegistryKeys.RESEARCH);
-		return parentIds.stream().map(id -> ResourceKey.create(DevotionRegistryKeys.RESEARCH, id)).map(lookup::getOrThrow).map(Holder.Reference::value).collect(Collectors.toSet());
+		HolderLookup.RegistryLookup<Research> lookup = provider.lookupOrThrow(DevotionRegistries.RESEARCH);
+		return parentIds.stream().map(id -> ResourceKey.create(DevotionRegistries.RESEARCH, id)).map(lookup::getOrThrow).map(Holder.Reference::value).collect(Collectors.toSet());
 	}
 
 	public enum Difficulty implements StringRepresentable {

@@ -9,6 +9,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 public class DevotionItems {
 	public static final RegistryHandler<Item> ITEMS = RegistryHandler.create(Registries.ITEM, Devotion.MOD_ID);
 
@@ -52,4 +55,10 @@ public class DevotionItems {
 	public static final RegistrySupplier<Item> DEATH_CULT_LEADER_CLOAK = ITEMS.register("death_cult_leader_cloak", () -> new MageRobesItem(ArmorItem.Type.CHESTPLATE, new Item.Properties(), AuraType.NONE, AuraType.values()));
 	public static final RegistrySupplier<Item> DEATH_CULT_LEADER_LEGGINGS = ITEMS.register("death_cult_leader_leggings", () -> new MageRobesItem(ArmorItem.Type.LEGGINGS, new Item.Properties(), AuraType.NONE, AuraType.values()));
 	public static final RegistrySupplier<Item> DEATH_CULT_LEADER_BOOTS = ITEMS.register("death_cult_leader_boots", () -> new MageRobesItem(ArmorItem.Type.BOOTS, new Item.Properties(), AuraType.NONE, AuraType.values()));
+
+	public static final List<Supplier<Item>> HOOD_ITEMS = List.of(
+		BASIC_MAGE_HOOD, ENHANCER_MAGE_HOOD, TRANSMUTER_MAGE_HOOD,
+		EMITTER_MAGE_HOOD, CONJURER_MAGE_HOOD, MANIPULATOR_MAGE_HOOD,
+		DEATH_CULTIST_HOOD
+	);
 }

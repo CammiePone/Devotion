@@ -1,6 +1,6 @@
 package dev.cammiescorner.devotion.fabric.entrypoints;
 
-import dev.cammiescorner.devotion.api.registries.DevotionRegistryKeys;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.BookEntry;
 import dev.cammiescorner.devotion.api.research.BookTab;
 import dev.cammiescorner.devotion.api.research.Research;
@@ -16,9 +16,9 @@ import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 public class FabricMain implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		DynamicRegistries.registerSynced(DevotionRegistryKeys.RESEARCH, Research.DIRECT_CODEC);
-		DynamicRegistries.registerSynced(DevotionRegistryKeys.BOOK_TAB, BookTab.DIRECT_CODEC);
-		DynamicRegistries.registerSynced(DevotionRegistryKeys.BOOK_ENTRY, BookEntry.DIRECT_CODEC);
+		DynamicRegistries.registerSynced(DevotionRegistries.RESEARCH, Research.DIRECT_CODEC);
+		DynamicRegistries.registerSynced(DevotionRegistries.BOOK_TAB, BookTab.DIRECT_CODEC);
+		DynamicRegistries.registerSynced(DevotionRegistries.BOOK_ENTRY, BookEntry.DIRECT_CODEC);
 
 		ServerPlayerEvents.COPY_FROM.register(RespawnCopyStrategy.EVENT_PHASE, (oldPlayer, newPlayer, alive) -> {
 			AuraType primaryAuraType = MainHelper.getPrimaryAuraType(oldPlayer);

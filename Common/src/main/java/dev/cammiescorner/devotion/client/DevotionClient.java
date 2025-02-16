@@ -90,7 +90,7 @@ public class DevotionClient implements ClientEntryPoint {
 		Network.registerPacket(ServerboundSaveScrollDataPacket.TYPE, ServerboundSaveScrollDataPacket.class, ServerboundSaveScrollDataPacket.CODEC, ServerboundSaveScrollDataPacket::handle);
 
 		RegisterItemPropertiesEvent.EVENT.register(event -> {
-			for(Supplier<Item> itemSupplier : Devotion.HOOD_ITEMS)
+			for(Supplier<Item> itemSupplier : DevotionItems.HOOD_ITEMS)
 				event.register(itemSupplier, Devotion.id("closed_hood"), (stack, level, entity, seed) -> stack.getOrDefault(DevotionData.CLOSED_HOOD.get(), false) ? 1f : 0f);
 
 			event.register(DevotionItems.RESEARCH_SCROLL, Devotion.id("completed_research"), (stack, level, entity, seed) -> stack.getOrDefault(DevotionData.SCROLL_COMPLETED.get(), false) ? 1f : 0f);

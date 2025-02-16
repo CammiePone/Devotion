@@ -2,7 +2,7 @@ package dev.cammiescorner.devotion.common.networking.serverbound;
 
 import commonnetwork.networking.data.PacketContext;
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.api.registries.DevotionRegistryKeys;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.research.RiddleData;
 import dev.cammiescorner.devotion.common.items.ResearchScrollItem;
@@ -25,7 +25,7 @@ public record ServerboundGiveResearchScrollPacket(ResourceKey<Research> research
 	public static final Type<ServerboundGiveResearchScrollPacket> TYPE = new Type<>(Devotion.id("give_research_scroll"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, ServerboundGiveResearchScrollPacket> CODEC = StreamCodec.of(
 		(buffer, packet) -> buffer.writeResourceKey(packet.researchId()),
-		buffer -> new ServerboundGiveResearchScrollPacket(buffer.readResourceKey(DevotionRegistryKeys.RESEARCH))
+		buffer -> new ServerboundGiveResearchScrollPacket(buffer.readResourceKey(DevotionRegistries.RESEARCH))
 	);
 
 	@Override
@@ -49,7 +49,7 @@ public record ServerboundGiveResearchScrollPacket(ResourceKey<Research> research
 		}
 
 		if(bl) {
-			HolderLookup.RegistryLookup<Research> lookUp = context.sender().registryAccess().lookupOrThrow(DevotionRegistryKeys.RESEARCH);
+			HolderLookup.RegistryLookup<Research> lookUp = context.sender().registryAccess().lookupOrThrow(DevotionRegistries.RESEARCH);
 			Holder<Research> research = lookUp.getOrThrow(researchId);
 			ItemStack stack = new ItemStack(DevotionItems.RESEARCH_SCROLL.get());
 			RiddleData riddleData = ResearchScrollItem.generateRiddleData(research, player.getRandom());

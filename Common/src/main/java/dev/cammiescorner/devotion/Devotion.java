@@ -3,8 +3,6 @@ package dev.cammiescorner.devotion;
 import com.teamresourceful.resourcefulconfig.api.loader.Configurator;
 import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.api.Graph;
-import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
-import dev.cammiescorner.devotion.api.registries.DevotionRegistryKeys;
 import dev.cammiescorner.devotion.api.spells.AuraAffinity;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.MainHelper;
@@ -28,23 +26,15 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.Equipable;
-import net.minecraft.world.item.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public class Devotion implements MainEntryPoint {
 	public static final String MOD_ID = "devotion";
 	public static final Logger LOGGER = LoggerFactory.getLogger("Devotion");
 	public static final Configurator CONFIGURATOR = new Configurator(MOD_ID);
-
-	public static final List<Supplier<Item>> HOOD_ITEMS = List.of(
-		DevotionItems.BASIC_MAGE_HOOD, DevotionItems.ENHANCER_MAGE_HOOD, DevotionItems.TRANSMUTER_MAGE_HOOD,
-		DevotionItems.EMITTER_MAGE_HOOD, DevotionItems.CONJURER_MAGE_HOOD, DevotionItems.MANIPULATOR_MAGE_HOOD,
-		DevotionItems.DEATH_CULTIST_HOOD
-	);
 
 	public static final Graph<AuraType> AURA_GRAPH = Util.make(new Graph<>(), (graph) -> {
 		for(int i = 0; i < AuraType.values().length - 1; i++)
@@ -67,8 +57,6 @@ public class Devotion implements MainEntryPoint {
 	public void onInitialize(ModContainer mod) {
 		CONFIGURATOR.register(DevotionConfig.class);
 		RegistryService registryService = RegistryService.get();
-		DevotionRegistryKeys.init();
-		DevotionRegistries.init();
 
 		// Registries that add gameplay features (e.g. items, blocks, and entities)
 		DevotionStaffCores.STAFF_CORES.accept(registryService);
@@ -97,7 +85,7 @@ public class Devotion implements MainEntryPoint {
 		});
 
 		ItemMenuInteractionEvent.EVENT.register((menu, player, level, clickAction, slot, slotStack, cursorStack) -> {
-			if(clickAction == ClickAction.SECONDARY && cursorStack.isEmpty() && Devotion.HOOD_ITEMS.stream().map(Supplier::get).anyMatch(slotStack::is)) {
+			if(clickAction == ClickAction.SECONDARY && cursorStack.isEmpty() && DevotionItems.HOOD_ITEMS.stream().map(Supplier::get).anyMatch(slotStack::is)) {
 				DataComponentType<Boolean> hoodData = DevotionData.CLOSED_HOOD.get();
 				boolean value = !slotStack.getOrDefault(hoodData, false);
 

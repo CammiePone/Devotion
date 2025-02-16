@@ -3,7 +3,7 @@ package dev.cammiescorner.devotion.client.gui.widgets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.api.registries.DevotionRegistryKeys;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.common.MainHelper;
 import net.minecraft.Util;
@@ -30,7 +30,7 @@ public class ResearchWidget extends AbstractButton {
 
 	public ResearchWidget(int x, int y, ResourceLocation researchId, OnPress onPress) {
 		super(x, y, 30, 30, Component.empty());
-		this.research = access.lookupOrThrow(DevotionRegistryKeys.RESEARCH).getOrThrow(ResourceKey.create(DevotionRegistryKeys.RESEARCH, researchId));
+		this.research = access.lookupOrThrow(DevotionRegistries.RESEARCH).getOrThrow(ResourceKey.create(DevotionRegistries.RESEARCH, researchId));
 		this.onPress = onPress;
 
 		Set<ResourceLocation> playerResearch = MainHelper.getResearchIds(client.player);
