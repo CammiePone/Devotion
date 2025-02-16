@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.research.RiddleData;
+import dev.cammiescorner.devotion.api.wands.WandCap;
 import dev.upcraft.sparkweave.api.registry.RegistryHandler;
 import dev.upcraft.sparkweave.api.registry.RegistrySupplier;
 import net.minecraft.core.Holder;
@@ -16,6 +17,12 @@ import java.util.List;
 public class DevotionData {
 	public static final RegistryHandler<DataComponentType<?>> DATA_COMPONENTS = RegistryHandler.create(Registries.DATA_COMPONENT_TYPE, Devotion.MOD_ID);
 
+	public static final RegistrySupplier<DataComponentType<Holder<WandCap>>> WAND_CAPS = DATA_COMPONENTS.register("wand_caps", () -> DataComponentType.<Holder<WandCap>>builder()
+		.persistent(WandCap.CODEC)
+		.networkSynchronized(WandCap.STREAM_CODEC)
+		.cacheEncoding()
+		.build()
+	);
 	public static final RegistrySupplier<DataComponentType<Boolean>> CLOSED_HOOD = DATA_COMPONENTS.register("closed_hood", () -> DataComponentType.<Boolean>builder()
 		.persistent(Codec.BOOL)
 		.networkSynchronized(ByteBufCodecs.BOOL)

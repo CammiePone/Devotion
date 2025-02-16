@@ -3,9 +3,6 @@ package dev.cammiescorner.devotion;
 import com.teamresourceful.resourcefulconfig.api.loader.Configurator;
 import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.api.Graph;
-import dev.cammiescorner.devotion.api.research.BookEntry;
-import dev.cammiescorner.devotion.api.research.BookTab;
-import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraAffinity;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.MainHelper;
@@ -23,9 +20,7 @@ import dev.upcraft.sparkweave.api.event.RegisterCustomLecternMenuEvent;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
 import dev.upcraft.sparkweave.api.platform.services.RegistryService;
 import net.minecraft.Util;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,9 +38,6 @@ public class Devotion implements MainEntryPoint {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Devotion");
 	public static final Configurator CONFIGURATOR = new Configurator(MOD_ID);
 
-	public static final ResourceKey<Registry<Research>> RESEARCH_KEY = ResourceKey.createRegistryKey(id("research"));
-	public static final ResourceKey<Registry<BookTab>> BOOK_TAB_KEY = ResourceKey.createRegistryKey(id("book_tab"));
-	public static final ResourceKey<Registry<BookEntry>> BOOK_ENTRY_KEY = ResourceKey.createRegistryKey(id("book_entry"));
 	public static final List<Supplier<Item>> HOOD_ITEMS = List.of(
 		DevotionItems.BASIC_MAGE_HOOD, DevotionItems.ENHANCER_MAGE_HOOD, DevotionItems.TRANSMUTER_MAGE_HOOD,
 		DevotionItems.EMITTER_MAGE_HOOD, DevotionItems.CONJURER_MAGE_HOOD, DevotionItems.MANIPULATOR_MAGE_HOOD,
@@ -73,12 +65,14 @@ public class Devotion implements MainEntryPoint {
 	public void onInitialize(ModContainer mod) {
 		CONFIGURATOR.register(DevotionConfig.class);
 		RegistryService registryService = RegistryService.get();
-		
+
 		// Registries that add gameplay features (e.g. items, blocks, and entities)
 		DevotionItems.ITEMS.accept(registryService);
 		DevotionBlocks.BLOCKS.accept(registryService);
 		DevotionBlocks.BLOCK_ENTITIES.accept(registryService);
 		DevotionAltarActions.ACTIONS.accept(registryService);
+		DevotionWandCores.WAND_CORES.accept(registryService);
+		DevotionWandCaps.WAND_CAPS.accept(registryService);
 
 		// Registries that supplement gameplay features (e.g. data components, materials, and recipes
 		DevotionCreativeTabs.CREATIVE_TABS.accept(registryService);
