@@ -17,6 +17,7 @@ public class DevotionStaffCores {
 	public static final RegistrySupplier<StaffCore> JUNGLE_CORE = STAFF_CORES.register("jungle", StaffCore::new);
 	public static final RegistrySupplier<StaffCore> ACACIA_CORE = STAFF_CORES.register("acacia", StaffCore::new);
 	public static final RegistrySupplier<StaffCore> DARK_OAK_CORE = STAFF_CORES.register("dark_oak", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> BAMBOO_CORE = STAFF_CORES.register("bamboo", StaffCore::new);
 	public static final RegistrySupplier<StaffCore> MANGROVE_CORE = STAFF_CORES.register("mangrove", StaffCore::new);
 	public static final RegistrySupplier<StaffCore> CHERRY_CORE = STAFF_CORES.register("cherry", StaffCore::new);
 	public static final RegistrySupplier<StaffCore> CRIMSON_CORE = STAFF_CORES.register("crimson", StaffCore::new);

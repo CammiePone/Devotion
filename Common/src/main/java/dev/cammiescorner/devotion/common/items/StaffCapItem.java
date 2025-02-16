@@ -27,14 +27,7 @@ public class StaffCapItem extends Item {
 	}
 
 	@Override
-	public boolean isFoil(ItemStack stack) {
-		return stack.get(DevotionData.STAFF_CAP.get()).value().hasGlint();
-	}
-
-	@Override
 	public String getDescriptionId(ItemStack stack) {
-		String cap = DevotionStaffCaps.REGISTRY.getKey(stack.get(DevotionData.STAFF_CAP.get()).value()).getPath();
-
-		return String.format("item.devotion.%s_cap", cap);
+		return stack.get(DevotionData.STAFF_CAP.get()).value().getDescriptionId();
 	}
 }

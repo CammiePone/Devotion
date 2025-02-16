@@ -12,8 +12,6 @@ public class StaffCoreItem extends Item {
 
 	@Override
 	public String getDescriptionId(ItemStack stack) {
-		String core = DevotionStaffCores.REGISTRY.getKey(stack.get(DevotionData.STAFF_CORE.get()).value()).getPath();
-
-		return String.format("item.devotion.%s_core", core);
+		return stack.get(DevotionData.STAFF_CORE.get()).value().getDescriptionId();
 	}
 }
