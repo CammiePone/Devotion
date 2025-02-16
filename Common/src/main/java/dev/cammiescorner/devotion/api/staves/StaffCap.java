@@ -8,15 +8,15 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
 
-public record StaffCap(boolean inert, boolean hasGlint) {
+public record StaffCap(float discount, boolean inert, boolean hasGlint) {
 	public static final Codec<Holder<StaffCap>> CODEC = RegistryFixedCodec.create(DevotionRegistries.STAFF_CAP);
 	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<StaffCap>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistries.STAFF_CAP);
 
-	public StaffCap() {
-		this(false, false);
+	public StaffCap(float discount) {
+		this(discount, false, false);
 	}
 
-	public StaffCap(boolean inert) {
-		this(inert, !inert);
+	public StaffCap(float discount, boolean inert) {
+		this(discount, inert, !inert);
 	}
 }
