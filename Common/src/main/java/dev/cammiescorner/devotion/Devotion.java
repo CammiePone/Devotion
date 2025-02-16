@@ -21,6 +21,8 @@ import dev.upcraft.sparkweave.api.platform.ModContainer;
 import dev.upcraft.sparkweave.api.platform.services.RegistryService;
 import net.minecraft.Util;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -118,6 +120,15 @@ public class Devotion implements MainEntryPoint {
 				}
 			}
 		});
+	}
+
+	public static MutableComponent translate(String prefix, String... additions) {
+		StringBuilder string = new StringBuilder(String.format("%s.%s", prefix, MOD_ID));
+
+		for(String a : additions)
+			string.append(".").append(a);
+
+		return Component.translatable(string.toString());
 	}
 
 	public static ResourceLocation id(String name) {

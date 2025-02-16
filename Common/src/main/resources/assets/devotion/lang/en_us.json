@@ -3,6 +3,10 @@
 
 	"item.devotion.scripts_of_devotion": "Scripts of Devotion",
 	"item.devotion.research_scroll": "Research Scroll",
+	"item.devotion.staff_core": "Staff Core",
+	"item.devotion.staff_cap": "Staff Cap",
+	"item.devotion.staff": "Staff",
+	"item.devotion.aurameter": "Aurameter",
 
 	"item.devotion.basic_mage_hood": "Basic Mage Hood",
 	"item.devotion.basic_mage_robe": "Basic Mage Robe",
@@ -40,6 +44,8 @@
 
 	"block.devotion.altar_focus": "Altar Focus",
 	"block.devotion.altar_pillar": "Altar Pillar",
+
+	"staff_tooltip.devotion.aura_discount": "Aura Discount",
 
 	"devotion_riddle.enhancement_0": "This is filler text #1 for an Enhancement riddle.",
 	"devotion_riddle.enhancement_1": "This is filler text #2 for an Enhancement riddle.",
