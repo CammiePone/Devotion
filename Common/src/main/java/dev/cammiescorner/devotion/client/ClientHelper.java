@@ -1,8 +1,11 @@
 package dev.cammiescorner.devotion.client;
 
+import dev.cammiescorner.devotion.api.staves.StaffCap;
+import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.upcraft.sparkweave.api.platform.Services;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -17,5 +20,13 @@ public class ClientHelper {
 			return true;
 
 		return entity.isHolding(DevotionItems.STAFF.get());
+	}
+
+	public static ModelResourceLocation getStaffCoreModel(StaffCore core) {
+		return duck.getStaffCoreModel(core);
+	}
+
+	public static ModelResourceLocation getStaffCapModel(StaffCap cap) {
+		return duck.getStaffCapModel(cap);
 	}
 }
