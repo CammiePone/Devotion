@@ -33,7 +33,6 @@ public class StaffItem extends Item {
 		StaffCore core = stack.get(DevotionData.STAFF_CORE.get()).value();
 		StaffCap cap = stack.get(DevotionData.STAFF_CAP.get()).value();
 
-		// TODO make this better for different languages
-		return Component.literal(String.format("%s %s", Component.translatable(cap.getStaffId()).getString(), Component.translatable(core.getStaffId()).getString()));
+		return Component.translatable(getDescriptionId(stack), Component.translatable(cap.getStaffId()), Component.translatable(core.getStaffId()));
 	}
 }

@@ -6,7 +6,7 @@
 	"item.devotion.research_scroll": "Research Scroll",
 	"item.devotion.staff_core": "Staff Core",
 	"item.devotion.staff_cap": "Staff Cap",
-	"item.devotion.staff": "Staff",
+	"item.devotion.staff": "%s %s",
 	"item.devotion.aurameter": "Aurameter",
 
 	"item.devotion.basic_mage_hood": "Basic Mage Hood",
