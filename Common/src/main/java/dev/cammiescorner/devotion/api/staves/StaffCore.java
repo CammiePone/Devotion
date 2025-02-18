@@ -14,11 +14,19 @@ public class StaffCore {
 	public static final Codec<Holder<StaffCore>> CODEC = RegistryFixedCodec.create(DevotionRegistries.STAFF_CORE);
 	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<StaffCore>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistries.STAFF_CORE);
 	private String descriptionId;
+	private String staffId;
 
 	public String getDescriptionId() {
 		if(descriptionId == null)
-			descriptionId = Util.makeDescriptionId("staff_core", DevotionStaffCores.REGISTRY.getKey(this));
+			descriptionId = Util.makeDescriptionId("item", DevotionStaffCores.REGISTRY.getKey(this)) + "_core";
 
 		return descriptionId;
+	}
+
+	public String getStaffId() {
+		if(staffId == null)
+			staffId = Util.makeDescriptionId("staff", DevotionStaffCores.REGISTRY.getKey(this)) + "_staff";
+
+		return staffId;
 	}
 }

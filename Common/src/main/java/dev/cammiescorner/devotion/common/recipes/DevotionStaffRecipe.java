@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
+import java.util.List;
 import java.util.Map;
 
 public class DevotionStaffRecipe extends CustomRecipe {
@@ -27,7 +28,13 @@ public class DevotionStaffRecipe extends CustomRecipe {
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
-		return PATTERN.matches(input);
+		if(PATTERN.matches(input)) {
+			List<ItemStack> capStacks = input.items().stream().filter(stack -> stack.is(DevotionItems.STAFF_CAP.get()) && !stack.get(DevotionData.STAFF_CAP.get()).value().inert()).toList();
+
+			return capStacks.size() == 2 && capStacks.stream().allMatch(stack -> stack.get(DevotionData.STAFF_CAP.get()) == capStacks.getFirst().get(DevotionData.STAFF_CAP.get()));
+		}
+
+		return false;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.common.items;
 
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
+import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.common.registries.DevotionData;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
@@ -28,10 +29,11 @@ public class StaffItem extends Item {
 	}
 
 	@Override
-	public String getDescriptionId(ItemStack stack) {
-		String core = DevotionStaffCores.REGISTRY.getKey(stack.get(DevotionData.STAFF_CORE.get()).value()).getPath();
-		String cap = DevotionStaffCaps.REGISTRY.getKey(stack.get(DevotionData.STAFF_CAP.get()).value()).getPath();
+	public Component getName(ItemStack stack) {
+		StaffCore core = stack.get(DevotionData.STAFF_CORE.get()).value();
+		StaffCap cap = stack.get(DevotionData.STAFF_CAP.get()).value();
 
-		return String.format("item.devotion.%s_capped_%s_staff", cap, core);
+		// TODO make this better for different languages
+		return Component.literal(String.format("%s %s", Component.translatable(cap.getStaffId()).getString(), Component.translatable(core.getStaffId()).getString()));
 	}
 }

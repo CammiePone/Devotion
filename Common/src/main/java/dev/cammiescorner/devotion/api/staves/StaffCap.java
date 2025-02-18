@@ -18,6 +18,7 @@ public class StaffCap {
 	private final float discount;
 	private final boolean inert;
 	private String descriptionId;
+	private String staffId;
 
 	public StaffCap(float discount, boolean inert) {
 		this.discount = discount;
@@ -30,9 +31,16 @@ public class StaffCap {
 
 	public String getDescriptionId() {
 		if(descriptionId == null)
-			descriptionId = Util.makeDescriptionId("staff_cap", DevotionStaffCaps.REGISTRY.getKey(this));
+			descriptionId = Util.makeDescriptionId("item", DevotionStaffCaps.REGISTRY.getKey(this)) + "_cap";
 
 		return descriptionId;
+	}
+
+	public String getStaffId() {
+		if(staffId == null)
+			staffId = Util.makeDescriptionId("staff", DevotionStaffCaps.REGISTRY.getKey(this)) + "_capped";
+
+		return staffId;
 	}
 
 	public float discount() {
