@@ -5,6 +5,7 @@ import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.upcraft.sparkweave.api.platform.Services;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,5 +29,9 @@ public class ClientHelper {
 
 	public static ModelResourceLocation getStaffCapModel(StaffCap cap) {
 		return duck.getStaffCapModel(cap);
+	}
+
+	public static boolean hasSpecificTranslation(String specificTranslation) {
+		return I18n.exists(specificTranslation);
 	}
 }

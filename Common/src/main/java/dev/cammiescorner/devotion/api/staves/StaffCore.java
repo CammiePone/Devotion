@@ -9,23 +9,32 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.ResourceLocation;
 
 public class StaffCore {
 	public static final Codec<Holder<StaffCore>> CODEC = RegistryFixedCodec.create(DevotionRegistries.STAFF_CORE);
 	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<StaffCore>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistries.STAFF_CORE);
+	private ResourceLocation resourceLocation;
 	private String descriptionId;
 	private String staffId;
 
+	public ResourceLocation getResourceLocation() {
+		if(resourceLocation == null)
+			resourceLocation = DevotionStaffCores.REGISTRY.getKey(this);
+
+		return resourceLocation;
+	}
+
 	public String getDescriptionId() {
 		if(descriptionId == null)
-			descriptionId = Util.makeDescriptionId("item", DevotionStaffCores.REGISTRY.getKey(this)) + "_core";
+			descriptionId = Util.makeDescriptionId("item", getResourceLocation()) + "_core";
 
 		return descriptionId;
 	}
 
 	public String getStaffId() {
 		if(staffId == null)
-			staffId = Util.makeDescriptionId("staff", DevotionStaffCores.REGISTRY.getKey(this)) + "_staff";
+			staffId = Util.makeDescriptionId("staff", getResourceLocation()) + "_staff";
 
 		return staffId;
 	}

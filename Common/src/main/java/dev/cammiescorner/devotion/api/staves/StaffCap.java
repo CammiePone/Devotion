@@ -10,6 +10,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public class StaffCap {
@@ -17,8 +18,16 @@ public class StaffCap {
 	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<StaffCap>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistries.STAFF_CAP);
 	private final float discount;
 	private final boolean inert;
+	private ResourceLocation resourceLocation;
 	private String descriptionId;
 	private String staffId;
+
+	public ResourceLocation getResourceLocation() {
+		if(resourceLocation == null)
+			resourceLocation = DevotionStaffCaps.REGISTRY.getKey(this);
+
+		return resourceLocation;
+	}
 
 	public StaffCap(float discount, boolean inert) {
 		this.discount = discount;
