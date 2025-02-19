@@ -78,6 +78,11 @@ public class FabricDuck implements Duck {
 	}
 
 	@Override
+	public void removeAuraNode(ChunkAccess access, BlockPos pos) {
+		access.getComponent(DevotionComponents.AURA_NODE).removeAuraNode(pos);
+	}
+
+	@Override
 	public Map<BlockPos, AuraNode> getAuraNodeMap(ChunkAccess access) {
 		return access.getComponent(DevotionComponents.AURA_NODE).getAuraNodeMap();
 	}

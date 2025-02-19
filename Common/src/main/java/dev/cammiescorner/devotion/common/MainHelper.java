@@ -64,6 +64,10 @@ public class MainHelper {
 		duck.addAuraNode(access, pos, node);
 	}
 
+	public static void removeAuraNode(ChunkAccess access, BlockPos pos) {
+		duck.removeAuraNode(access, pos);
+	}
+
 	public static Map<BlockPos, AuraNode> getAuraNodes(ChunkAccess access) {
 		return duck.getAuraNodeMap(access);
 	}

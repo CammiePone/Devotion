@@ -2,23 +2,15 @@ package dev.cammiescorner.devotion.neoforge.common;
 
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.spells.AuraType;
-import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.common.MainHelper;
-import dev.cammiescorner.devotion.neoforge.common.attachments.chunk.AuraNodeAttachment;
 import dev.cammiescorner.devotion.neoforge.common.attachments.entity.AuraAttachment;
 import dev.cammiescorner.devotion.neoforge.entrypoints.NeoMain;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 @EventBusSubscriber(modid = Devotion.MOD_ID)
 public class CommonEvents {
@@ -31,30 +23,6 @@ public class CommonEvents {
 
 		if(entity instanceof Player)
 			entity.getData(NeoMain.KNOWN_RESEARCH);
-	}
-
-	@SubscribeEvent
-	public static void levelTick(LevelTickEvent event) {
-		if(event.getLevel() instanceof ServerLevel level) {
-			// TODO improve performance of this because its pretty shit rn
-			for(long forcedChunk : level.getForcedChunks()) {
-				ChunkAccess access = level.getChunk(ChunkPos.getX(forcedChunk), ChunkPos.getZ(forcedChunk));
-				AuraNodeAttachment attachment = access.getData(NeoMain.AURA_NODE);
-
-				if(attachment.getAuraNodeMap().size() < attachment.getMaxAuraNodes()) { // TODO add timer
-					float enhancementAura = Math.max(attachment.getRandom().nextFloat(-50f, 100f), 0f) * attachment.getAuraAffinity();
-					float transmutationAura = Math.max(attachment.getRandom().nextFloat(-50f, 100f), 0f) * attachment.getAuraAffinity();
-					float emissionAura = Math.max(attachment.getRandom().nextFloat(-50f, 100f), 0f) * attachment.getAuraAffinity();
-					float conjurationAura = Math.max(attachment.getRandom().nextFloat(-50f, 100f), 0f) * attachment.getAuraAffinity();
-					float manipulationAura = Math.max(attachment.getRandom().nextFloat(-50f, 100f), 0f) * attachment.getAuraAffinity();
-					int x = attachment.getRandom().nextInt(16);
-					int z = attachment.getRandom().nextInt(16);
-					int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + attachment.getRandom().nextInt(3, 6);
-
-					attachment.addAuraNode(new BlockPos(x, y, z), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
-				}
-			}
-		}
 	}
 
 	@SubscribeEvent

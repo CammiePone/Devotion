@@ -37,5 +37,7 @@ public interface Duck {
 
 	void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node);
 
+	void removeAuraNode(ChunkAccess access, BlockPos pos);
+
 	Map<BlockPos, AuraNode> getAuraNodeMap(ChunkAccess access);
 }

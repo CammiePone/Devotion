@@ -125,6 +125,12 @@ public class NeoDuck implements Duck {
 	}
 
 	@Override
+	public void removeAuraNode(ChunkAccess access, BlockPos pos) {
+		access.getData(NeoMain.AURA_NODE).removeAuraNode(pos);
+		// TODO sync map
+	}
+
+	@Override
 	public Map<BlockPos, AuraNode> getAuraNodeMap(ChunkAccess access) {
 		return access.getData(NeoMain.AURA_NODE).getAuraNodeMap();
 	}

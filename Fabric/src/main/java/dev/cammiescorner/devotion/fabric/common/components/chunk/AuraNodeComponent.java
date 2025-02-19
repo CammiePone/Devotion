@@ -35,8 +35,8 @@ public class AuraNodeComponent implements AutoSyncedComponent, ServerTickingComp
 
 	@Override
 	public void serverTick() {
-		// TODO improve performance of this because its pretty shit rn
-		if(auraNodeMap.size() < maxAuraNodes) { // TODO add timer
+		// TODO replace with a world generator thingy, it'll be infinitely better
+		if(auraNodeMap.size() < maxAuraNodes) {
 			float enhancementAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float transmutationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float emissionAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
@@ -116,6 +116,11 @@ public class AuraNodeComponent implements AutoSyncedComponent, ServerTickingComp
 	public void addAuraNode(BlockPos pos, AuraNode node) {
 		ChunkPos chunkPos = access.getPos();
 		auraNodeMap.put(new BlockPos(chunkPos.x != 0 ? pos.getX() % chunkPos.x : pos.getX(), pos.getY(), chunkPos.z != 0 ? pos.getZ() % chunkPos.z : pos.getZ()), node);
+		DevotionComponents.AURA_NODE.sync(access);
+	}
+
+	public void removeAuraNode(BlockPos pos) {
+		auraNodeMap.remove(pos);
 		DevotionComponents.AURA_NODE.sync(access);
 	}
 

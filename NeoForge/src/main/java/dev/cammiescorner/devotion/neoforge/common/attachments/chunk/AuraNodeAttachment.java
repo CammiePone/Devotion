@@ -69,6 +69,10 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 		auraNodeMap.put(pos, node);
 	}
 
+	public void removeAuraNode(BlockPos pos) {
+		auraNodeMap.remove(pos);
+	}
+
 	public RandomGenerator getRandom() {
 		return random;
 	}
