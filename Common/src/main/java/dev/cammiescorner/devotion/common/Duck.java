@@ -40,4 +40,8 @@ public interface Duck {
 	void removeAuraNode(ChunkAccess access, BlockPos pos);
 
 	Map<BlockPos, AuraNode> getAuraNodeMap(ChunkAccess access);
+
+	int getMaxAuraNodes(ChunkAccess access);
+
+	float getAuraAffinity(ChunkAccess access);
 }

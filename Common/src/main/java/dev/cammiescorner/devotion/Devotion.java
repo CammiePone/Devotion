@@ -67,6 +67,7 @@ public class Devotion implements MainEntryPoint {
 		DevotionBlocks.BLOCKS.accept(registryService);
 		DevotionBlocks.BLOCK_ENTITIES.accept(registryService);
 		DevotionAltarActions.ACTIONS.accept(registryService);
+		DevotionFeatures.FEATURES.accept(registryService);
 
 		// Registries that supplement gameplay features (e.g. data components, materials, and recipes)
 		DevotionCreativeTabs.CREATIVE_TABS.accept(registryService);

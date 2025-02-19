@@ -12,42 +12,24 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Heightmap;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
-import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.random.RandomGenerator;
 
-public class AuraNodeComponent implements AutoSyncedComponent, ServerTickingComponent {
+public class AuraNodeComponent implements AutoSyncedComponent {
 	private final Map<BlockPos, AuraNode> auraNodeMap = new HashMap<>();
-	private final RandomGenerator random = RandomGenerator.getDefault();
 	private final ChunkAccess access;
 	private float auraAffinity;
 	private int maxAuraNodes;
 
 	public AuraNodeComponent(ChunkAccess access) {
+		RandomGenerator random = RandomGenerator.getDefault();
+
 		this.access = access;
 		this.maxAuraNodes = Math.max(random.nextInt(-50, 2), 0);
 		this.auraAffinity = random.nextFloat();
-	}
-
-	@Override
-	public void serverTick() {
-		// TODO replace with a world generator thingy, it'll be infinitely better
-		if(auraNodeMap.size() < maxAuraNodes) {
-			float enhancementAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
-			float transmutationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
-			float emissionAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
-			float conjurationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
-			float manipulationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
-			int x = random.nextInt(16);
-			int z = random.nextInt(16);
-			int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + random.nextInt(3, 6);
-
-			addAuraNode(new BlockPos(x, y, z), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
-		}
 	}
 
 	@Override
@@ -126,5 +108,13 @@ public class AuraNodeComponent implements AutoSyncedComponent, ServerTickingComp
 
 	public Map<BlockPos, AuraNode> getAuraNodeMap() {
 		return Map.copyOf(auraNodeMap);
+	}
+
+	public int getMaxAuraNodes() {
+		return maxAuraNodes;
+	}
+
+	public float getAuraAffinity() {
+		return auraAffinity;
 	}
 }

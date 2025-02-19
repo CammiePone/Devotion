@@ -86,4 +86,14 @@ public class FabricDuck implements Duck {
 	public Map<BlockPos, AuraNode> getAuraNodeMap(ChunkAccess access) {
 		return access.getComponent(DevotionComponents.AURA_NODE).getAuraNodeMap();
 	}
+
+	@Override
+	public int getMaxAuraNodes(ChunkAccess access) {
+		return access.getComponent(DevotionComponents.AURA_NODE).getMaxAuraNodes();
+	}
+
+	@Override
+	public float getAuraAffinity(ChunkAccess access) {
+		return access.getComponent(DevotionComponents.AURA_NODE).getAuraAffinity();
+	}
 }

@@ -71,4 +71,12 @@ public class MainHelper {
 	public static Map<BlockPos, AuraNode> getAuraNodes(ChunkAccess access) {
 		return duck.getAuraNodeMap(access);
 	}
+
+	public static int getMaxAuraNodes(ChunkAccess access) {
+		return duck.getMaxAuraNodes(access);
+	}
+
+	public static float getAuraAffinity(ChunkAccess access) {
+		return duck.getAuraAffinity(access);
+	}
 }
