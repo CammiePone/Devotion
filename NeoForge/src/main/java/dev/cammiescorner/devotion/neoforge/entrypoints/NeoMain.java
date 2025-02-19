@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion.neoforge.entrypoints;
 
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.neoforge.common.attachments.chunk.AuraNodeAttachment;
 import dev.cammiescorner.devotion.neoforge.common.attachments.entity.AuraAttachment;
 import dev.cammiescorner.devotion.neoforge.common.attachments.entity.KnownResearchAttachment;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +22,9 @@ public class NeoMain {
 	);
 	public static final Supplier<AttachmentType<KnownResearchAttachment>> KNOWN_RESEARCH = ATTACHMENT_TYPES.register(
 		"known_research", () -> AttachmentType.serializable(KnownResearchAttachment::new).copyOnDeath().build()
+	);
+	public static final Supplier<AttachmentType<AuraNodeAttachment>> AURA_NODE = ATTACHMENT_TYPES.register(
+		"aura_node", () -> AttachmentType.serializable(AuraNodeAttachment::new).build()
 	);
 
 	public NeoMain(IEventBus modBus) {

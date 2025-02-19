@@ -2,11 +2,14 @@ package dev.cammiescorner.devotion.fabric.common;
 
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
+import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.common.Duck;
 import dev.cammiescorner.devotion.fabric.common.registries.DevotionComponents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import java.util.Set;
 
@@ -66,5 +69,10 @@ public class FabricDuck implements Duck {
 	@Override
 	public boolean revokeResearch(Player player, Research research, boolean simulate) {
 		return player.getComponent(DevotionComponents.KNOWN_RESEARCH).revokeResearch(research, simulate);
+	}
+
+	@Override
+	public void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node) {
+		access.getComponent(DevotionComponents.AURA_NODE).addAuraNode(pos, node);
 	}
 }

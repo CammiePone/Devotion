@@ -2,10 +2,13 @@ package dev.cammiescorner.devotion.common;
 
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
+import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.upcraft.sparkweave.api.platform.Services;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import java.util.Set;
 
@@ -54,5 +57,9 @@ public class MainHelper {
 
 	public static boolean revokeResearch(Player player, Research research, boolean simulate) {
 		return duck.revokeResearch(player, research, simulate);
+	}
+
+	public static void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node) {
+		duck.addAuraNode(access, pos, node);
 	}
 }

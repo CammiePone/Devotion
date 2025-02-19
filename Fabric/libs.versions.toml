@@ -17,10 +17,11 @@ cca_base = { module = "org.ladysnake.cardinal-components-api:cardinal-components
 cca_entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
 cca_block = { module = "org.ladysnake.cardinal-components-api:cardinal-components-block", version.ref = "cca" }
 cca_scoreboard = { module = "org.ladysnake.cardinal-components-api:cardinal-components-scoreboard", version.ref = "cca" }
+cca_chunk = { module = "org.ladysnake.cardinal-components-api:cardinal-components-chunk", version.ref = "cca" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
-cca = ["cca_base", "cca_entity", "cca_block", "cca_scoreboard"]
+cca = ["cca_base", "cca_entity", "cca_block", "cca_scoreboard", "cca_chunk"]
 
 [plugins]
 loom = { id = "fabric-loom", version.ref = "loom" }
