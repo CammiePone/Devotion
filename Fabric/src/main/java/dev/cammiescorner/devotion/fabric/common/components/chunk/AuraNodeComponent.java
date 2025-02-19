@@ -29,28 +29,24 @@ public class AuraNodeComponent implements AutoSyncedComponent, ServerTickingComp
 
 	public AuraNodeComponent(ChunkAccess access) {
 		this.access = access;
-		this.maxAuraNodes = Math.max(random.nextInt(-3, 3), 0);
+		this.maxAuraNodes = Math.max(random.nextInt(-50, 2), 0);
 		this.auraAffinity = random.nextFloat();
 	}
 
 	@Override
 	public void serverTick() {
+		// TODO improve performance of this because its pretty shit rn
 		if(auraNodeMap.size() < maxAuraNodes) { // TODO add timer
 			float enhancementAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float transmutationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float emissionAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float conjurationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float manipulationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
-			BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
+			int x = random.nextInt(16);
+			int z = random.nextInt(16);
+			int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + random.nextInt(3, 6);
 
-			while(auraNodeMap.keySet().stream().anyMatch(pos -> pos.distSqr(blockPos) < 25)) {
-				int x = random.nextInt(16);
-				int z = random.nextInt(16);
-				int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + random.nextInt(3, 6);
-				blockPos.set(x, y, z);
-			}
-
-			addAuraNode(blockPos.immutable(), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
+			addAuraNode(new BlockPos(x, y, z), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
 		}
 	}
 

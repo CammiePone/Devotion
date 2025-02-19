@@ -25,7 +25,7 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 
 	public AuraNodeAttachment(IAttachmentHolder holder) {
 		this.access = holder instanceof ChunkAccess access ? access : null;
-		this.maxAuraNodes = Math.max(random.nextInt(-3, 3), 0);
+		this.maxAuraNodes = Math.max(random.nextInt(-50, 2), 0);
 		this.auraAffinity = random.nextFloat();
 	}
 
