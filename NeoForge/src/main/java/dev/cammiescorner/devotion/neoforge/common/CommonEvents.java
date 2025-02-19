@@ -46,11 +46,16 @@ public class CommonEvents {
 					float emissionAura = Math.max(attachment.getRandom().nextFloat(-50f, 100f), 0f) * attachment.getAuraAffinity();
 					float conjurationAura = Math.max(attachment.getRandom().nextFloat(-50f, 100f), 0f) * attachment.getAuraAffinity();
 					float manipulationAura = Math.max(attachment.getRandom().nextFloat(-50f, 100f), 0f) * attachment.getAuraAffinity();
-					int x = attachment.getRandom().nextInt(16);
-					int z = attachment.getRandom().nextInt(16);
-					int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + attachment.getRandom().nextInt(2, 5);
+					BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
 
-					attachment.addAuraNode(new BlockPos(x, y, z), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
+					while(attachment.getAuraNodeMap().keySet().stream().anyMatch(pos -> pos.distSqr(blockPos) < 25)) {
+						int x = attachment.getRandom().nextInt(16);
+						int z = attachment.getRandom().nextInt(16);
+						int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + attachment.getRandom().nextInt(3, 6);
+						blockPos.set(x, y, z);
+					}
+
+					attachment.addAuraNode(blockPos, new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
 				}
 			}
 		}

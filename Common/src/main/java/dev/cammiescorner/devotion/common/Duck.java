@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface Duck {
@@ -35,4 +36,6 @@ public interface Duck {
 	boolean revokeResearch(Player player, Research research, boolean simulate);
 
 	void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node);
+
+	Map<BlockPos, AuraNode> getAuraNodeMap(ChunkAccess access);
 }

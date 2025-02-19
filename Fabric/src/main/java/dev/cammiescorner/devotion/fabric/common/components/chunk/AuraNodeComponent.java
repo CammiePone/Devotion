@@ -41,11 +41,16 @@ public class AuraNodeComponent implements AutoSyncedComponent, ServerTickingComp
 			float emissionAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float conjurationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float manipulationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
-			int x = random.nextInt(16);
-			int z = random.nextInt(16);
-			int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + random.nextInt(2, 5);
+			BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
 
-			addAuraNode(new BlockPos(x, y, z), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
+			while(auraNodeMap.keySet().stream().anyMatch(pos -> pos.distSqr(blockPos) < 25)) {
+				int x = random.nextInt(16);
+				int z = random.nextInt(16);
+				int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + random.nextInt(3, 6);
+				blockPos.set(x, y, z);
+			}
+
+			addAuraNode(blockPos.immutable(), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
 		}
 	}
 
@@ -114,7 +119,11 @@ public class AuraNodeComponent implements AutoSyncedComponent, ServerTickingComp
 
 	public void addAuraNode(BlockPos pos, AuraNode node) {
 		ChunkPos chunkPos = access.getPos();
-		auraNodeMap.put(new BlockPos(pos.getX() % chunkPos.x, pos.getY(), pos.getZ() % chunkPos.z), node);
+		auraNodeMap.put(new BlockPos(chunkPos.x != 0 ? pos.getX() % chunkPos.x : pos.getX(), pos.getY(), chunkPos.z != 0 ? pos.getZ() % chunkPos.z : pos.getZ()), node);
 		DevotionComponents.AURA_NODE.sync(access);
+	}
+
+	public Map<BlockPos, AuraNode> getAuraNodeMap() {
+		return Map.copyOf(auraNodeMap);
 	}
 }

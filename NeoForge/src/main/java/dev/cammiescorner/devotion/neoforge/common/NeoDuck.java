@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
+import java.util.Map;
 import java.util.Set;
 
 public class NeoDuck implements Duck {
@@ -121,5 +122,10 @@ public class NeoDuck implements Duck {
 	public void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node) {
 		access.getData(NeoMain.AURA_NODE).addAuraNode(pos, node);
 		// TODO sync map
+	}
+
+	@Override
+	public Map<BlockPos, AuraNode> getAuraNodeMap(ChunkAccess access) {
+		return access.getData(NeoMain.AURA_NODE).getAuraNodeMap();
 	}
 }

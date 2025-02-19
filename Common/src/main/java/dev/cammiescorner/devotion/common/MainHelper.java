@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
+import java.util.Map;
 import java.util.Set;
 
 public class MainHelper {
@@ -61,5 +62,9 @@ public class MainHelper {
 
 	public static void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node) {
 		duck.addAuraNode(access, pos, node);
+	}
+
+	public static Map<BlockPos, AuraNode> getAuraNodes(ChunkAccess access) {
+		return duck.getAuraNodeMap(access);
 	}
 }

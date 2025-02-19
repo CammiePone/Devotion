@@ -42,7 +42,8 @@
 		},
 		"cardinal-components": [
 			"devotion:aura",
-			"devotion:known_research"
+			"devotion:known_research",
+			"devotion:aura_node"
 		]
 	},
 	"depends": {

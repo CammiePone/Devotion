@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
+import java.util.Map;
 import java.util.Set;
 
 public class FabricDuck implements Duck {
@@ -74,5 +75,10 @@ public class FabricDuck implements Duck {
 	@Override
 	public void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node) {
 		access.getComponent(DevotionComponents.AURA_NODE).addAuraNode(pos, node);
+	}
+
+	@Override
+	public Map<BlockPos, AuraNode> getAuraNodeMap(ChunkAccess access) {
+		return access.getComponent(DevotionComponents.AURA_NODE).getAuraNodeMap();
 	}
 }
