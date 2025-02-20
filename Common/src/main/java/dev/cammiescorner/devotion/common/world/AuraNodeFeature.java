@@ -5,8 +5,8 @@ import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.common.MainHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -33,11 +33,12 @@ public class AuraNodeFeature extends Feature<NoneFeatureConfiguration> {
 			float emissionAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float conjurationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
 			float manipulationAura = Math.max(random.nextFloat(-50f, 100f), 0f) * auraAffinity;
-			int x = random.nextInt(16);
-			int z = random.nextInt(16);
-			int y = access.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) + random.nextInt(3, 6);
+			int offsetX = random.nextInt(16);
+			int offsetY = random.nextInt(3, 6);
+			int offsetZ = random.nextInt(16);
 
-			MainHelper.addAuraNode(access, new BlockPos(x, y, z), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
+			level.setBlock(context.origin().offset(offsetX, offsetY - 1, offsetZ), Blocks.GLOWSTONE.defaultBlockState(), 3);
+			MainHelper.addAuraNode(access, context.origin().offset(offsetX, offsetY, offsetZ), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
 
 			return true;
 		}

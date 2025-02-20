@@ -1,13 +1,16 @@
 package dev.cammiescorner.devotion.neoforge.common.attachments.chunk;
 
+import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.api.world.AuraNode;
+import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundAuraNodePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.UnknownNullability;
@@ -19,12 +22,12 @@ import java.util.random.RandomGenerator;
 public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 	private final Map<BlockPos, AuraNode> auraNodeMap = new HashMap<>();
 	private final RandomGenerator random = RandomGenerator.getDefault();
-	private final ChunkAccess access;
+	private final LevelChunk levelChunk;
 	private float auraAffinity;
 	private int maxAuraNodes;
 
 	public AuraNodeAttachment(IAttachmentHolder holder) {
-		this.access = holder instanceof ChunkAccess access ? access : null;
+		this.levelChunk = holder instanceof LevelChunk levelChunk ? levelChunk : null;
 		this.maxAuraNodes = Math.max(random.nextInt(-50, 2), 0);
 		this.auraAffinity = random.nextFloat();
 	}
@@ -66,11 +69,13 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 	}
 
 	public void addAuraNode(BlockPos pos, AuraNode node) {
-		auraNodeMap.put(pos, node);
+		auraNodeMap.put(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), node);
+		sync();
 	}
 
 	public void removeAuraNode(BlockPos pos) {
 		auraNodeMap.remove(pos);
+		sync();
 	}
 
 	public RandomGenerator getRandom() {
@@ -87,5 +92,11 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 
 	public int getMaxAuraNodes() {
 		return maxAuraNodes;
+	}
+
+	public void sync() {
+		if(!auraNodeMap.isEmpty() && levelChunk != null && levelChunk.getLevel() instanceof ServerLevel level) {
+			Network.getNetworkHandler().sendToAllClients(new ClientboundAuraNodePacket(levelChunk.getPos(), auraNodeMap), level.getServer());
+		}
 	}
 }

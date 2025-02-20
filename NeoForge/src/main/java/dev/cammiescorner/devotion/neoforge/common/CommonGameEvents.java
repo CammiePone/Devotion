@@ -5,15 +5,18 @@ import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.neoforge.common.attachments.entity.AuraAttachment;
 import dev.cammiescorner.devotion.neoforge.entrypoints.NeoMain;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.level.ChunkEvent;
 
 @EventBusSubscriber(modid = Devotion.MOD_ID)
-public class CommonEvents {
+public class CommonGameEvents {
 	@SubscribeEvent
 	public static void registerEntitiesForAttachments(EntityJoinLevelEvent event) {
 		Entity entity = event.getEntity();
@@ -23,6 +26,12 @@ public class CommonEvents {
 
 		if(entity instanceof Player)
 			entity.getData(NeoMain.KNOWN_RESEARCH);
+	}
+
+	@SubscribeEvent
+	public static void syncAuraNodes(ChunkEvent.Load event) {
+		if(event.getChunk() instanceof LevelChunk levelChunk && event.getLevel() instanceof ServerLevel)
+			levelChunk.getData(NeoMain.AURA_NODE).sync();
 	}
 
 	@SubscribeEvent

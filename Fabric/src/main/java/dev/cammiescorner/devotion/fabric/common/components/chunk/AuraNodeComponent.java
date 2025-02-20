@@ -10,7 +10,6 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
@@ -96,8 +95,7 @@ public class AuraNodeComponent implements AutoSyncedComponent {
 	}
 
 	public void addAuraNode(BlockPos pos, AuraNode node) {
-		ChunkPos chunkPos = access.getPos();
-		auraNodeMap.put(new BlockPos(chunkPos.x != 0 ? pos.getX() % chunkPos.x : pos.getX(), pos.getY(), chunkPos.z != 0 ? pos.getZ() % chunkPos.z : pos.getZ()), node);
+		auraNodeMap.put(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), node);
 		DevotionComponents.AURA_NODE.sync(access);
 	}
 

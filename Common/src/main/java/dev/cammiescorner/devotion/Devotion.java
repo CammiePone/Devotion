@@ -6,6 +6,7 @@ import dev.cammiescorner.devotion.api.Graph;
 import dev.cammiescorner.devotion.api.spells.AuraAffinity;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.MainHelper;
+import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundAuraNodePacket;
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundAuraPacket;
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundKnownResearchPacket;
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundRefreshResearchScreenPacket;
@@ -82,6 +83,7 @@ public class Devotion implements MainEntryPoint {
 		Network.registerPacket(ClientboundAuraPacket.TYPE, ClientboundAuraPacket.class, ClientboundAuraPacket.CODEC, ClientboundAuraPacket::handle);
 		Network.registerPacket(ClientboundKnownResearchPacket.TYPE, ClientboundKnownResearchPacket.class, ClientboundKnownResearchPacket.CODEC, ClientboundKnownResearchPacket::handle);
 		Network.registerPacket(ClientboundRefreshResearchScreenPacket.TYPE, ClientboundRefreshResearchScreenPacket.class, ClientboundRefreshResearchScreenPacket.CODEC, ClientboundRefreshResearchScreenPacket::handle);
+		Network.registerPacket(ClientboundAuraNodePacket.TYPE, ClientboundAuraNodePacket.class, ClientboundAuraNodePacket.CODEC, ClientboundAuraNodePacket::handle);
 
 		RegisterCustomLecternMenuEvent.EVENT.register(event -> {
 			event.register((level, pos, player, blockEntity, stack) -> new ResearchMenuProvider(level, stack, pos, blockEntity.bookAccess), DevotionItems.RESEARCH_SCROLL);

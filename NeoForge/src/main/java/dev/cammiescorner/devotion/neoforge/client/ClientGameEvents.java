@@ -10,7 +10,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -19,7 +18,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import java.util.Map;
 
 @EventBusSubscriber(modid = Devotion.MOD_ID)
-public class ClientEvents2 {
+public class ClientGameEvents {
 	@SubscribeEvent
 	public static void renderAuraNodes(RenderLevelStageEvent event) {
 		if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
@@ -34,12 +33,9 @@ public class ClientEvents2 {
 					LevelChunk chunk = storage.chunks.get(i);
 
 					if(chunk != null) {
-						ChunkPos chunkPos = chunk.getPos();
 						Map<BlockPos, AuraNode> auraNodeMap = MainHelper.getAuraNodes(chunk);
 
 						for(BlockPos blockPos : auraNodeMap.keySet()) {
-							blockPos = blockPos.offset(chunkPos.x * 16, 0, chunkPos.z * 16);
-
 							// TODO replace with actual render
 							level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 0, 0, 0);
 						}
