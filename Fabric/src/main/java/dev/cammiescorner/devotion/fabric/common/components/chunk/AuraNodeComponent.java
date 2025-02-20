@@ -95,7 +95,7 @@ public class AuraNodeComponent implements AutoSyncedComponent {
 	}
 
 	public void addAuraNode(BlockPos pos, AuraNode node) {
-		auraNodeMap.put(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), node);
+		auraNodeMap.put(pos, node);
 		DevotionComponents.AURA_NODE.sync(access);
 	}
 

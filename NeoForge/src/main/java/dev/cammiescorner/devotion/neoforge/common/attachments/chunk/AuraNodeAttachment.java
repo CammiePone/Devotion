@@ -10,10 +10,10 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +22,12 @@ import java.util.random.RandomGenerator;
 public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 	private final Map<BlockPos, AuraNode> auraNodeMap = new HashMap<>();
 	private final RandomGenerator random = RandomGenerator.getDefault();
-	private final LevelChunk levelChunk;
+	private final ChunkAccess access;
 	private float auraAffinity;
 	private int maxAuraNodes;
 
 	public AuraNodeAttachment(IAttachmentHolder holder) {
-		this.levelChunk = holder instanceof LevelChunk levelChunk ? levelChunk : null;
+		this.access = holder instanceof ChunkAccess chunkAccess ? chunkAccess : null;
 		this.maxAuraNodes = Math.max(random.nextInt(-50, 2), 0);
 		this.auraAffinity = random.nextFloat();
 	}
@@ -48,7 +48,7 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 	}
 
 	@Override
-	public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+	public CompoundTag serializeNBT(HolderLookup.Provider provider) {
 		CompoundTag compoundTag = new CompoundTag();
 		ListTag listTag = new ListTag();
 
@@ -69,7 +69,7 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 	}
 
 	public void addAuraNode(BlockPos pos, AuraNode node) {
-		auraNodeMap.put(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), node);
+		auraNodeMap.put(pos, node);
 		sync();
 	}
 
@@ -78,11 +78,8 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 		sync();
 	}
 
-	public RandomGenerator getRandom() {
-		return random;
-	}
-
 	public Map<BlockPos, AuraNode> getAuraNodeMap() {
+		// TODO why is it empty????
 		return Map.copyOf(auraNodeMap);
 	}
 
@@ -95,8 +92,7 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 	}
 
 	public void sync() {
-		if(!auraNodeMap.isEmpty() && levelChunk != null && levelChunk.getLevel() instanceof ServerLevel level) {
-			Network.getNetworkHandler().sendToAllClients(new ClientboundAuraNodePacket(levelChunk.getPos(), auraNodeMap), level.getServer());
-		}
+		if(!auraNodeMap.isEmpty() && access instanceof LevelChunk && access.getLevel() instanceof ServerLevel level)
+			Network.getNetworkHandler().sendToClientsLoadingPos(new ClientboundAuraNodePacket(access.getPos(), auraNodeMap), level, access.getPos(), true);
 	}
 }

@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Map;
 
@@ -46,8 +47,10 @@ public class FabricClient implements ClientModInitializer {
 						Map<BlockPos, AuraNode> auraNodeMap = MainHelper.getAuraNodes(chunk);
 
 						for(BlockPos blockPos : auraNodeMap.keySet()) {
+							Vec3 pos = blockPos.getCenter();
+
 							// TODO replace with actual render
-							level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 0, 0, 0);
+							level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, pos.x(), pos.y(), pos.z(), 0, 0, 0);
 						}
 					}
 				}
