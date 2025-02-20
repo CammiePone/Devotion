@@ -56,10 +56,6 @@ public record ClientboundAuraPacket(int entityId, Map<AuraType, Float> aura, Aur
 				MainHelper.setAura(entity, entry.getKey(), entry.getValue());
 
 			MainHelper.setPrimaryAuraType(entity, primaryAuraType);
-
-			System.out.println("Side: " + (entity.level().isClientSide() ? "CLIENT" : "SERVER"));
-			System.out.println("From Packet Value: " + primaryAuraType);
-			System.out.println("From Packet After Set: " + MainHelper.getPrimaryAuraType(entity));
 		}
 	}
 }
