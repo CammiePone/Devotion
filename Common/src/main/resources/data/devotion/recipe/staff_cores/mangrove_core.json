@@ -13,7 +13,7 @@
 	"result": {
 		"id": "devotion:staff_core",
 		"components": {
-			"devotion:staff_core": "devotion:mangrove"
+			"devotion:staff_core": "devotion:mangrove_core"
 		}
 	}
 }

@@ -13,7 +13,7 @@
 		"id": "devotion:staff_cap",
 		"count": 2,
 		"components": {
-			"devotion:staff_cap": "devotion:iron"
+			"devotion:staff_cap": "devotion:iron_cap"
 		}
 	}
 }

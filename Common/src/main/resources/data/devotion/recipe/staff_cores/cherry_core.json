@@ -13,7 +13,7 @@
 	"result": {
 		"id": "devotion:staff_core",
 		"components": {
-			"devotion:staff_core": "devotion:cherry"
+			"devotion:staff_core": "devotion:cherry_core"
 		}
 	}
 }

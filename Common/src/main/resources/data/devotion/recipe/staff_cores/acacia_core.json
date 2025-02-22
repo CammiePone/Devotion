@@ -13,7 +13,7 @@
 	"result": {
 		"id": "devotion:staff_core",
 		"components": {
-			"devotion:staff_core": "devotion:acacia"
+			"devotion:staff_core": "devotion:acacia_core"
 		}
 	}
 }

@@ -43,7 +43,7 @@ public class FabricClient implements ClientModInitializer {
 			}
 
 			ctx.modifyModelAfterBake().register((bakedModel, context) -> {
-				if(bakedModel != null && context.resourceId() != null && context.resourceId().equals(Devotion.id("item/staff"))) {
+				if(context.resourceId() != null && context.resourceId().equals(Devotion.id("item/staff"))) {
 					Map<StaffCore, BakedModel> coreModels = new HashMap<>();
 					Map<StaffCap, BakedModel> capModels = new HashMap<>();
 
@@ -57,7 +57,7 @@ public class FabricClient implements ClientModInitializer {
 						capModels.put(staffCap, context.baker().bake(ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "staff_part/cap/" + location.getPath()), context.settings()));
 					}
 
-					return new StaffModel(coreModels, capModels, bakedModel);
+					return new StaffModel(coreModels, capModels);
 				}
 
 				return bakedModel;
