@@ -30,7 +30,7 @@ import java.util.Map;
 
 @CalledByReflection
 public class FabricClient implements ClientModInitializer {
-	private static final ModelResourceLocation STAFF_RESOURCE_LOCATION = new ModelResourceLocation(Devotion.id("staff"), "");
+	private static final ModelResourceLocation STAFF_RESOURCE_LOCATION = ModelResourceLocation.inventory(Devotion.id("staff"));
 
 	@Override
 	public void onInitializeClient() {
