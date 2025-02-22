@@ -23,7 +23,7 @@ public class StaffCapItem extends Item {
 		ChatFormatting formatting = discount < 0 ? ChatFormatting.RED : ChatFormatting.BLUE;
 
 		if(discount != 0)
-			tooltipComponents.add(Component.literal(String.format("%+.0f", discount * 100)).append("% ").append(Devotion.translate("staff_tooltip", "aura_discount")).withStyle(formatting));
+			tooltipComponents.add(Component.literal(String.format("%+.0f", discount * 100)).append("% ").append(Devotion.translate("tooltip", "aura_discount")).withStyle(formatting));
 	}
 
 	@Override

@@ -84,7 +84,9 @@
 	"staff.devotion.inert_netherite_capped": "Netherite-Capped",
 	"staff.devotion.charged_netherite_capped": "Netherite-Capped",
 
-	"staff_tooltip.devotion.aura_discount": "Aura Discount",
+	"tooltip.devotion.aura_discount": "Aura Discount",
+	"tooltip.devotion.hood_down": "Hood Down",
+	"tooltip.devotion.hood_up": "Hood Up",
 
 	"devotion_riddle.enhancement_0": "This is filler text #1 for an Enhancement riddle.",
 	"devotion_riddle.enhancement_1": "This is filler text #2 for an Enhancement riddle.",

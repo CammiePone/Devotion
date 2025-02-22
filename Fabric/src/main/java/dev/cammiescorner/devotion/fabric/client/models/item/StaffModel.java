@@ -62,7 +62,7 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
 		for(Map.Entry<StaffCap, BakedModel> entry : staffCapsBaked.entrySet())
 			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
-		
+
 		return bakedQuads;
 	}
 
