@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "devotion:item/caps/charged_netherite"
+		"layer0": "devotion:item/caps/iron_cap"
 	}
 }

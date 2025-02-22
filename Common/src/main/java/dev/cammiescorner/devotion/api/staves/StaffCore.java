@@ -27,7 +27,7 @@ public class StaffCore {
 
 	public String getDescriptionId() {
 		if(descriptionId == null)
-			descriptionId = Util.makeDescriptionId("item", getResourceLocation()) + "_core";
+			descriptionId = Util.makeDescriptionId("item", getResourceLocation());
 
 		return descriptionId;
 	}

@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/handheld",
 	"textures": {
-		"layer0": "devotion:item/cores/bamboo"
+		"layer0": "devotion:item/cores/jungle_core"
 	}
 }

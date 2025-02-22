@@ -3,8 +3,11 @@ package dev.cammiescorner.devotion.common.items;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.registries.DevotionMaterials;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 
@@ -24,6 +27,11 @@ public class MageRobesItem extends ArmorItem {
 
 	public MageRobesItem(Type type, Properties properties) {
 		this(type, properties, AuraType.NONE);
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+
 	}
 
 	public AuraType getPrimaryAuraType() {

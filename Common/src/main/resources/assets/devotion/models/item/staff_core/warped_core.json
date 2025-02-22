@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/handheld",
 	"textures": {
-		"layer0": "devotion:item/cores/spruce"
+		"layer0": "devotion:item/cores/warped_core"
 	}
 }

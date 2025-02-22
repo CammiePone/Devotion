@@ -9,17 +9,17 @@ import net.minecraft.core.Registry;
 
 public class DevotionStaffCores {
 	public static final RegistryHandler<StaffCore> STAFF_CORES = RegistryHandler.create(DevotionRegistries.STAFF_CORE, Devotion.MOD_ID);
-	public static final Registry<StaffCore> REGISTRY = STAFF_CORES.createNewRegistry(true, Devotion.id("oak"));
+	public static final Registry<StaffCore> REGISTRY = STAFF_CORES.createNewRegistry(true, Devotion.id("oak_core"));
 
-	public static final RegistrySupplier<StaffCore> OAK_CORE = STAFF_CORES.register("oak", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> SPRUCE_CORE = STAFF_CORES.register("spruce", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> BIRCH_CORE = STAFF_CORES.register("birch", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> JUNGLE_CORE = STAFF_CORES.register("jungle", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> ACACIA_CORE = STAFF_CORES.register("acacia", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> DARK_OAK_CORE = STAFF_CORES.register("dark_oak", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> BAMBOO_CORE = STAFF_CORES.register("bamboo", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> MANGROVE_CORE = STAFF_CORES.register("mangrove", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> CHERRY_CORE = STAFF_CORES.register("cherry", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> CRIMSON_CORE = STAFF_CORES.register("crimson", StaffCore::new);
-	public static final RegistrySupplier<StaffCore> WARPED_CORE = STAFF_CORES.register("warped", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> OAK_CORE = STAFF_CORES.register("oak_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> SPRUCE_CORE = STAFF_CORES.register("spruce_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> BIRCH_CORE = STAFF_CORES.register("birch_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> JUNGLE_CORE = STAFF_CORES.register("jungle_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> ACACIA_CORE = STAFF_CORES.register("acacia_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> DARK_OAK_CORE = STAFF_CORES.register("dark_oak_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> BAMBOO_CORE = STAFF_CORES.register("bamboo_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> MANGROVE_CORE = STAFF_CORES.register("mangrove_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> CHERRY_CORE = STAFF_CORES.register("cherry_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> CRIMSON_CORE = STAFF_CORES.register("crimson_core", StaffCore::new);
+	public static final RegistrySupplier<StaffCore> WARPED_CORE = STAFF_CORES.register("warped_core", StaffCore::new);
 }

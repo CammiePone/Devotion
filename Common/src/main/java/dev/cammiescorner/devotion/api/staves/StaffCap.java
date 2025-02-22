@@ -40,14 +40,14 @@ public class StaffCap {
 
 	public String getDescriptionId() {
 		if(descriptionId == null)
-			descriptionId = Util.makeDescriptionId("item", DevotionStaffCaps.REGISTRY.getKey(this)) + "_cap";
+			descriptionId = Util.makeDescriptionId("item", DevotionStaffCaps.REGISTRY.getKey(this));
 
 		return descriptionId;
 	}
 
 	public String getStaffId() {
 		if(staffId == null)
-			staffId = Util.makeDescriptionId("staff", DevotionStaffCaps.REGISTRY.getKey(this)) + "_capped";
+			staffId = Util.makeDescriptionId("staff", DevotionStaffCaps.REGISTRY.getKey(this)) + "ped";
 
 		return staffId;
 	}

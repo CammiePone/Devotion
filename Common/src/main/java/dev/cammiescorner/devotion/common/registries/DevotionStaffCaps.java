@@ -9,12 +9,12 @@ import net.minecraft.core.Registry;
 
 public class DevotionStaffCaps {
 	public static final RegistryHandler<StaffCap> STAFF_CAPS = RegistryHandler.create(DevotionRegistries.STAFF_CAP, Devotion.MOD_ID);
-	public static final Registry<StaffCap> REGISTRY = STAFF_CAPS.createNewRegistry(true, Devotion.id("iron"));
+	public static final Registry<StaffCap> REGISTRY = STAFF_CAPS.createNewRegistry(true, Devotion.id("iron_cap"));
 
-	public static final RegistrySupplier<StaffCap> IRON_CAP = STAFF_CAPS.register("iron", () -> new StaffCap(-0.1f));
-	public static final RegistrySupplier<StaffCap> GOLD_CAP = STAFF_CAPS.register("gold", () -> new StaffCap(0f));
-	public static final RegistrySupplier<StaffCap> INERT_COPPER_CAP = STAFF_CAPS.register("inert_copper", () -> new StaffCap(0f, true));
-	public static final RegistrySupplier<StaffCap> CHARGED_COPPER_CAP = STAFF_CAPS.register("charged_copper", () -> new StaffCap(0.1f, false));
-	public static final RegistrySupplier<StaffCap> INERT_NETHERITE_CAP = STAFF_CAPS.register("inert_netherite", () -> new StaffCap(0.15f, true));
-	public static final RegistrySupplier<StaffCap> CHARGED_NETHERITE_CAP = STAFF_CAPS.register("charged_netherite", () -> new StaffCap(0.25f, false));
+	public static final RegistrySupplier<StaffCap> IRON_CAP = STAFF_CAPS.register("iron_cap", () -> new StaffCap(-0.1f));
+	public static final RegistrySupplier<StaffCap> GOLD_CAP = STAFF_CAPS.register("gold_cap", () -> new StaffCap(0f));
+	public static final RegistrySupplier<StaffCap> INERT_COPPER_CAP = STAFF_CAPS.register("inert_copper_cap", () -> new StaffCap(0f, true));
+	public static final RegistrySupplier<StaffCap> CHARGED_COPPER_CAP = STAFF_CAPS.register("charged_copper_cap", () -> new StaffCap(0.1f, false));
+	public static final RegistrySupplier<StaffCap> INERT_NETHERITE_CAP = STAFF_CAPS.register("inert_netherite_cap", () -> new StaffCap(0.15f, true));
+	public static final RegistrySupplier<StaffCap> CHARGED_NETHERITE_CAP = STAFF_CAPS.register("charged_netherite_cap", () -> new StaffCap(0.25f, false));
 }

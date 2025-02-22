@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/handheld",
 	"textures": {
-		"layer0": "devotion:item/cores/acacia"
+		"layer0": "devotion:item/cores/bamboo_core"
 	}
 }
