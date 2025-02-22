@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.fabric.client.models.item;
 
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
+import dev.cammiescorner.devotion.common.registries.DevotionData;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -16,28 +17,26 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
-	private final Map<StaffCore, UnbakedModel> staffCoreModels;
-	private final Map<StaffCap, UnbakedModel> staffCapsModels;
-	private final List<BakedModel> bakedDelegates = new ArrayList<>();
+	private final Map<StaffCore, BakedModel> staffCoreBaked = new HashMap<>();
+	private final Map<StaffCap, BakedModel> staffCapsBaked = new HashMap<>();
+	private final Map<StaffCore, UnbakedModel> staffCoreUnbaked;
+	private final Map<StaffCap, UnbakedModel> staffCapsUnbaked;
 
-	public StaffModel(Map<StaffCore, UnbakedModel> staffCoreModels, Map<StaffCap, UnbakedModel> staffCapsModels) {
-		this.staffCoreModels = staffCoreModels;
-		this.staffCapsModels = staffCapsModels;
+	public StaffModel(Map<StaffCore, UnbakedModel> staffCoreUnbaked, Map<StaffCap, UnbakedModel> staffCapsUnbaked) {
+		this.staffCoreUnbaked = staffCoreUnbaked;
+		this.staffCapsUnbaked = staffCapsUnbaked;
 	}
 
 
 	@Override
 	public void emitItemQuads(ItemStack stack, Supplier<RandomSource> randomSupplier, RenderContext context) {
-		for(BakedModel delegate : bakedDelegates)
-			delegate.emitItemQuads(stack, randomSupplier, context);
+		staffCoreBaked.get(stack.get(DevotionData.STAFF_CORE.get()).value()).emitItemQuads(stack, randomSupplier, context);
+		staffCapsBaked.get(stack.get(DevotionData.STAFF_CAP.get()).value()).emitItemQuads(stack, randomSupplier, context);
 	}
 
 	@Override
@@ -47,10 +46,10 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 	@Override
 	public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState state) {
-		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreModels.entrySet())
-			bakedDelegates.add(entry.getValue().bake(baker, spriteGetter, state));
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsModels.entrySet())
-			bakedDelegates.add(entry.getValue().bake(baker, spriteGetter, state));
+		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
+			staffCoreBaked.put(entry.getKey(), entry.getValue().bake(baker, spriteGetter, state));
+		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsUnbaked.entrySet())
+			staffCapsBaked.put(entry.getKey(), entry.getValue().bake(baker, spriteGetter, state));
 
 		return this;
 	}
@@ -59,9 +58,11 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random) {
 		List<BakedQuad> bakedQuads = new ArrayList<>();
 
-		for(BakedModel model : bakedDelegates)
-			bakedQuads.addAll(model.getQuads(state, direction, random));
-
+		for(Map.Entry<StaffCore, BakedModel> entry : staffCoreBaked.entrySet())
+			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
+		for(Map.Entry<StaffCap, BakedModel> entry : staffCapsBaked.entrySet())
+			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
+		
 		return bakedQuads;
 	}
 
@@ -104,9 +105,9 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	public Collection<ResourceLocation> getDependencies() {
 		List<ResourceLocation> dependencies = new ArrayList<>();
 
-		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreModels.entrySet())
+		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
 			dependencies.addAll(entry.getValue().getDependencies());
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsModels.entrySet())
+		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsUnbaked.entrySet())
 			dependencies.addAll(entry.getValue().getDependencies());
 
 		return dependencies;
@@ -114,9 +115,9 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 	@Override
 	public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver) {
-		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreModels.entrySet())
+		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
 			entry.getValue().resolveParents(resolver);
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsModels.entrySet())
+		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsUnbaked.entrySet())
 			entry.getValue().resolveParents(resolver);
 	}
 }
