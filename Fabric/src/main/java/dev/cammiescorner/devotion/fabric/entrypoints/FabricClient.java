@@ -17,7 +17,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +30,8 @@ import java.util.Map;
 
 @CalledByReflection
 public class FabricClient implements ClientModInitializer {
+	private static final ModelResourceLocation STAFF_RESOURCE_LOCATION = new ModelResourceLocation(Devotion.id("staff"), "");
+
 	@Override
 	public void onInitializeClient() {
 		ModelLoadingPlugin.register(ctx -> {
@@ -42,25 +45,25 @@ public class FabricClient implements ClientModInitializer {
 				ctx.addModels(id.withPrefix("staff_part/cap/"));
 			}
 
-			ctx.modifyModelAfterBake().register((bakedModel, context) -> {
-				if(context.resourceId() != null && context.resourceId().equals(Devotion.id("item/staff"))) {
-					Map<StaffCore, BakedModel> coreModels = new HashMap<>();
-					Map<StaffCap, BakedModel> capModels = new HashMap<>();
+			ctx.modifyModelOnLoad().register((unbakedModel, context) -> {
+				if(STAFF_RESOURCE_LOCATION.equals(context.topLevelId())) {
+					Map<StaffCore, UnbakedModel> coreModels = new HashMap<>();
+					Map<StaffCap, UnbakedModel> capModels = new HashMap<>();
 
 					for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
 						StaffCore core = DevotionStaffCores.REGISTRY.get(location);
-						coreModels.put(core, context.baker().bake(ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "staff_part/core/" + location.getPath()), context.settings()));
+						coreModels.put(core, context.getOrLoadModel(ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "staff_part/core/" + location.getPath())));
 					}
 
 					for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
 						StaffCap staffCap = DevotionStaffCaps.REGISTRY.get(location);
-						capModels.put(staffCap, context.baker().bake(ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "staff_part/cap/" + location.getPath()), context.settings()));
+						capModels.put(staffCap, context.getOrLoadModel(ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "staff_part/cap/" + location.getPath())));
 					}
 
 					return new StaffModel(coreModels, capModels);
 				}
 
-				return bakedModel;
+				return unbakedModel;
 			});
 		});
 
