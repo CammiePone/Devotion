@@ -31,8 +31,7 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 		this.staffCoreUnbaked = staffCoreUnbaked;
 		this.staffCapsUnbaked = staffCapsUnbaked;
 	}
-
-
+	
 	@Override
 	public void emitItemQuads(ItemStack stack, Supplier<RandomSource> randomSupplier, RenderContext context) {
 		staffCoreBaked.get(stack.get(DevotionData.STAFF_CORE.get()).value()).emitItemQuads(stack, randomSupplier, context);
