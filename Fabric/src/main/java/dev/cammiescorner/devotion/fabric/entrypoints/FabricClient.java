@@ -52,12 +52,12 @@ public class FabricClient implements ClientModInitializer {
 
 					for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
 						StaffCore core = DevotionStaffCores.REGISTRY.get(location);
-						coreModels.put(core, context.getOrLoadModel(ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "staff_part/core/" + location.getPath())));
+						coreModels.put(core, context.getOrLoadModel(location.withPrefix("staff_part/core/")));
 					}
 
 					for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
 						StaffCap staffCap = DevotionStaffCaps.REGISTRY.get(location);
-						capModels.put(staffCap, context.getOrLoadModel(ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "staff_part/cap/" + location.getPath())));
+						capModels.put(staffCap, context.getOrLoadModel(location.withPrefix("staff_part/cap/")));
 					}
 
 					return new StaffModel(coreModels, capModels);
