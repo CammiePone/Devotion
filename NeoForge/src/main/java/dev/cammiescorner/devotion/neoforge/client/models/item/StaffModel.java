@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Function;
 
-public class StaffModel implements BakedModel, UnbakedModel { // TODO extend/implement whatever neo's equivalent of FabricBakedModel is
+public class StaffModel implements BakedModel, UnbakedModel {
 	private final Map<StaffCore, BakedModel> staffCoreBaked = new HashMap<>();
 	private final Map<StaffCap, BakedModel> staffCapBaked = new HashMap<>();
 	private final Map<StaffCore, UnbakedModel> unbakedCoreModels;
