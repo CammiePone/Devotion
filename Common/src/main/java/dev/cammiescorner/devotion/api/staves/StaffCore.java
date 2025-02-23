@@ -15,6 +15,8 @@ public class StaffCore {
 	public static final Codec<Holder<StaffCore>> CODEC = RegistryFixedCodec.create(DevotionRegistries.STAFF_CORE);
 	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<StaffCore>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistries.STAFF_CORE);
 	private ResourceLocation resourceLocation;
+	private ResourceLocation itemModelLocation;
+	private ResourceLocation staffModelLocation;
 	private String descriptionId;
 	private String staffId;
 
@@ -23,6 +25,20 @@ public class StaffCore {
 			resourceLocation = DevotionStaffCores.REGISTRY.getKey(this);
 
 		return resourceLocation;
+	}
+
+	public ResourceLocation getItemModelLocation() {
+		if(itemModelLocation == null)
+			itemModelLocation = getResourceLocation().withPrefix("item/staff_core/");
+
+		return itemModelLocation;
+	}
+
+	public ResourceLocation getStaffModelLocation() {
+		if(staffModelLocation == null)
+			staffModelLocation = getResourceLocation().withPrefix("staff_part/staff_core/");
+
+		return staffModelLocation;
 	}
 
 	public String getDescriptionId() {

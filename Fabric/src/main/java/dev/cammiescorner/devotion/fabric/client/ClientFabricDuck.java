@@ -14,13 +14,13 @@ public class ClientFabricDuck implements ClientDuck {
 	public ModelResourceLocation getStaffCoreModel(StaffCore core) {
 		ResourceLocation id = DevotionStaffCores.REGISTRY.getKey(core);
 
-		return ModelLoadingConstants.toResourceModelId(id.withPrefix("item/staff_core/"));
+		return ModelLoadingConstants.toResourceModelId(DevotionStaffCores.REGISTRY.get(id).getItemModelLocation());
 	}
 
 	@Override
 	public ModelResourceLocation getStaffCapModel(StaffCap cap) {
 		ResourceLocation id = DevotionStaffCaps.REGISTRY.getKey(cap);
 
-		return ModelLoadingConstants.toResourceModelId(id.withPrefix("item/staff_cap/"));
+		return ModelLoadingConstants.toResourceModelId(DevotionStaffCaps.REGISTRY.get(id).getItemModelLocation());
 	}
 }

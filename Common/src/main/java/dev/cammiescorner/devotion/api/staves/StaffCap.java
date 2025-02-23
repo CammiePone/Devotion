@@ -22,13 +22,6 @@ public class StaffCap {
 	private String descriptionId;
 	private String staffId;
 
-	public ResourceLocation getResourceLocation() {
-		if(resourceLocation == null)
-			resourceLocation = DevotionStaffCaps.REGISTRY.getKey(this);
-
-		return resourceLocation;
-	}
-
 	public StaffCap(float discount, boolean inert) {
 		this.discount = discount;
 		this.inert = inert;
@@ -36,6 +29,21 @@ public class StaffCap {
 
 	public StaffCap(float discount) {
 		this(discount, false);
+	}
+
+	public ResourceLocation getResourceLocation() {
+		if(resourceLocation == null)
+			resourceLocation = DevotionStaffCaps.REGISTRY.getKey(this);
+
+		return resourceLocation;
+	}
+
+	public ResourceLocation getItemModelLocation() {
+		return getResourceLocation().withPrefix("item/staff_cap/");
+	}
+
+	public ResourceLocation getStaffModelLocation() {
+		return getResourceLocation().withPrefix("staff_part/staff_cap/");
 	}
 
 	public String getDescriptionId() {

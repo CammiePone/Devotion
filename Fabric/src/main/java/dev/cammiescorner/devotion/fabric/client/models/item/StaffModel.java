@@ -23,19 +23,19 @@ import java.util.function.Supplier;
 
 public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	private final Map<StaffCore, BakedModel> staffCoreBaked = new HashMap<>();
-	private final Map<StaffCap, BakedModel> staffCapsBaked = new HashMap<>();
+	private final Map<StaffCap, BakedModel> staffCapBaked = new HashMap<>();
 	private final Map<StaffCore, UnbakedModel> staffCoreUnbaked;
-	private final Map<StaffCap, UnbakedModel> staffCapsUnbaked;
+	private final Map<StaffCap, UnbakedModel> staffCapUnbaked;
 
-	public StaffModel(Map<StaffCore, UnbakedModel> staffCoreUnbaked, Map<StaffCap, UnbakedModel> staffCapsUnbaked) {
+	public StaffModel(Map<StaffCore, UnbakedModel> staffCoreUnbaked, Map<StaffCap, UnbakedModel> staffCapUnbaked) {
 		this.staffCoreUnbaked = staffCoreUnbaked;
-		this.staffCapsUnbaked = staffCapsUnbaked;
+		this.staffCapUnbaked = staffCapUnbaked;
 	}
 
 	@Override
 	public void emitItemQuads(ItemStack stack, Supplier<RandomSource> randomSupplier, RenderContext context) {
 		staffCoreBaked.get(stack.get(DevotionData.STAFF_CORE.get()).value()).emitItemQuads(stack, randomSupplier, context);
-		staffCapsBaked.get(stack.get(DevotionData.STAFF_CAP.get()).value()).emitItemQuads(stack, randomSupplier, context);
+		staffCapBaked.get(stack.get(DevotionData.STAFF_CAP.get()).value()).emitItemQuads(stack, randomSupplier, context);
 	}
 
 	@Override
@@ -46,9 +46,9 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	@Override
 	public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState state) {
 		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
-			staffCoreBaked.put(entry.getKey(), entry.getValue().bake(baker, spriteGetter, state));
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsUnbaked.entrySet())
-			staffCapsBaked.put(entry.getKey(), entry.getValue().bake(baker, spriteGetter, state));
+			staffCoreBaked.put(entry.getKey(), baker.bake(entry.getKey().getStaffModelLocation(), state));
+		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapUnbaked.entrySet())
+			staffCapBaked.put(entry.getKey(), baker.bake(entry.getKey().getStaffModelLocation(), state));
 
 		return this;
 	}
@@ -59,7 +59,7 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 		for(Map.Entry<StaffCore, BakedModel> entry : staffCoreBaked.entrySet())
 			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
-		for(Map.Entry<StaffCap, BakedModel> entry : staffCapsBaked.entrySet())
+		for(Map.Entry<StaffCap, BakedModel> entry : staffCapBaked.entrySet())
 			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
 
 		return bakedQuads;
@@ -106,7 +106,7 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
 			dependencies.addAll(entry.getValue().getDependencies());
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsUnbaked.entrySet())
+		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapUnbaked.entrySet())
 			dependencies.addAll(entry.getValue().getDependencies());
 
 		return dependencies;
@@ -116,7 +116,7 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver) {
 		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
 			entry.getValue().resolveParents(resolver);
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapsUnbaked.entrySet())
+		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapUnbaked.entrySet())
 			entry.getValue().resolveParents(resolver);
 	}
 }

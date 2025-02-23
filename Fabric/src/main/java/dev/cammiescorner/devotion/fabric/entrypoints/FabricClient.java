@@ -35,14 +35,14 @@ public class FabricClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ModelLoadingPlugin.register(ctx -> {
-			for(ResourceLocation id : DevotionStaffCores.REGISTRY.keySet()) {
-				ctx.addModels(id.withPrefix("item/staff_core/"));
-				ctx.addModels(id.withPrefix("staff_part/core/"));
+			for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
+				ctx.addModels(DevotionStaffCores.REGISTRY.get(location).getItemModelLocation());
+				ctx.addModels(DevotionStaffCores.REGISTRY.get(location).getStaffModelLocation());
 			}
 
-			for(ResourceLocation id : DevotionStaffCaps.REGISTRY.keySet()) {
-				ctx.addModels(id.withPrefix("item/staff_cap/"));
-				ctx.addModels(id.withPrefix("staff_part/cap/"));
+			for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
+				ctx.addModels(DevotionStaffCaps.REGISTRY.get(location).getItemModelLocation());
+				ctx.addModels(DevotionStaffCaps.REGISTRY.get(location).getStaffModelLocation());
 			}
 
 			ctx.modifyModelOnLoad().register((unbakedModel, context) -> {
@@ -52,12 +52,12 @@ public class FabricClient implements ClientModInitializer {
 
 					for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
 						StaffCore core = DevotionStaffCores.REGISTRY.get(location);
-						coreModels.put(core, context.getOrLoadModel(location.withPrefix("staff_part/core/")));
+						coreModels.put(core, context.getOrLoadModel(DevotionStaffCores.REGISTRY.get(location).getStaffModelLocation()));
 					}
 
 					for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
 						StaffCap staffCap = DevotionStaffCaps.REGISTRY.get(location);
-						capModels.put(staffCap, context.getOrLoadModel(location.withPrefix("staff_part/cap/")));
+						capModels.put(staffCap, context.getOrLoadModel(DevotionStaffCaps.REGISTRY.get(location).getStaffModelLocation()));
 					}
 
 					return new StaffModel(coreModels, capModels);

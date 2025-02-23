@@ -13,9 +13,13 @@ import net.neoforged.neoforge.client.event.ModelEvent;
 public class ClientModEvents {
 	@SubscribeEvent
 	public static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
-		for(ResourceLocation id : DevotionStaffCores.REGISTRY.keySet())
-			event.register(ModelResourceLocation.standalone(id.withPrefix("item/staff_core/")));
-		for(ResourceLocation id : DevotionStaffCaps.REGISTRY.keySet())
-			event.register(ModelResourceLocation.standalone(id.withPrefix("item/staff_cap/")));
+		for(ResourceLocation id : DevotionStaffCores.REGISTRY.keySet()) {
+			event.register(ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getItemModelLocation()));
+			event.register(ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getStaffModelLocation()));
+		}
+		for(ResourceLocation id : DevotionStaffCaps.REGISTRY.keySet()) {
+			event.register(ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getItemModelLocation()));
+			event.register(ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getStaffModelLocation()));
+		}
 	}
 }

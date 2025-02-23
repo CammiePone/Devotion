@@ -13,13 +13,13 @@ public class ClientNeoDuck implements ClientDuck {
 	public ModelResourceLocation getStaffCoreModel(StaffCore core) {
 		ResourceLocation id = DevotionStaffCores.REGISTRY.getKey(core);
 
-		return ModelResourceLocation.standalone(id.withPrefix("item/staff_core/"));
+		return ModelResourceLocation.standalone(DevotionStaffCores.REGISTRY.get(id).getItemModelLocation());
 	}
 
 	@Override
 	public ModelResourceLocation getStaffCapModel(StaffCap cap) {
 		ResourceLocation id = DevotionStaffCaps.REGISTRY.getKey(cap);
 
-		return ModelResourceLocation.standalone(id.withPrefix("item/staff_cap/"));
+		return ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getItemModelLocation());
 	}
 }
