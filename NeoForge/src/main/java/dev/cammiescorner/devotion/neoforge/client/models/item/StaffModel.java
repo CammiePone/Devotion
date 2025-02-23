@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.neoforge.client.models.item;
 
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
+import dev.cammiescorner.devotion.common.registries.DevotionData;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -12,6 +13,7 @@ import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,6 +29,11 @@ public class StaffModel implements BakedModel, UnbakedModel { // TODO extend/imp
 	public StaffModel(Map<StaffCore, UnbakedModel> unbakedCoreModels, Map<StaffCap, UnbakedModel> unbakedCapModels) {
 		this.unbakedCoreModels = unbakedCoreModels;
 		this.unbakedCapModels = unbakedCapModels;
+	}
+
+	@Override
+	public List<BakedModel> getRenderPasses(ItemStack stack, boolean fabulous) {
+		return List.of(staffCoreBaked.get(stack.get(DevotionData.STAFF_CORE.get()).value()), staffCapBaked.get(stack.get(DevotionData.STAFF_CAP.get()).value()));
 	}
 
 	@Override
