@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "devotion:item/caps/gold_cap"
+		"layer0": "devotion:item/staff_cap/gold_cap"
 	}
 }

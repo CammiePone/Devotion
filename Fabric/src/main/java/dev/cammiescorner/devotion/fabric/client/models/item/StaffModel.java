@@ -3,6 +3,8 @@ package dev.cammiescorner.devotion.fabric.client.models.item;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.common.registries.DevotionData;
+import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
+import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -24,12 +26,12 @@ import java.util.function.Supplier;
 public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	private final Map<StaffCore, BakedModel> staffCoreBaked = new HashMap<>();
 	private final Map<StaffCap, BakedModel> staffCapBaked = new HashMap<>();
-	private final Map<StaffCore, UnbakedModel> staffCoreUnbaked;
-	private final Map<StaffCap, UnbakedModel> staffCapUnbaked;
+	private final Map<StaffCore, UnbakedModel> unbakedCoreModels;
+	private final Map<StaffCap, UnbakedModel> unbakedCapModels;
 
-	public StaffModel(Map<StaffCore, UnbakedModel> staffCoreUnbaked, Map<StaffCap, UnbakedModel> staffCapUnbaked) {
-		this.staffCoreUnbaked = staffCoreUnbaked;
-		this.staffCapUnbaked = staffCapUnbaked;
+	public StaffModel(Map<StaffCore, UnbakedModel> unbakedCoreModels, Map<StaffCap, UnbakedModel> unbakedCapModels) {
+		this.unbakedCoreModels = unbakedCoreModels;
+		this.unbakedCapModels = unbakedCapModels;
 	}
 
 	@Override
@@ -45,10 +47,17 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 	@Override
 	public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState state) {
-		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
-			staffCoreBaked.put(entry.getKey(), baker.bake(entry.getKey().getStaffModelLocation(), state));
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapUnbaked.entrySet())
-			staffCapBaked.put(entry.getKey(), baker.bake(entry.getKey().getStaffModelLocation(), state));
+		for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
+			StaffCore staffCore = DevotionStaffCores.REGISTRY.get(location);
+
+			staffCoreBaked.put(staffCore, baker.bake(staffCore.getStaffModelLocation(), state));
+		}
+
+		for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
+			StaffCap staffCap = DevotionStaffCaps.REGISTRY.get(location);
+
+			staffCapBaked.put(staffCap, baker.bake(staffCap.getStaffModelLocation(), state));
+		}
 
 		return this;
 	}
@@ -92,21 +101,21 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 	@Override
 	public ItemTransforms getTransforms() {
-		return ItemTransforms.NO_TRANSFORMS;
+		return staffCoreBaked.get(DevotionStaffCores.OAK_CORE.get()).getTransforms();
 	}
 
 	@Override
 	public ItemOverrides getOverrides() {
-		return ItemOverrides.EMPTY;
+		return staffCoreBaked.get(DevotionStaffCores.OAK_CORE.get()).getOverrides();
 	}
 
 	@Override
 	public Collection<ResourceLocation> getDependencies() {
 		List<ResourceLocation> dependencies = new ArrayList<>();
 
-		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
+		for(Map.Entry<StaffCore, UnbakedModel> entry : unbakedCoreModels.entrySet())
 			dependencies.addAll(entry.getValue().getDependencies());
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapUnbaked.entrySet())
+		for(Map.Entry<StaffCap, UnbakedModel> entry : unbakedCapModels.entrySet())
 			dependencies.addAll(entry.getValue().getDependencies());
 
 		return dependencies;
@@ -114,9 +123,9 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 	@Override
 	public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver) {
-		for(Map.Entry<StaffCore, UnbakedModel> entry : staffCoreUnbaked.entrySet())
+		for(Map.Entry<StaffCore, UnbakedModel> entry : unbakedCoreModels.entrySet())
 			entry.getValue().resolveParents(resolver);
-		for(Map.Entry<StaffCap, UnbakedModel> entry : staffCapUnbaked.entrySet())
+		for(Map.Entry<StaffCap, UnbakedModel> entry : unbakedCapModels.entrySet())
 			entry.getValue().resolveParents(resolver);
 	}
 }

@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "devotion:item/caps/iron_cap"
+		"layer0": "devotion:item/staff_cap/iron_cap"
 	}
 }

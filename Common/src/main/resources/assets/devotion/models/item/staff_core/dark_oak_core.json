@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/handheld",
 	"textures": {
-		"layer0": "devotion:item/cores/dark_oak_core"
+		"layer0": "devotion:item/staff_core/dark_oak_core"
 	}
 }
