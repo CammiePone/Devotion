@@ -23,13 +23,13 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
+public class FabricStaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	private final Map<StaffCore, BakedModel> staffCoreBaked = new HashMap<>();
 	private final Map<StaffCap, BakedModel> staffCapBaked = new HashMap<>();
 	private final Map<StaffCore, UnbakedModel> unbakedCoreModels;
 	private final Map<StaffCap, UnbakedModel> unbakedCapModels;
 
-	public StaffModel(Map<StaffCore, UnbakedModel> unbakedCoreModels, Map<StaffCap, UnbakedModel> unbakedCapModels) {
+	public FabricStaffModel(Map<StaffCore, UnbakedModel> unbakedCoreModels, Map<StaffCap, UnbakedModel> unbakedCapModels) {
 		this.unbakedCoreModels = unbakedCoreModels;
 		this.unbakedCapModels = unbakedCapModels;
 	}

@@ -8,7 +8,7 @@ import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
-import dev.cammiescorner.devotion.fabric.client.models.item.StaffModel;
+import dev.cammiescorner.devotion.fabric.client.models.item.FabricStaffModel;
 import dev.upcraft.sparkweave.api.annotation.CalledByReflection;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -60,7 +60,7 @@ public class FabricClient implements ClientModInitializer {
 						capModels.put(staffCap, context.getOrLoadModel(DevotionStaffCaps.REGISTRY.get(location).getStaffModelLocation()));
 					}
 
-					return new StaffModel(coreModels, capModels);
+					return new FabricStaffModel(coreModels, capModels);
 				}
 
 				return unbakedModel;
