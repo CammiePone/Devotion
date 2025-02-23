@@ -15,6 +15,6 @@ public class DevotionStaffCaps {
 	public static final RegistrySupplier<StaffCap> GOLD_CAP = STAFF_CAPS.register("gold_cap", () -> new StaffCap(0f));
 	public static final RegistrySupplier<StaffCap> INERT_COPPER_CAP = STAFF_CAPS.register("inert_copper_cap", () -> new StaffCap(0f, true));
 	public static final RegistrySupplier<StaffCap> CHARGED_COPPER_CAP = STAFF_CAPS.register("charged_copper_cap", () -> new StaffCap(0.1f, false));
-	public static final RegistrySupplier<StaffCap> INERT_NETHERITE_CAP = STAFF_CAPS.register("inert_netherite_cap", () -> new StaffCap(0.15f, true));
-	public static final RegistrySupplier<StaffCap> CHARGED_NETHERITE_CAP = STAFF_CAPS.register("charged_netherite_cap", () -> new StaffCap(0.25f, false));
+	public static final RegistrySupplier<StaffCap> INERT_NETHERITE_CAP = STAFF_CAPS.register("inert_netherite_cap", () -> new StaffCap(0f, true));
+	public static final RegistrySupplier<StaffCap> CHARGED_NETHERITE_CAP = STAFF_CAPS.register("charged_netherite_cap", () -> new StaffCap(0.2f, false));
 }
