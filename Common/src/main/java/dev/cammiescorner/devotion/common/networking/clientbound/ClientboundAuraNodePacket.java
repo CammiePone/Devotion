@@ -16,7 +16,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO remove printfs later once problem is solved
 public record ClientboundAuraNodePacket(ChunkPos chunkPos, Map<BlockPos, AuraNode> auraNodeMap) implements CustomPacketPayload {
 	public static final Type<ClientboundAuraNodePacket> TYPE = new Type<>(Devotion.id("aura_node"));
 	public static final StreamCodec<? extends FriendlyByteBuf, ClientboundAuraNodePacket> CODEC = StreamCodec.of((buffer, value) -> {
