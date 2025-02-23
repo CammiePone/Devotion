@@ -5,7 +5,7 @@ import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
-import dev.cammiescorner.devotion.neoforge.client.models.item.StaffModel;
+import dev.cammiescorner.devotion.neoforge.client.models.item.NeoStaffModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
@@ -38,7 +38,7 @@ public abstract class ModelBakeryMixin {
 				capModels.put(staffCap, getModel(DevotionStaffCaps.REGISTRY.get(location).getStaffModelLocation()));
 			}
 
-			return new StaffModel(coreModels, capModels);
+			return new NeoStaffModel(coreModels, capModels);
 		}
 
 		return unbakedModel;
