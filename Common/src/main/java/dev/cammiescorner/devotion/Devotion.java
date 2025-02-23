@@ -107,17 +107,10 @@ public class Devotion implements MainEntryPoint {
 		});
 
 		EntityTickEvents.endTick(LivingEntity.class).register((entity, level) -> {
-			// TODO decide on how long it should take for aura to regenerate. currently takes 10 minutes to go from no aura to max for the given aura type
 			if(!level.isClientSide() && MainHelper.lastTimeAuraChanged(entity) % 240 == 0) {
 				for(AuraType auraType : AuraType.values()) {
 					AuraAffinity affinity = auraType.getAffinity(MainHelper.getPrimaryAuraType(entity));
 					float regenAmount = affinity.getMultiplier() * 0.02f;
-//					float altRegenAmount = switch(affinity) {
-//						case PRIMARY -> 4f;
-//						case SECONDARY -> 3f;
-//						case TERTIARY -> 2f;
-//						case OPPOSITE -> 1f;
-//					};
 
 					MainHelper.regenAura(entity, auraType, regenAmount, false);
 				}

@@ -38,18 +38,11 @@ public class CommonGameEvents {
 	public static void copyAuraStuff(PlayerEvent.Clone event) {
 		Player oldPlayer = event.getOriginal();
 		Player newPlayer = event.getEntity();
-
 		AuraType primaryAuraType = MainHelper.getPrimaryAuraType(oldPlayer);
+
 		MainHelper.setPrimaryAuraType(newPlayer, primaryAuraType);
 
-		if(!event.isWasDeath()) {
-			for(AuraType auraType : AuraType.values())
-				MainHelper.setAura(newPlayer, auraType, MainHelper.getAura(oldPlayer, auraType));
-		}
-		// CONSIDER uncomment this if we don't use the player's aura to fill the pillars
-//		else {
-//			for(AuraType auraType : AuraType.values())
-//				MainHelper.setAura(newPlayer, auraType, AuraAttachment.MAX_AURA * auraType.getAffinityMultiplier(primaryAuraType));
-//		}
+		for(AuraType auraType : AuraType.values())
+			MainHelper.setAura(newPlayer, auraType, MainHelper.getAura(oldPlayer, auraType));
 	}
 }

@@ -20,7 +20,7 @@ public class DevotionItems {
 	public static final RegistrySupplier<Item> STAFF_CORE = ITEMS.register("staff_core", StaffCoreItem::new);
 	public static final RegistrySupplier<Item> STAFF_CAP = ITEMS.register("staff_cap", StaffCapItem::new);
 	public static final RegistrySupplier<Item> STAFF = ITEMS.register("staff", StaffItem::new);
-	public static final RegistrySupplier<Item> AURAMETER = ITEMS.register("aurameter", () -> new Item(new Item.Properties().stacksTo(1))); // TODO replace with actual item class later
+	public static final RegistrySupplier<Item> AURAMETER = ITEMS.register("aurameter", AurameterItem::new);
 
 	public static final RegistrySupplier<Item> BASIC_MAGE_HOOD = ITEMS.register("basic_mage_hood", () -> new MageRobesItem(ArmorItem.Type.HELMET, new Item.Properties().component(DevotionData.CLOSED_HOOD.get(), false)));
 	public static final RegistrySupplier<Item> BASIC_MAGE_ROBE = ITEMS.register("basic_mage_robe", () -> new MageRobesItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
