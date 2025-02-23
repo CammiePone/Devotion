@@ -1,6 +1,6 @@
 {
 	"parent": "devotion:staff_part/basic_staff_cap",
 	"textures": {
-		"layer0": "devotion:item/staff_part/staff_cap/inert_netherite_cap"
+		"layer0": "devotion:item/staff_part/staff_cap/netherite_cap"
 	}
 }
