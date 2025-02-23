@@ -67,7 +67,7 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 	@Override
 	public boolean useAmbientOcclusion() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class StaffModel implements FabricBakedModel, BakedModel, UnbakedModel {
 
 	@Override
 	public boolean usesBlockLight() {
-		return true;
+		return false;
 	}
 
 	@Override
