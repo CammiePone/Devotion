@@ -3,8 +3,8 @@ package dev.cammiescorner.devotion.common.networking.clientbound;
 import commonnetwork.networking.data.PacketContext;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.world.AuraNode;
+import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.common.MainHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -61,7 +61,7 @@ public record ClientboundAuraNodePacket(ChunkPos chunkPos, Map<BlockPos, AuraNod
 	}
 
 	public static void handle(PacketContext<ClientboundAuraNodePacket> context) {
-		ClientLevel level = Minecraft.getInstance().level;
+		ClientLevel level = DevotionClient.client.level;
 		ChunkPos chunkPos = context.message().chunkPos;
 		Map<BlockPos, AuraNode> auraNodeMap = context.message().auraNodeMap;
 

@@ -92,7 +92,7 @@ public class AuraNodeAttachment implements INBTSerializable<CompoundTag> {
 	}
 
 	public void sync() {
-		if(!auraNodeMap.isEmpty() && access instanceof LevelChunk && access.getLevel() instanceof ServerLevel level)
-			Network.getNetworkHandler().sendToClientsLoadingPos(new ClientboundAuraNodePacket(access.getPos(), auraNodeMap), level, access.getPos(), true);
+		if(!auraNodeMap.isEmpty() && access.getLevel() instanceof ServerLevel && access instanceof LevelChunk levelChunk)
+			Network.getNetworkHandler().sendToClientsLoadingChunk(new ClientboundAuraNodePacket(access.getPos(), auraNodeMap), levelChunk);
 	}
 }
