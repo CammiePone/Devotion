@@ -1,8 +1,5 @@
 {
-	"texture_size": [32, 32],
-	"textures": {
-		"layer0": "minecraft:misc/white"
-	},
+	"parent": "devotion:staff_part/staff_base",
 	"elements": [
 		{
 			"name":      "top_cap_upper",
@@ -28,8 +25,8 @@
 				"east":  {"uv": [1.5, 4.5,   3,   5], "texture": "#layer0"},
 				"south": {"uv": [  3, 4.5, 4.5,   5], "texture": "#layer0"},
 				"west":  {"uv": [4.5, 4.5,   6,   5], "texture": "#layer0"},
-				"up":    {"uv": [1.5,   3,   3, 3.5], "texture": "#layer0"},
-				"down":  {"uv": [  3,   3, 4.5, 3.5], "texture": "#layer0"}
+				"up":    {"uv": [1.5,   3,   3, 4.5], "texture": "#layer0"},
+				"down":  {"uv": [  3,   3, 4.5, 4.5], "texture": "#layer0"}
 			}
 		},
 		{
