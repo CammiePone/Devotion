@@ -10,7 +10,9 @@ import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundAuraN
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundAuraPacket;
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundKnownResearchPacket;
 import dev.cammiescorner.devotion.common.networking.clientbound.ClientboundRefreshResearchScreenPacket;
+import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundGiveResearchScrollPacket;
 import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundOpenCloseHoodPacket;
+import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundSaveScrollDataPacket;
 import dev.cammiescorner.devotion.common.registries.*;
 import dev.cammiescorner.devotion.common.screens.providers.ResearchMenuProvider;
 import dev.upcraft.sparkweave.api.entrypoint.MainEntryPoint;
@@ -84,6 +86,10 @@ public class Devotion implements MainEntryPoint {
 		Network.registerPacket(ClientboundKnownResearchPacket.TYPE, ClientboundKnownResearchPacket.class, ClientboundKnownResearchPacket.CODEC, ClientboundKnownResearchPacket::handle);
 		Network.registerPacket(ClientboundRefreshResearchScreenPacket.TYPE, ClientboundRefreshResearchScreenPacket.class, ClientboundRefreshResearchScreenPacket.CODEC, ClientboundRefreshResearchScreenPacket::handle);
 		Network.registerPacket(ClientboundAuraNodePacket.TYPE, ClientboundAuraNodePacket.class, ClientboundAuraNodePacket.CODEC, ClientboundAuraNodePacket::handle);
+
+		Network.registerPacket(ServerboundOpenCloseHoodPacket.TYPE, ServerboundOpenCloseHoodPacket.class, ServerboundOpenCloseHoodPacket.CODEC, ServerboundOpenCloseHoodPacket::handle);
+		Network.registerPacket(ServerboundGiveResearchScrollPacket.TYPE, ServerboundGiveResearchScrollPacket.class, ServerboundGiveResearchScrollPacket.CODEC, ServerboundGiveResearchScrollPacket::handle);
+		Network.registerPacket(ServerboundSaveScrollDataPacket.TYPE, ServerboundSaveScrollDataPacket.class, ServerboundSaveScrollDataPacket.CODEC, ServerboundSaveScrollDataPacket::handle);
 
 		RegisterCustomLecternMenuEvent.EVENT.register(event -> {
 			event.register((level, pos, player, blockEntity, stack) -> new ResearchMenuProvider(level, stack, pos, blockEntity.bookAccess), DevotionItems.RESEARCH_SCROLL);
