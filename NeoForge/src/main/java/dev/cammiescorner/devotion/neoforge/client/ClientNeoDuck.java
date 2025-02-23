@@ -3,37 +3,26 @@ package dev.cammiescorner.devotion.neoforge.client;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.client.ClientDuck;
-import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
-import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
 
 public class ClientNeoDuck implements ClientDuck {
 	@Override
 	public ModelResourceLocation getCoreItemModelLocation(StaffCore core) {
-		ResourceLocation id = DevotionStaffCores.REGISTRY.getKey(core);
-
-		return ModelResourceLocation.standalone(DevotionStaffCores.REGISTRY.get(id).getItemModelLocation());
+		return ModelResourceLocation.standalone(core.getItemModelLocation());
 	}
 
 	@Override
 	public ModelResourceLocation getCapItemModelLocation(StaffCap cap) {
-		ResourceLocation id = DevotionStaffCaps.REGISTRY.getKey(cap);
-
-		return ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getItemModelLocation());
+		return ModelResourceLocation.standalone(cap.getItemModelLocation());
 	}
 
 	@Override
 	public ModelResourceLocation getCoreStaffModelLocation(StaffCore core) {
-		ResourceLocation id = DevotionStaffCores.REGISTRY.getKey(core);
-
-		return ModelResourceLocation.standalone(DevotionStaffCores.REGISTRY.get(id).getStaffModelLocation());
+		return ModelResourceLocation.standalone(core.getStaffModelLocation());
 	}
 
 	@Override
 	public ModelResourceLocation getCapStaffModelLocation(StaffCap cap) {
-		ResourceLocation id = DevotionStaffCaps.REGISTRY.getKey(cap);
-
-		return ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getStaffModelLocation());
+		return ModelResourceLocation.standalone(cap.getStaffModelLocation());
 	}
 }
