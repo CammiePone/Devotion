@@ -51,13 +51,13 @@ public class FabricClient implements ClientModInitializer {
 					Map<StaffCap, UnbakedModel> capModels = new HashMap<>();
 
 					for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
-						StaffCore core = DevotionStaffCores.REGISTRY.get(location);
-						coreModels.put(core, context.getOrLoadModel(DevotionStaffCores.REGISTRY.get(location).getStaffModelLocation()));
+						StaffCore staffCore = DevotionStaffCores.REGISTRY.get(location);
+						coreModels.put(staffCore, context.getOrLoadModel(staffCore.getStaffModelLocation()));
 					}
 
 					for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
 						StaffCap staffCap = DevotionStaffCaps.REGISTRY.get(location);
-						capModels.put(staffCap, context.getOrLoadModel(DevotionStaffCaps.REGISTRY.get(location).getStaffModelLocation()));
+						capModels.put(staffCap, context.getOrLoadModel(staffCap.getStaffModelLocation()));
 					}
 
 					return new FabricStaffModel(coreModels, capModels);

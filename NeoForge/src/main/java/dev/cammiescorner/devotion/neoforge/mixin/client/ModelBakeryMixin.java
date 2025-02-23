@@ -29,13 +29,13 @@ public abstract class ModelBakeryMixin {
 			Map<StaffCap, UnbakedModel> capModels = new HashMap<>();
 
 			for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
-				StaffCore core = DevotionStaffCores.REGISTRY.get(location);
-				coreModels.put(core, getModel(DevotionStaffCores.REGISTRY.get(location).getStaffModelLocation()));
+				StaffCore staffCore = DevotionStaffCores.REGISTRY.get(location);
+				coreModels.put(staffCore, getModel(staffCore.getStaffModelLocation()));
 			}
 
 			for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
 				StaffCap staffCap = DevotionStaffCaps.REGISTRY.get(location);
-				capModels.put(staffCap, getModel(DevotionStaffCaps.REGISTRY.get(location).getStaffModelLocation()));
+				capModels.put(staffCap, getModel(staffCap.getStaffModelLocation()));
 			}
 
 			return new NeoStaffModel(coreModels, capModels);
