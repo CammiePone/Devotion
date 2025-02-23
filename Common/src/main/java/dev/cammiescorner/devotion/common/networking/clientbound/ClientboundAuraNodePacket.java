@@ -20,9 +20,6 @@ import java.util.Map;
 public record ClientboundAuraNodePacket(ChunkPos chunkPos, Map<BlockPos, AuraNode> auraNodeMap) implements CustomPacketPayload {
 	public static final Type<ClientboundAuraNodePacket> TYPE = new Type<>(Devotion.id("aura_node"));
 	public static final StreamCodec<? extends FriendlyByteBuf, ClientboundAuraNodePacket> CODEC = StreamCodec.of((buffer, value) -> {
-		System.out.printf("Write ChunkPos: %s\n", value.chunkPos);
-		System.out.printf("Write Node Map: %s\n", value.auraNodeMap);
-
 		buffer.writeVarInt(value.chunkPos.x);
 		buffer.writeVarInt(value.chunkPos.z);
 		buffer.writeVarInt(value.auraNodeMap.size());
@@ -49,9 +46,6 @@ public record ClientboundAuraNodePacket(ChunkPos chunkPos, Map<BlockPos, AuraNod
 			auraNodeMap.put(blockPos, auraNode);
 		}
 
-		System.out.printf("Read ChunkPos: %s\n", chunkPos);
-		System.out.printf("Read Node Map: %s\n", auraNodeMap);
-
 		return new ClientboundAuraNodePacket(chunkPos, auraNodeMap);
 	});
 
@@ -65,12 +59,8 @@ public record ClientboundAuraNodePacket(ChunkPos chunkPos, Map<BlockPos, AuraNod
 		ChunkPos chunkPos = context.message().chunkPos;
 		Map<BlockPos, AuraNode> auraNodeMap = context.message().auraNodeMap;
 
-		System.out.printf("Handle ChunkPos: %s\n", chunkPos);
-		System.out.printf("Handle Node Map: %s\n", auraNodeMap);
-
 		if(level != null) {
 			LevelChunk chunk = level.getChunk(chunkPos.x, chunkPos.z);
-			System.out.printf("Handle LevelChunk: %s\n", chunk);
 
 			for(Map.Entry<BlockPos, AuraNode> entry : auraNodeMap.entrySet())
 				MainHelper.addAuraNode(chunk, entry.getKey(), entry.getValue());

@@ -5,7 +5,6 @@ import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.common.MainHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -37,7 +36,6 @@ public class AuraNodeFeature extends Feature<NoneFeatureConfiguration> {
 			int offsetY = random.nextInt(3, 6);
 			int offsetZ = random.nextInt(16);
 
-			level.setBlock(context.origin().offset(offsetX, offsetY - 1, offsetZ), Blocks.GLOWSTONE.defaultBlockState(), 3);
 			MainHelper.addAuraNode(access, context.origin().offset(offsetX, offsetY, offsetZ), new AuraNode(enhancementAura, transmutationAura, emissionAura, conjurationAura, manipulationAura));
 
 			return true;

@@ -13,7 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.level.ChunkEvent;
+import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 
 @EventBusSubscriber(modid = Devotion.MOD_ID)
 public class CommonGameEvents {
@@ -29,9 +29,11 @@ public class CommonGameEvents {
 	}
 
 	@SubscribeEvent
-	public static void syncAuraNodes(ChunkEvent.Load event) {
-		if(event.getLevel() instanceof ServerLevel && event.getChunk() instanceof LevelChunk levelChunk)
+	public static void syncAuraNodes(ChunkWatchEvent.Sent event) {
+		if(event.getLevel() instanceof ServerLevel) {
+			LevelChunk levelChunk = event.getChunk();
 			levelChunk.getData(NeoMain.AURA_NODE).sync();
+		}
 	}
 
 	@SubscribeEvent
