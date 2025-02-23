@@ -30,7 +30,7 @@ public class CommonGameEvents {
 
 	@SubscribeEvent
 	public static void syncAuraNodes(ChunkEvent.Load event) {
-		if(event.getChunk() instanceof LevelChunk levelChunk && event.getLevel() instanceof ServerLevel)
+		if(event.getLevel() instanceof ServerLevel && event.getChunk() instanceof LevelChunk levelChunk)
 			levelChunk.getData(NeoMain.AURA_NODE).sync();
 	}
 
