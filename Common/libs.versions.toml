@@ -19,8 +19,9 @@ jetbrains_annotations = "25.0.0"
 # other dependencies
 sparkweave = "0.507.1" # https://www.curseforge.com/minecraft/mc-mods/sparkweave/files/all
 velvet = "0.4.1" # https://www.curseforge.com/minecraft/mc-mods/velvet/files/all
-common_network = "1.0.17-beta.2-1.21.1" # https://www.curseforge.com/minecraft/mc-mods/common-network/files/all
 resourcefulconfig = "3.0.4" # https://www.curseforge.com/minecraft/mc-mods/resourceful-config/files/all
+common_network = "1.0.17-beta.2-1.21.1" # https://www.curseforge.com/minecraft/mc-mods/common-network/files/all
+player_animator = "2.0.1+1.21.1"
 emi = "1.1.14+1.21.1" # https://www.curseforge.com/minecraft/mc-mods/emi/files/all
 
 [libraries]
@@ -43,13 +44,17 @@ velvet = { module = "dev.cammiescorner.velvet:Velvet-Common", version.ref = "vel
 velvet_fabric = { module = "dev.cammiescorner.velvet:Velvet-Fabric", version.ref = "velvet" }
 velvet_neoforge = { module = "dev.cammiescorner.velvet:Velvet-NeoForge", version.ref = "velvet" }
 
+resourcefulconfig = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-common-1.21", version.ref = "resourcefulconfig" }
+resourcefulconfig_fabric = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-1.21", version.ref = "resourcefulconfig" }
+resourcefulconfig_neoforge = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-neoforge-1.21", version.ref = "resourcefulconfig" }
+
 common_network = { module = "mysticdrew:common-networking-common", version.ref = "common_network" }
 common_network_fabric = { module = "mysticdrew:common-networking-fabric", version.ref = "common_network" }
 common_network_neoforge = { module = "mysticdrew:common-networking-neoforge", version.ref = "common_network" }
 
-resourcefulconfig = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-common-1.21", version.ref = "resourcefulconfig" }
-resourcefulconfig_fabric = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-1.21", version.ref = "resourcefulconfig" }
-resourcefulconfig_neoforge = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-neoforge-1.21", version.ref = "resourcefulconfig" }
+player_animator = { module = "dev.kosmx.player-anim:player-animation-lib", version.ref = "player_animator" }
+player_animator_fabric = { module = "dev.kosmx.player-anim:player-animation-lib-fabric", version.ref = "player_animator" }
+player_animator_neoforge = { module = "dev.kosmx.player-anim:player-animation-lib-forge", version.ref = "player_animator" }
 
 emi = { module = "dev.emi:emi-xplat-mojmap", version.ref = "emi" }
 emi_fabric = { module = "dev.emi:emi-fabric", version.ref = "emi" }

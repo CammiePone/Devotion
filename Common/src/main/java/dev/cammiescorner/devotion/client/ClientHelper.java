@@ -23,12 +23,20 @@ public class ClientHelper {
 		return entity.isHolding(DevotionItems.STAFF.get());
 	}
 
-	public static ModelResourceLocation getStaffCoreModel(StaffCore core) {
-		return duck.getStaffCoreModel(core);
+	public static ModelResourceLocation getCoreItemModelLocation(StaffCore core) {
+		return duck.getCoreItemModelLocation(core);
 	}
 
-	public static ModelResourceLocation getStaffCapModel(StaffCap cap) {
-		return duck.getStaffCapModel(cap);
+	public static ModelResourceLocation getCapItemModelLocation(StaffCap cap) {
+		return duck.getCapItemModelLocation(cap);
+	}
+
+	public static ModelResourceLocation getCoreStaffModelLocation(StaffCore core) {
+		return duck.getCoreStaffModelLocation(core);
+	}
+
+	public static ModelResourceLocation getCapStaffModelLocation(StaffCap cap) {
+		return duck.getCapStaffModelLocation(cap);
 	}
 
 	public static boolean hasSpecificTranslation(String specificTranslation) {

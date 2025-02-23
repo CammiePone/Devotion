@@ -1,0 +1,6 @@
+{
+	"parent": "devotion:staff_part/basic_staff_core",
+	"textures": {
+		"layer0": "devotion:block/staff_core/spruce_core"
+	}
+}

@@ -18,6 +18,7 @@ dependencies {
 	modImplementation fabric.bundles.cca
 	modImplementation libs.resourcefulconfig.fabric
 	modImplementation libs.common.network.fabric
+	modImplementation libs.player.animator.fabric
 
 	modCompileOnly fabric.modmenu
 	modLocalRuntime fabric.modmenu
@@ -66,12 +67,20 @@ repositories {
 		url = "https://jm.gserv.me/repository/maven-public/"
 	}
 	maven {
-		name "TerraformersMC"
-		url "https://maven.terraformersmc.com/releases"
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases"
 	}
 	maven {
-		name "Modrinth"
-		url "https://api.modrinth.com/maven"
+		name = "KosmX's maven"
+		url  = "https://maven.kosmx.dev/"
+	}
+	maven {
+		name = "Ladysnake Mods"
+		url = "https://maven.ladysnake.org/releases"
+	}
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
 		content {
 			includeGroup "maven.modrinth"
 		}
@@ -82,10 +91,6 @@ repositories {
 		content {
 			includeGroup "curse.maven"
 		}
-	}
-	maven {
-		name = "Ladysnake Mods"
-		url = "https://maven.ladysnake.org/releases"
 	}
 }
 

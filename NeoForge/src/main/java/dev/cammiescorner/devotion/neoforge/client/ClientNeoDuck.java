@@ -10,16 +10,30 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ClientNeoDuck implements ClientDuck {
 	@Override
-	public ModelResourceLocation getStaffCoreModel(StaffCore core) {
+	public ModelResourceLocation getCoreItemModelLocation(StaffCore core) {
 		ResourceLocation id = DevotionStaffCores.REGISTRY.getKey(core);
 
 		return ModelResourceLocation.standalone(DevotionStaffCores.REGISTRY.get(id).getItemModelLocation());
 	}
 
 	@Override
-	public ModelResourceLocation getStaffCapModel(StaffCap cap) {
+	public ModelResourceLocation getCapItemModelLocation(StaffCap cap) {
 		ResourceLocation id = DevotionStaffCaps.REGISTRY.getKey(cap);
 
 		return ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getItemModelLocation());
+	}
+
+	@Override
+	public ModelResourceLocation getCoreStaffModelLocation(StaffCore core) {
+		ResourceLocation id = DevotionStaffCores.REGISTRY.getKey(core);
+
+		return ModelResourceLocation.standalone(DevotionStaffCores.REGISTRY.get(id).getStaffModelLocation());
+	}
+
+	@Override
+	public ModelResourceLocation getCapStaffModelLocation(StaffCap cap) {
+		ResourceLocation id = DevotionStaffCaps.REGISTRY.getKey(cap);
+
+		return ModelResourceLocation.standalone(DevotionStaffCaps.REGISTRY.get(id).getStaffModelLocation());
 	}
 }

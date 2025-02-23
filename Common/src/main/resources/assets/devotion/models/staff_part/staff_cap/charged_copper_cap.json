@@ -1,0 +1,6 @@
+{
+	"parent": "devotion:staff_part/basic_staff_cap",
+	"textures": {
+		"layer0": "devotion:block/staff_cap/charged_copper_cap"
+	}
+}

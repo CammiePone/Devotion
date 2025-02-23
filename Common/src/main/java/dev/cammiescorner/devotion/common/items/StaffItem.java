@@ -10,15 +10,24 @@ import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import dev.upcraft.sparkweave.api.SparkweaveApi;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 
 import java.util.List;
 
 public class StaffItem extends Item {
 	public StaffItem() {
-		super(new Properties().stacksTo(1).component(DevotionData.STAFF_CORE.get(), DevotionStaffCores.OAK_CORE.holder()).component(DevotionData.STAFF_CAP.get(), DevotionStaffCaps.IRON_CAP.holder()));
+		super(new Properties()
+			.stacksTo(1)
+			.component(DevotionData.STAFF_CORE.get(), DevotionStaffCores.OAK_CORE.holder())
+			.component(DevotionData.STAFF_CAP.get(), DevotionStaffCaps.IRON_CAP.holder())
+			.attributes(StaffItem.constructModifiers())
+		);
 	}
 
 	@Override
@@ -40,5 +49,18 @@ public class StaffItem extends Item {
 			return Component.translatable(specificTranslate);
 
 		return Component.translatable(getDescriptionId(stack), Component.translatable(cap.getStaffId()), Component.translatable(core.getStaffId()));
+	}
+
+	private static ItemAttributeModifiers constructModifiers() {
+		return ItemAttributeModifiers
+			.builder().add(
+				Attributes.ATTACK_DAMAGE,
+				new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 4, AttributeModifier.Operation.ADD_VALUE),
+				EquipmentSlotGroup.MAINHAND
+			).add(
+				Attributes.ATTACK_SPEED,
+				new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.6, AttributeModifier.Operation.ADD_VALUE),
+				EquipmentSlotGroup.MAINHAND
+			).build();
 	}
 }

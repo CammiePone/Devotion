@@ -24,13 +24,13 @@ public class ItemRendererMixin {
 		if(stack.is(DevotionItems.STAFF_CORE.get())) {
 			StaffCore core = stack.get(DevotionData.STAFF_CORE.get()).value();
 
-			return instance.getModelManager().getModel(ClientHelper.getStaffCoreModel(core));
+			return instance.getModelManager().getModel(ClientHelper.getCoreItemModelLocation(core));
 		}
 
 		if(stack.is(DevotionItems.STAFF_CAP.get())) {
 			StaffCap cap = stack.get(DevotionData.STAFF_CAP.get()).value();
 
-			return instance.getModelManager().getModel(ClientHelper.getStaffCapModel(cap));
+			return instance.getModelManager().getModel(ClientHelper.getCapItemModelLocation(cap));
 		}
 
 		return original.call(instance, stack);

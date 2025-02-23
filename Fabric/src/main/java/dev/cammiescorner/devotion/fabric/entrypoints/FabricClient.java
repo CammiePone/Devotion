@@ -1,6 +1,5 @@
 package dev.cammiescorner.devotion.fabric.entrypoints;
 
-import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.api.world.AuraNode;
@@ -17,7 +16,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,23 +28,25 @@ import java.util.Map;
 
 @CalledByReflection
 public class FabricClient implements ClientModInitializer {
-	private static final ModelResourceLocation STAFF_RESOURCE_LOCATION = ModelResourceLocation.inventory(Devotion.id("staff"));
-
 	@Override
 	public void onInitializeClient() {
 		ModelLoadingPlugin.register(ctx -> {
 			for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
-				ctx.addModels(DevotionStaffCores.REGISTRY.get(location).getItemModelLocation());
-				ctx.addModels(DevotionStaffCores.REGISTRY.get(location).getStaffModelLocation());
+				ctx.addModels(
+					DevotionStaffCores.REGISTRY.get(location).getItemModelLocation(),
+					DevotionStaffCores.REGISTRY.get(location).getStaffModelLocation()
+				);
 			}
 
 			for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
-				ctx.addModels(DevotionStaffCaps.REGISTRY.get(location).getItemModelLocation());
-				ctx.addModels(DevotionStaffCaps.REGISTRY.get(location).getStaffModelLocation());
+				ctx.addModels(
+					DevotionStaffCaps.REGISTRY.get(location).getItemModelLocation(),
+					DevotionStaffCaps.REGISTRY.get(location).getStaffModelLocation()
+				);
 			}
 
 			ctx.modifyModelOnLoad().register((unbakedModel, context) -> {
-				if(STAFF_RESOURCE_LOCATION.equals(context.topLevelId())) {
+				if(DevotionClient.STAFF_RESOURCE_LOCATION.equals(context.topLevelId())) {
 					Map<StaffCore, UnbakedModel> coreModels = new HashMap<>();
 					Map<StaffCap, UnbakedModel> capModels = new HashMap<>();
 

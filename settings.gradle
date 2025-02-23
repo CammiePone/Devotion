@@ -63,6 +63,10 @@ dependencyResolutionManagement {
 			url = "https://maven.terraformersmc.com/releases"
 		}
 		maven {
+			name = "KosmX's maven"
+			url  = "https://maven.kosmx.dev/"
+		}
+		maven {
 			name = "Modrinth"
 			url = "https://api.modrinth.com/maven"
 			content {

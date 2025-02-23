@@ -5,7 +5,11 @@ import dev.cammiescorner.devotion.api.staves.StaffCore;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 
 public interface ClientDuck {
-	ModelResourceLocation getStaffCoreModel(StaffCore core);
+	ModelResourceLocation getCoreItemModelLocation(StaffCore core);
 
-	ModelResourceLocation getStaffCapModel(StaffCap cap);
+	ModelResourceLocation getCapItemModelLocation(StaffCap cap);
+
+	ModelResourceLocation getCoreStaffModelLocation(StaffCore core);
+
+	ModelResourceLocation getCapStaffModelLocation(StaffCap cap);
 }

@@ -34,6 +34,7 @@ import dev.upcraft.sparkweave.api.entrypoint.ClientEntryPoint;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -49,6 +50,7 @@ public class DevotionClient implements ClientEntryPoint {
 	private static final ResourceLocation EMITTER_MAGE_ROBES = Devotion.id("textures/entity/armor/emitter_mage_robes.png");
 	private static final ResourceLocation CONJURER_MAGE_ROBES = Devotion.id("textures/entity/armor/conjurer_mage_robes.png");
 	private static final ResourceLocation MANIPULATOR_MAGE_ROBES = Devotion.id("textures/entity/armor/manipulator_mage_robes.png");
+	public static final ModelResourceLocation STAFF_RESOURCE_LOCATION = ModelResourceLocation.inventory(Devotion.id("staff"));
 	public static final Minecraft client = Minecraft.getInstance();
 	public static float guideBookOffsetX, guideBookOffsetY;
 

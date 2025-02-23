@@ -12,6 +12,7 @@ dependencies {
 	compileOnly libs.velvet
 	compileOnly libs.resourcefulconfig
 	compileOnly libs.common.network
+	compileOnly libs.player.animator
 
 	compileOnly "${libs.emi.asProvider().get()}:api"
 }

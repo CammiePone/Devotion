@@ -14,6 +14,7 @@ dependencies {
 	implementation libs.velvet.neoforge
 	implementation libs.resourcefulconfig.neoforge
 	implementation libs.common.network.neoforge
+	implementation libs.player.animator.neoforge
 
 	compileOnly "${libs.emi.neoforge.get()}:api"
 	localRuntime libs.emi.neoforge
@@ -56,12 +57,16 @@ repositories {
 		url = "https://jm.gserv.me/repository/maven-public/"
 	}
 	maven {
-		name "TerraformersMC"
-		url "https://maven.terraformersmc.com/releases"
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases"
 	}
 	maven {
-		name "Modrinth"
-		url "https://api.modrinth.com/maven"
+		name = "KosmX's maven"
+		url  = "https://maven.kosmx.dev/"
+	}
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
 		content {
 			includeGroup "maven.modrinth"
 		}
