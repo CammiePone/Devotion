@@ -43,6 +43,9 @@ public class DevotionCreativeTabs {
 	}).build());
 	public static final RegistrySupplier<CreativeModeTab> FOCUS_TAB = CREATIVE_TABS.register("focus_tab", () -> CreativeTabHelper.newBuilder(Devotion.id("focus_tab")).icon(() -> new ItemStack(DevotionItems.SPELL_FOCUS.get())).displayItems((parameters, output) -> {
 		for(Holder.Reference<SpellFocus> spellFocus : DevotionSpellFoci.REGISTRY.holders().toList()) {
+			if(spellFocus.is(DevotionSpellFoci.BLANK.holder()))
+				continue;
+
 			ItemStack stack = new ItemStack(DevotionItems.SPELL_FOCUS.get());
 			stack.set(DevotionData.SPELL_FOCUS.get(), spellFocus);
 			output.accept(stack);
