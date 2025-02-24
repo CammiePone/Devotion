@@ -15,8 +15,8 @@ import net.minecraft.world.item.ItemStack;
 public class DevotionCreativeTabs {
 	public static final RegistryHandler<CreativeModeTab> CREATIVE_TABS = RegistryHandler.create(Registries.CREATIVE_MODE_TAB, Devotion.MOD_ID);
 
-	public static final RegistrySupplier<CreativeModeTab> BASE_TAB = CREATIVE_TABS.register("base_tab", () -> CreativeTabHelper.newBuilder(Devotion.id("base_tab")).icon(() -> new ItemStack(DevotionItems.BASIC_MAGE_HOOD.get())).displayItems((parameters, output) -> CreativeTabHelper.addRegistryEntries(parameters, output, DevotionItems.ITEMS)).build());
-	public static final RegistrySupplier<CreativeModeTab> STAFF_TAB = CREATIVE_TABS.register("staff_tab", () -> CreativeTabHelper.newBuilder(Devotion.id("staff_tab")).icon(() -> new ItemStack(DevotionItems.STAFF.get())).displayItems((parameters, output) -> {
+	public static final RegistrySupplier<CreativeModeTab> BASE_TAB = CREATIVE_TABS.register("devotion_base_tab", () -> CreativeTabHelper.newBuilder(Devotion.id("devotion_base_tab")).icon(() -> new ItemStack(DevotionItems.BASIC_MAGE_HOOD.get())).displayItems((parameters, output) -> CreativeTabHelper.addRegistryEntries(parameters, output, DevotionItems.ITEMS)).build());
+	public static final RegistrySupplier<CreativeModeTab> STAFF_TAB = CREATIVE_TABS.register("devotion_staff_tab", () -> CreativeTabHelper.newBuilder(Devotion.id("devotion_staff_tab")).icon(() -> new ItemStack(DevotionItems.STAFF.get())).displayItems((parameters, output) -> {
 		for(Holder.Reference<StaffCore> core : DevotionStaffCores.REGISTRY.holders().toList()) {
 			ItemStack stack = new ItemStack(DevotionItems.STAFF_CORE.get());
 			stack.set(DevotionData.STAFF_CORE.get(), core);
@@ -41,7 +41,7 @@ public class DevotionCreativeTabs {
 			}
 		}
 	}).build());
-	public static final RegistrySupplier<CreativeModeTab> FOCUS_TAB = CREATIVE_TABS.register("focus_tab", () -> CreativeTabHelper.newBuilder(Devotion.id("focus_tab")).icon(() -> new ItemStack(DevotionItems.SPELL_FOCUS.get())).displayItems((parameters, output) -> {
+	public static final RegistrySupplier<CreativeModeTab> FOCUS_TAB = CREATIVE_TABS.register("devotion_focus_tab", () -> CreativeTabHelper.newBuilder(Devotion.id("devotion_focus_tab")).icon(() -> new ItemStack(DevotionItems.SPELL_FOCUS.get())).displayItems((parameters, output) -> {
 		for(Holder.Reference<SpellFocus> spellFocus : DevotionSpellFoci.REGISTRY.holders().toList()) {
 			if(spellFocus.is(DevotionSpellFoci.BLANK.holder()))
 				continue;

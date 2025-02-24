@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "devotion:item/spell_focus/scorching_beam_focus"
+	}
+}

@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.common.items;
 
 import dev.cammiescorner.devotion.common.registries.DevotionData;
 import dev.cammiescorner.devotion.common.registries.DevotionSpellFoci;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -11,7 +12,7 @@ public class SpellFocusItem extends Item {
 	}
 
 	@Override
-	public String getDescriptionId(ItemStack stack) {
-		return stack.get(DevotionData.SPELL_FOCUS.get()).value().getDescriptionId();
+	public Component getName(ItemStack stack) {
+		return Component.translatable(getDescriptionId(stack), Component.translatable(stack.get(DevotionData.SPELL_FOCUS.get()).value().getDescriptionId()));
 	}
 }
