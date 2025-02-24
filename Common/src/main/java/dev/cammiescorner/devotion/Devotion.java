@@ -81,6 +81,7 @@ public class Devotion implements MainEntryPoint {
 		DevotionRecipes.RECIPE_SERIALIZERS.accept(registryService);
 		DevotionRecipes.RECIPE_TYPES.accept(registryService);
 		DevotionMenus.MENUS.accept(registryService);
+		DevotionParticles.PARTICLES.accept(registryService);
 		CommandEvents.REGISTER.register(DevotionCommands::register);
 
 		Network.registerPacket(ClientboundAuraPacket.TYPE, ClientboundAuraPacket.class, ClientboundAuraPacket.CODEC, ClientboundAuraPacket::handle);

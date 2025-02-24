@@ -5,11 +5,11 @@ import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
+import dev.cammiescorner.devotion.common.registries.DevotionParticles;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -40,7 +40,7 @@ public class ClientGameEvents {
 							Vec3 pos = blockPos.getCenter();
 
 							// TODO replace with actual render
-							level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, pos.x(), pos.y(), pos.z(), 0, 0, 0);
+							level.addParticle(DevotionParticles.AURA_NODE.get(), pos.x(), pos.y(), pos.z(), 0, 0, 0);
 						}
 					}
 				}

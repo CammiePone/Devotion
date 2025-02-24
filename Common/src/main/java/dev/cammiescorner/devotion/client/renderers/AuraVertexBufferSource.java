@@ -81,13 +81,19 @@ public class AuraVertexBufferSource implements MultiBufferSource {
 		}
 
 		@Override
+		public VertexConsumer setLight(int packedLight) {
+			delegate.setUv2(packedLight & 65535, packedLight >> 16 & 65535);
+			return this;
+		}
+
+		@Override
 		public VertexConsumer setNormal(float normalX, float normalY, float normalZ) {
 			return this;
 		}
 
 		@Override
 		public void addVertex(float x, float y, float z, int color, float u, float v, int packedOverlay, int packedLight, float normalX, float normalY, float normalZ) {
-			delegate.addVertex(x, y, z).setColor(this.red, this.green, this.blue, this.alpha).setUv(u, v);
+			delegate.addVertex(x, y, z).setColor(this.red, this.green, this.blue, this.alpha).setUv(u, v).setUv2(0, 0);
 		}
 	}
 

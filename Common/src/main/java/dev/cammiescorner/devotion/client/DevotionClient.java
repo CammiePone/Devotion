@@ -11,6 +11,7 @@ import dev.cammiescorner.devotion.client.models.armor.DeathCultLeaderArmorModel;
 import dev.cammiescorner.devotion.client.models.armor.DeathCultistRobesModel;
 import dev.cammiescorner.devotion.client.models.armor.MageRobesModel;
 import dev.cammiescorner.devotion.client.models.blockentity.AltarPillarModel;
+import dev.cammiescorner.devotion.client.particles.AuraNodeParticle;
 import dev.cammiescorner.devotion.client.renderers.blockentity.AltarFocusRenderer;
 import dev.cammiescorner.devotion.client.renderers.blockentity.AltarPillarRenderer;
 import dev.cammiescorner.devotion.client.renderers.entity.armor.DeathCultLeaderArmorRenderer;
@@ -18,12 +19,7 @@ import dev.cammiescorner.devotion.client.renderers.entity.armor.DeathCultistRobe
 import dev.cammiescorner.devotion.client.renderers.entity.armor.MageRobesRenderer;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundGiveResearchScrollPacket;
-import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundOpenCloseHoodPacket;
-import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundSaveScrollDataPacket;
-import dev.cammiescorner.devotion.common.registries.DevotionBlocks;
-import dev.cammiescorner.devotion.common.registries.DevotionData;
-import dev.cammiescorner.devotion.common.registries.DevotionItems;
-import dev.cammiescorner.devotion.common.registries.DevotionMenus;
+import dev.cammiescorner.devotion.common.registries.*;
 import dev.cammiescorner.velvet.api.event.EntitiesPreRenderCallback;
 import dev.cammiescorner.velvet.api.event.PostLevelRenderCallback;
 import dev.cammiescorner.velvet.api.event.ShaderEffectRenderCallback;
@@ -65,6 +61,10 @@ public class DevotionClient implements ClientEntryPoint {
 			event.registerModelLayers(DeathCultistRobesModel.MODEL_LAYER, DeathCultistRobesModel::createBodyLayer);
 			event.registerModelLayers(DeathCultLeaderArmorModel.MODEL_LAYER, DeathCultLeaderArmorModel::createBodyLayer);
 			event.registerModelLayers(AltarPillarModel.MODEL_LAYER, AltarPillarModel::createBodyLayer);
+		});
+
+		RegisterParticleFactoriesEvent.EVENT.register(event -> {
+			event.registerSpriteSet(DevotionParticles.AURA_NODE, AuraNodeParticle.Factory::new);
 		});
 
 		RegisterBlockEntityRenderersEvent.EVENT.register(event -> {

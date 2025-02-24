@@ -6,10 +6,7 @@ import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.common.MainHelper;
-import dev.cammiescorner.devotion.common.registries.DevotionItems;
-import dev.cammiescorner.devotion.common.registries.DevotionSpellFoci;
-import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
-import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
+import dev.cammiescorner.devotion.common.registries.*;
 import dev.cammiescorner.devotion.fabric.client.models.item.FabricStaffModel;
 import dev.upcraft.sparkweave.api.annotation.CalledByReflection;
 import net.fabricmc.api.ClientModInitializer;
@@ -20,7 +17,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
@@ -100,7 +96,7 @@ public class FabricClient implements ClientModInitializer {
 							Vec3 pos = blockPos.getCenter();
 
 							// TODO replace with actual render
-							level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, pos.x(), pos.y(), pos.z(), 0, 0, 0);
+							level.addParticle(DevotionParticles.AURA_NODE.get(), pos.x(), pos.y(), pos.z(), 0, 0, 0);
 						}
 					}
 				}
