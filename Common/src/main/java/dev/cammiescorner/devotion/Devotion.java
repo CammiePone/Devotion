@@ -66,6 +66,7 @@ public class Devotion implements MainEntryPoint {
 		// Registries that add gameplay features (e.g. items, blocks, and entities)
 		DevotionStaffCores.STAFF_CORES.accept(registryService);
 		DevotionStaffCaps.STAFF_CAPS.accept(registryService);
+		DevotionSpellFoci.SPELL_FOCI.accept(registryService);
 		DevotionItems.ITEMS.accept(registryService);
 		DevotionBlocks.BLOCKS.accept(registryService);
 		DevotionBlocks.BLOCK_ENTITIES.accept(registryService);

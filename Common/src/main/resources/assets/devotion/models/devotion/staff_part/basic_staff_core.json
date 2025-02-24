@@ -1,5 +1,5 @@
 {
-	"parent": "devotion:staff_part/staff_base",
+	"parent": "devotion:devotion/staff_part/staff_base",
 	"elements": [
 		{
 			"name":      "staff_core",

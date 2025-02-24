@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion.common.registries;
 
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.spells.SpellFocus;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.upcraft.sparkweave.api.item.CreativeTabHelper;
@@ -38,6 +39,13 @@ public class DevotionCreativeTabs {
 				stack.set(DevotionData.STAFF_CAP.get(), cap);
 				output.accept(stack);
 			}
+		}
+	}).build());
+	public static final RegistrySupplier<CreativeModeTab> FOCUS_TAB = CREATIVE_TABS.register("focus_tab", () -> CreativeTabHelper.newBuilder(Devotion.id("focus_tab")).icon(() -> new ItemStack(DevotionItems.SPELL_FOCUS.get())).displayItems((parameters, output) -> {
+		for(Holder.Reference<SpellFocus> spellFocus : DevotionSpellFoci.REGISTRY.holders().toList()) {
+			ItemStack stack = new ItemStack(DevotionItems.SPELL_FOCUS.get());
+			stack.set(DevotionData.SPELL_FOCUS.get(), spellFocus);
+			output.accept(stack);
 		}
 	}).build());
 }

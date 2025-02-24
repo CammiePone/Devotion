@@ -5,6 +5,7 @@ import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.client.ClientHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionData;
+import dev.cammiescorner.devotion.common.registries.DevotionSpellFoci;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import dev.upcraft.sparkweave.api.SparkweaveApi;
@@ -26,6 +27,7 @@ public class StaffItem extends Item {
 			.stacksTo(1)
 			.component(DevotionData.STAFF_CORE.get(), DevotionStaffCores.OAK_CORE.holder())
 			.component(DevotionData.STAFF_CAP.get(), DevotionStaffCaps.IRON_CAP.holder())
+			.component(DevotionData.SPELL_FOCUS.get(), DevotionSpellFoci.BLANK.holder())
 			.attributes(StaffItem.constructModifiers())
 		);
 	}

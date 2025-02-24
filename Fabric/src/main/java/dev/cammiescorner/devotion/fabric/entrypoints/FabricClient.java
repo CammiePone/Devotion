@@ -1,11 +1,13 @@
 package dev.cammiescorner.devotion.fabric.entrypoints;
 
+import dev.cammiescorner.devotion.api.spells.SpellFocus;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
+import dev.cammiescorner.devotion.common.registries.DevotionSpellFoci;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import dev.cammiescorner.devotion.fabric.client.models.item.FabricStaffModel;
@@ -45,10 +47,18 @@ public class FabricClient implements ClientModInitializer {
 				);
 			}
 
+			for(ResourceLocation location : DevotionSpellFoci.REGISTRY.keySet()) {
+				ctx.addModels(
+					DevotionSpellFoci.REGISTRY.get(location).getItemModelLocation(),
+					DevotionSpellFoci.REGISTRY.get(location).getStaffModelLocation()
+				);
+			}
+
 			ctx.modifyModelOnLoad().register((unbakedModel, context) -> {
 				if(DevotionClient.STAFF_RESOURCE_LOCATION.equals(context.topLevelId())) {
 					Map<StaffCore, UnbakedModel> coreModels = new HashMap<>();
 					Map<StaffCap, UnbakedModel> capModels = new HashMap<>();
+					Map<SpellFocus, UnbakedModel> focusModels = new HashMap<>();
 
 					for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
 						StaffCore staffCore = DevotionStaffCores.REGISTRY.get(location);
@@ -60,7 +70,12 @@ public class FabricClient implements ClientModInitializer {
 						capModels.put(staffCap, context.getOrLoadModel(staffCap.getStaffModelLocation()));
 					}
 
-					return new FabricStaffModel(coreModels, capModels);
+					for(ResourceLocation location : DevotionSpellFoci.REGISTRY.keySet()) {
+						SpellFocus spellFocus = DevotionSpellFoci.REGISTRY.get(location);
+						focusModels.put(spellFocus, context.getOrLoadModel(spellFocus.getStaffModelLocation()));
+					}
+
+					return new FabricStaffModel(coreModels, capModels, focusModels);
 				}
 
 				return unbakedModel;

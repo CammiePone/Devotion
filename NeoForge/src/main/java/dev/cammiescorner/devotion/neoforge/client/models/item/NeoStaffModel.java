@@ -1,8 +1,10 @@
 package dev.cammiescorner.devotion.neoforge.client.models.item;
 
+import dev.cammiescorner.devotion.api.spells.SpellFocus;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.common.registries.DevotionData;
+import dev.cammiescorner.devotion.common.registries.DevotionSpellFoci;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -21,19 +23,22 @@ import java.util.*;
 import java.util.function.Function;
 
 public class NeoStaffModel implements BakedModel, UnbakedModel {
-	private final Map<StaffCore, BakedModel> staffCoreBaked = new HashMap<>();
-	private final Map<StaffCap, BakedModel> staffCapBaked = new HashMap<>();
+	private final Map<StaffCore, BakedModel> bakedCoreModels = new HashMap<>();
+	private final Map<StaffCap, BakedModel> bakedCapModels = new HashMap<>();
+	private final Map<SpellFocus, BakedModel> bakedFocusModels = new HashMap<>();
 	private final Map<StaffCore, UnbakedModel> unbakedCoreModels;
 	private final Map<StaffCap, UnbakedModel> unbakedCapModels;
+	private final Map<SpellFocus, UnbakedModel> unbakedFocusModels;
 
-	public NeoStaffModel(Map<StaffCore, UnbakedModel> unbakedCoreModels, Map<StaffCap, UnbakedModel> unbakedCapModels) {
+	public NeoStaffModel(Map<StaffCore, UnbakedModel> unbakedCoreModels, Map<StaffCap, UnbakedModel> unbakedCapModels, Map<SpellFocus, UnbakedModel> unbakedFocusModels) {
 		this.unbakedCoreModels = unbakedCoreModels;
 		this.unbakedCapModels = unbakedCapModels;
+		this.unbakedFocusModels = unbakedFocusModels;
 	}
 
 	@Override
 	public List<BakedModel> getRenderPasses(ItemStack stack, boolean fabulous) {
-		return List.of(staffCoreBaked.get(stack.get(DevotionData.STAFF_CORE.get()).value()), staffCapBaked.get(stack.get(DevotionData.STAFF_CAP.get()).value()));
+		return List.of(bakedCoreModels.get(stack.get(DevotionData.STAFF_CORE.get()).value()), bakedCapModels.get(stack.get(DevotionData.STAFF_CAP.get()).value()), bakedFocusModels.get(stack.get(DevotionData.SPELL_FOCUS).value()));
 	}
 
 	@Override
@@ -41,13 +46,19 @@ public class NeoStaffModel implements BakedModel, UnbakedModel {
 		for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
 			StaffCore staffCore = DevotionStaffCores.REGISTRY.get(location);
 
-			staffCoreBaked.put(staffCore, baker.bake(staffCore.getStaffModelLocation(), state));
+			bakedCoreModels.put(staffCore, baker.bake(staffCore.getStaffModelLocation(), state));
 		}
 
 		for(ResourceLocation location : DevotionStaffCaps.REGISTRY.keySet()) {
 			StaffCap staffCap = DevotionStaffCaps.REGISTRY.get(location);
 
-			staffCapBaked.put(staffCap, baker.bake(staffCap.getStaffModelLocation(), state));
+			bakedCapModels.put(staffCap, baker.bake(staffCap.getStaffModelLocation(), state));
+		}
+
+		for(ResourceLocation location : DevotionSpellFoci.REGISTRY.keySet()) {
+			SpellFocus spellFocus = DevotionSpellFoci.REGISTRY.get(location);
+
+			bakedFocusModels.put(spellFocus, baker.bake(spellFocus.getStaffModelLocation(), state));
 		}
 
 		return this;
@@ -57,9 +68,11 @@ public class NeoStaffModel implements BakedModel, UnbakedModel {
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random) {
 		List<BakedQuad> bakedQuads = new ArrayList<>();
 
-		for(Map.Entry<StaffCore, BakedModel> entry : staffCoreBaked.entrySet())
+		for(Map.Entry<StaffCore, BakedModel> entry : bakedCoreModels.entrySet())
 			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
-		for(Map.Entry<StaffCap, BakedModel> entry : staffCapBaked.entrySet())
+		for(Map.Entry<StaffCap, BakedModel> entry : bakedCapModels.entrySet())
+			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
+		for(Map.Entry<SpellFocus, BakedModel> entry : bakedFocusModels.entrySet())
 			bakedQuads.addAll(entry.getValue().getQuads(state, direction, random));
 
 		return bakedQuads;
@@ -92,12 +105,12 @@ public class NeoStaffModel implements BakedModel, UnbakedModel {
 
 	@Override
 	public ItemTransforms getTransforms() {
-		return staffCoreBaked.get(DevotionStaffCores.OAK_CORE.get()).getTransforms();
+		return bakedCoreModels.get(DevotionStaffCores.OAK_CORE.get()).getTransforms();
 	}
 
 	@Override
 	public ItemOverrides getOverrides() {
-		return staffCoreBaked.get(DevotionStaffCores.OAK_CORE.get()).getOverrides();
+		return bakedCoreModels.get(DevotionStaffCores.OAK_CORE.get()).getOverrides();
 	}
 
 	@Override
@@ -108,6 +121,8 @@ public class NeoStaffModel implements BakedModel, UnbakedModel {
 			dependencies.addAll(entry.getValue().getDependencies());
 		for(Map.Entry<StaffCap, UnbakedModel> entry : unbakedCapModels.entrySet())
 			dependencies.addAll(entry.getValue().getDependencies());
+		for(Map.Entry<SpellFocus, UnbakedModel> entry : unbakedFocusModels.entrySet())
+			dependencies.addAll(entry.getValue().getDependencies());
 
 		return dependencies;
 	}
@@ -117,6 +132,8 @@ public class NeoStaffModel implements BakedModel, UnbakedModel {
 		for(Map.Entry<StaffCore, UnbakedModel> entry : unbakedCoreModels.entrySet())
 			entry.getValue().resolveParents(resolver);
 		for(Map.Entry<StaffCap, UnbakedModel> entry : unbakedCapModels.entrySet())
+			entry.getValue().resolveParents(resolver);
+		for(Map.Entry<SpellFocus, UnbakedModel> entry : unbakedFocusModels.entrySet())
 			entry.getValue().resolveParents(resolver);
 	}
 }

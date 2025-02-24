@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.neoforge.client;
 
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.client.ClientHelper;
+import dev.cammiescorner.devotion.common.registries.DevotionSpellFoci;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,11 @@ public class ClientModEvents {
 		for(ResourceLocation id : DevotionStaffCaps.REGISTRY.keySet()) {
 			event.register(ClientHelper.getCapItemModelLocation(DevotionStaffCaps.REGISTRY.get(id)));
 			event.register(ClientHelper.getCapStaffModelLocation(DevotionStaffCaps.REGISTRY.get(id)));
+		}
+
+		for(ResourceLocation id : DevotionSpellFoci.REGISTRY.keySet()) {
+			event.register(ClientHelper.getFocusItemModelLocation(DevotionSpellFoci.REGISTRY.get(id)));
+			event.register(ClientHelper.getFocusStaffModelLocation(DevotionSpellFoci.REGISTRY.get(id)));
 		}
 	}
 }

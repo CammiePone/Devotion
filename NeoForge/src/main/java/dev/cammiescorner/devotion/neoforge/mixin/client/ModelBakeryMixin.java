@@ -1,8 +1,10 @@
 package dev.cammiescorner.devotion.neoforge.mixin.client;
 
+import dev.cammiescorner.devotion.api.spells.SpellFocus;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.client.DevotionClient;
+import dev.cammiescorner.devotion.common.registries.DevotionSpellFoci;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import dev.cammiescorner.devotion.neoforge.client.models.item.NeoStaffModel;
@@ -27,6 +29,7 @@ public abstract class ModelBakeryMixin {
 		if(DevotionClient.STAFF_RESOURCE_LOCATION.equals(modelLocation)) {
 			Map<StaffCore, UnbakedModel> coreModels = new HashMap<>();
 			Map<StaffCap, UnbakedModel> capModels = new HashMap<>();
+			Map<SpellFocus, UnbakedModel> focusModels = new HashMap<>();
 
 			for(ResourceLocation location : DevotionStaffCores.REGISTRY.keySet()) {
 				StaffCore staffCore = DevotionStaffCores.REGISTRY.get(location);
@@ -38,7 +41,12 @@ public abstract class ModelBakeryMixin {
 				capModels.put(staffCap, getModel(staffCap.getStaffModelLocation()));
 			}
 
-			return new NeoStaffModel(coreModels, capModels);
+			for(ResourceLocation location : DevotionSpellFoci.REGISTRY.keySet()) {
+				SpellFocus spellFocus = DevotionSpellFoci.REGISTRY.get(location);
+				focusModels.put(spellFocus, getModel(spellFocus.getStaffModelLocation()));
+			}
+
+			return new NeoStaffModel(coreModels, capModels, focusModels);
 		}
 
 		return unbakedModel;

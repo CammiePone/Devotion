@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.research.RiddleData;
+import dev.cammiescorner.devotion.api.spells.SpellFocus;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.upcraft.sparkweave.api.registry.RegistryHandler;
@@ -27,6 +28,12 @@ public class DevotionData {
 	public static final RegistrySupplier<DataComponentType<Holder<StaffCap>>> STAFF_CAP = DATA_COMPONENTS.register("staff_cap", () -> DataComponentType.<Holder<StaffCap>>builder()
 		.persistent(StaffCap.CODEC)
 		.networkSynchronized(StaffCap.STREAM_CODEC)
+		.cacheEncoding()
+		.build()
+	);
+	public static final RegistrySupplier<DataComponentType<Holder<SpellFocus>>> SPELL_FOCUS = DATA_COMPONENTS.register("spell_focus", () -> DataComponentType.<Holder<SpellFocus>>builder()
+		.persistent(SpellFocus.CODEC)
+		.networkSynchronized(SpellFocus.STREAM_CODEC)
 		.cacheEncoding()
 		.build()
 	);

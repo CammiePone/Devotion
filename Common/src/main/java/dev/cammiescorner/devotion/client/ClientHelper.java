@@ -1,5 +1,6 @@
 package dev.cammiescorner.devotion.client;
 
+import dev.cammiescorner.devotion.api.spells.SpellFocus;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
@@ -31,12 +32,20 @@ public class ClientHelper {
 		return duck.getCapItemModelLocation(cap);
 	}
 
+	public static ModelResourceLocation getFocusItemModelLocation(SpellFocus focus) {
+		return duck.getFocusItemModelLocation(focus);
+	}
+
 	public static ModelResourceLocation getCoreStaffModelLocation(StaffCore core) {
 		return duck.getCoreStaffModelLocation(core);
 	}
 
 	public static ModelResourceLocation getCapStaffModelLocation(StaffCap cap) {
 		return duck.getCapStaffModelLocation(cap);
+	}
+
+	public static ModelResourceLocation getFocusStaffModelLocation(SpellFocus focus) {
+		return duck.getFocusStaffModelLocation(focus);
 	}
 
 	public static boolean hasSpecificTranslation(String specificTranslation) {

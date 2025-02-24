@@ -1,5 +1,5 @@
 {
-	"parent": "devotion:staff_part/basic_staff_core",
+	"parent": "devotion:devotion/staff_part/basic_staff_core",
 	"textures": {
 		"layer0": "devotion:item/staff_part/staff_core/acacia_core"
 	}

@@ -29,14 +29,14 @@ public class StaffCore {
 
 	public ResourceLocation getItemModelLocation() {
 		if(itemModelLocation == null)
-			itemModelLocation = getResourceLocation().withPrefix("item/staff_core/");
+			itemModelLocation = getResourceLocation().withPrefix("item/devotion/staff_core/");
 
 		return itemModelLocation;
 	}
 
 	public ResourceLocation getStaffModelLocation() {
 		if(staffModelLocation == null)
-			staffModelLocation = getResourceLocation().withPrefix("staff_part/staff_core/");
+			staffModelLocation = getResourceLocation().withPrefix("devotion/staff_part/staff_core/");
 
 		return staffModelLocation;
 	}

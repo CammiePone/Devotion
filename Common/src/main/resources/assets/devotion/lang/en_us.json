@@ -1,11 +1,13 @@
 {
 	"itemGroup.devotion.main_tab": "Devotion",
-	"itemGroup.devotion.staff_tab": "Devotion: Staves",
+	"itemGroup.devotion.staff_tab": "Devotion Staves",
+	"itemGroup.devotion.focus_tab": "Devotion Spells",
 
 	"item.devotion.scripts_of_devotion": "Scripts of Devotion",
 	"item.devotion.research_scroll": "Research Scroll",
 	"item.devotion.staff_core": "Staff Core",
 	"item.devotion.staff_cap": "Staff Cap",
+	"item.devotion.spell_focus": "%s Focus",
 	"item.devotion.staff": "%1$s %2$s",
 	"item.devotion.aurameter": "Aurameter",
 
@@ -61,6 +63,12 @@
 	"item.devotion.charged_copper_cap": "Charged Copper Cap",
 	"item.devotion.inert_netherite_cap": "Inert Netherite Cap",
 	"item.devotion.charged_netherite_cap": "Charged Netherite Cap",
+
+	"item.devotion.blank_focus": "Blank Focus",
+	"item.devotion.scorching_beam_focus": "Scorching Beam",
+	"item.devotion.slow_time_focus": "Slow Time",
+	"item.devotion.mage_mace_focus": "Mage Mace",
+	"item.devotion.portable_hole_focus": "Portable Hole",
 
 	"block.devotion.altar_focus": "Altar Focus",
 	"block.devotion.altar_pillar": "Altar Pillar",

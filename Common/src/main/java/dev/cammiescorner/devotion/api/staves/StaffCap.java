@@ -39,11 +39,11 @@ public class StaffCap {
 	}
 
 	public ResourceLocation getItemModelLocation() {
-		return getResourceLocation().withPrefix("item/staff_cap/");
+		return getResourceLocation().withPrefix("item/devotion/staff_cap/");
 	}
 
 	public ResourceLocation getStaffModelLocation() {
-		return getResourceLocation().withPrefix("staff_part/staff_cap/");
+		return getResourceLocation().withPrefix("devotion/staff_part/staff_cap/");
 	}
 
 	public String getDescriptionId() {
