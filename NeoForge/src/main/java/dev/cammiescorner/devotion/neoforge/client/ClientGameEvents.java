@@ -2,7 +2,6 @@ package dev.cammiescorner.devotion.neoforge.client;
 
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.world.AuraNode;
-import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.cammiescorner.devotion.common.registries.DevotionParticles;
@@ -18,15 +17,17 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 import java.util.Map;
 
+
+
 @EventBusSubscriber(modid = Devotion.MOD_ID)
 public class ClientGameEvents {
 	@SubscribeEvent
 	public static void renderAuraNodes(RenderLevelStageEvent event) {
 		if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
-			LocalPlayer player = DevotionClient.client.player;
+			LocalPlayer player = client.player;
 
 			if(player != null && player.isHolding(DevotionItems.AURAMETER.get())) {
-				ClientLevel level = DevotionClient.client.level;
+				ClientLevel level = client.level;
 				ClientChunkCache chunkCache = level.getChunkSource();
 				ClientChunkCache.Storage storage = chunkCache.storage;
 

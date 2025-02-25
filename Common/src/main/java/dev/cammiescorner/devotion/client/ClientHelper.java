@@ -16,7 +16,7 @@ public class ClientHelper {
 	private static final ClientDuck duck = Services.getService(ClientDuck.class);
 
 	public static boolean shouldRenderAura(LivingEntity entity) {
-		LocalPlayer player = DevotionClient.client.player;
+		LocalPlayer player = Minecraft.getInstance().player;
 
 		if(player != null && player != entity && player.isHolding(DevotionItems.AURAMETER.get()))
 			return true;

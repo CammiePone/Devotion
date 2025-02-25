@@ -79,7 +79,7 @@ public class FabricClient implements ClientModInitializer {
 		});
 
 		WorldRenderEvents.AFTER_ENTITIES.register(context -> {
-			LocalPlayer player = DevotionClient.client.player;
+			LocalPlayer player = Minecraft.getInstance().player;
 
 			if(player != null && player.isHolding(DevotionItems.AURAMETER.get())) {
 				ClientLevel level = context.world();

@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-import static dev.cammiescorner.devotion.client.DevotionClient.client;
+
 
 public class AltarFocusRenderer implements BlockEntityRenderer<AltarFocusBlockEntity> {
 	private final ItemRenderer itemRenderer;

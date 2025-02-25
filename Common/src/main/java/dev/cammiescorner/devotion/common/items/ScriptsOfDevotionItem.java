@@ -19,7 +19,7 @@ public class ScriptsOfDevotionItem extends Item {
 		ItemStack stack = player.getItemInHand(usedHand);
 
 		if(level.isClientSide())
-			DevotionClient.client.setScreen(new ScriptsOfDevotionScreen());
+			Minecraft.getInstance().setScreen(new ScriptsOfDevotionScreen());
 
 		return InteractionResultHolder.success(stack);
 	}

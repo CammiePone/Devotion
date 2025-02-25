@@ -32,8 +32,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static dev.cammiescorner.devotion.client.DevotionClient.client;
-
 public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
 	public static final ResourceLocation TEXTURE = Devotion.id("textures/gui/research/research_scroll.png");
 	private final List<Pair<Vec2, Vec2>> lines = new ArrayList<>();

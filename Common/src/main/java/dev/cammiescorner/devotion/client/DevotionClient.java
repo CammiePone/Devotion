@@ -47,7 +47,6 @@ public class DevotionClient implements ClientEntryPoint {
 	private static final ResourceLocation CONJURER_MAGE_ROBES = Devotion.id("textures/entity/armor/conjurer_mage_robes.png");
 	private static final ResourceLocation MANIPULATOR_MAGE_ROBES = Devotion.id("textures/entity/armor/manipulator_mage_robes.png");
 	public static final ModelResourceLocation STAFF_RESOURCE_LOCATION = ModelResourceLocation.inventory(Devotion.id("staff"));
-	public static final Minecraft client = Minecraft.getInstance();
 	public static float guideBookOffsetX, guideBookOffsetY;
 
 	@Override
@@ -114,7 +113,7 @@ public class DevotionClient implements ClientEntryPoint {
 	}
 
 	private static void researchWidgetClick(ResearchWidget widget) {
-		Player player = client.player;
+		Player player = Minecraft.getInstance().player;
 
 		if(player != null) {
 			ResourceKey<Research> researchKey = widget.getResearch().key();

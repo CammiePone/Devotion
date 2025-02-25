@@ -54,7 +54,7 @@ public record ClientboundAuraNodePacket(ChunkPos chunkPos, Map<BlockPos, AuraNod
 	}
 
 	public static void handle(PacketContext<ClientboundAuraNodePacket> context) {
-		ClientLevel level = DevotionClient.client.level;
+		ClientLevel level = Minecraft.getInstance().level;
 		ChunkPos chunkPos = context.message().chunkPos;
 		Map<BlockPos, AuraNode> auraNodeMap = context.message().auraNodeMap;
 

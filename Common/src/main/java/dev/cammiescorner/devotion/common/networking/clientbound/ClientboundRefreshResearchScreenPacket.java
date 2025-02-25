@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
 
-import static dev.cammiescorner.devotion.client.DevotionClient.client;
+
 
 public record ClientboundRefreshResearchScreenPacket(ItemStack stack) implements CustomPacketPayload {
 	public static final Type<ClientboundRefreshResearchScreenPacket> TYPE = new Type<>(Devotion.id("refresh_research_screen"));

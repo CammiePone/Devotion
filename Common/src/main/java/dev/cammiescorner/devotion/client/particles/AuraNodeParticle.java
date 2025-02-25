@@ -49,7 +49,7 @@ public class AuraNodeParticle extends TextureSheetParticle implements ParticleOp
 		Color color = AuraType.NONE.getColor();
 		float alpha = 1f;
 		AuraVertexBufferSource auraBuffer = new AuraVertexBufferSource(
-			DevotionClient.client.renderBuffers().bufferSource(),
+			Minecraft.getInstance().renderBuffers().bufferSource(),
 			color.getRedI(), color.getGreenI(), color.getBlueI(),
 			(int) alpha * 255
 		);
