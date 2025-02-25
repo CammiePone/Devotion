@@ -5,6 +5,7 @@ import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.cammiescorner.devotion.common.registries.DevotionParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -24,10 +25,10 @@ public class ClientGameEvents {
 	@SubscribeEvent
 	public static void renderAuraNodes(RenderLevelStageEvent event) {
 		if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
-			LocalPlayer player = client.player;
+			LocalPlayer player = Minecraft.getInstance().player;
 
 			if(player != null && player.isHolding(DevotionItems.AURAMETER.get())) {
-				ClientLevel level = client.level;
+				ClientLevel level = Minecraft.getInstance().level;
 				ClientChunkCache chunkCache = level.getChunkSource();
 				ClientChunkCache.Storage storage = chunkCache.storage;
 

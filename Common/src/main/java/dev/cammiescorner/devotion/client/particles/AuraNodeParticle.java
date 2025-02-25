@@ -53,8 +53,10 @@ public class AuraNodeParticle extends TextureSheetParticle implements ParticleOp
 			color.getRedI(), color.getGreenI(), color.getBlueI(),
 			(int) alpha * 255
 		);
-		quadSize = 0.4f;
+		this.quadSize = 0.4f;
+		this.alpha = 0.5f;
 
+		super.render(buffer, renderInfo, partialTicks);
 		super.render(auraBuffer.getBuffer(RenderType.entityTranslucent(sprite.atlasLocation())), renderInfo, partialTicks);
 	}
 
