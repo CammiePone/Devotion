@@ -55,12 +55,12 @@ public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCall
 			auraPostShader.setUniformValue("DevotionTransStepGranularity", DevotionConfig.Client.auraGradiant);
 			auraPostShader.setUniformValue("DevotionBlobsStepGranularity", DevotionConfig.Client.auraSharpness);
 			auraPostShader.setUniformValue("DevotionTime", getTime(tickDelta));
-			auraPostShader.setSamplerUniform("DepthSampler", ReadableDepthRenderTarget.getStillDepthMap(client.getMainRenderTarget()));
+			auraPostShader.setSamplerUniform("DepthSampler", ReadableDepthRenderTarget.getStillDepthMap(Minecraft.getInstance().getMainRenderTarget()));
 			auraPostShader.render(tickDelta);
-			client.getMainRenderTarget().bindWrite(true);
+			Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-			auraRenderTarget.draw(client.getWindow().getWidth(), client.getWindow().getHeight(), false);
+			auraRenderTarget.draw(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight(), false);
 			RenderSystem.disableBlend();
 		}
 	}
@@ -94,7 +94,7 @@ public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCall
 	 * Unbinds aura render target for use and undoes changes made in {@link #beginAuraRenderTargetUse()}.
 	 */
 	private void endAuraRenderTargetUse() {
-		client.getMainRenderTarget().bindWrite(false);
+		Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
 	}
 
 	/**
@@ -104,8 +104,8 @@ public class AuraFx implements EntitiesPreRenderCallback, ShaderEffectRenderCall
 	 * @param managedShaderEffect shader effect being initialised
 	 */
 	private void assignDepthTexture(ManagedShaderEffect managedShaderEffect) {
-		client.getMainRenderTarget().bindWrite(false);
-		int depthTexturePtr = client.getMainRenderTarget().getDepthTextureId();
+		Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
+		int depthTexturePtr = Minecraft.getInstance().getMainRenderTarget().getDepthTextureId();
 
 		if(depthTexturePtr > -1) {
 			auraRenderTarget.beginWrite(false);

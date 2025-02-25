@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.client.gui.screens.ScriptsOfDevotionScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -37,7 +38,7 @@ public class TabWidget extends AbstractButton {
 		PoseStack poseStack = guiGraphics.pose();
 		int u = 0;
 
-		if(client.screen instanceof ScriptsOfDevotionScreen guideBookScreen) {
+		if(Minecraft.getInstance().screen instanceof ScriptsOfDevotionScreen guideBookScreen) {
 			if(!guideBookScreen.tabId.equals(tabId)) {
 				u = 24;
 

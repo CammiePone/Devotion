@@ -5,6 +5,7 @@ import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.upcraft.sparkweave.api.platform.Services;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.model.ModelResourceLocation;

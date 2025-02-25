@@ -11,6 +11,7 @@ import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundSaveScrollDataPacket;
 import dev.cammiescorner.devotion.common.registries.DevotionData;
 import dev.cammiescorner.devotion.common.screens.ResearchMenu;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -89,7 +90,7 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		PoseStack poseStack = guiGraphics.pose();
 		Matrix4fStack matrixStack = RenderSystem.getModelViewStack();
-		int guiScale = (int) client.getWindow().getGuiScale();
+		int guiScale = (int) Minecraft.getInstance().getWindow().getGuiScale();
 
 		matrixStack.pushMatrix();
 		RenderSystem.applyModelViewMatrix();
@@ -263,8 +264,8 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
 	}
 
 	private void takeScrollButtonShit(Button buttonWidget) {
-		if(client.gameMode != null) {
-			client.gameMode.handleInventoryButtonClick(menu.containerId, 0);
+		if(Minecraft.getInstance().gameMode != null) {
+			Minecraft.getInstance().gameMode.handleInventoryButtonClick(menu.containerId, 0);
 			onClose();
 		}
 	}
@@ -295,8 +296,8 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
 		DataComponentType<Long> completedTimeData = DevotionData.SCROLL_COMPLETED_TIME.get();
 		float colorModifier = 0f;
 
-		if(client.level != null)
-			colorModifier = 0.25f + (float) Math.sin((client.level.getGameTime() - stack.getOrDefault(completedTimeData, 0).longValue()) * 0.15f) * 0.25f;
+		if(Minecraft.getInstance().level != null)
+			colorModifier = 0.25f + (float) Math.sin((Minecraft.getInstance().level.getGameTime() - stack.getOrDefault(completedTimeData, 0).longValue()) * 0.15f) * 0.25f;
 
 		return new Color(r + colorModifier, g + colorModifier, b + colorModifier);
 	}
@@ -305,7 +306,7 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
 		DataComponentType<List<Integer>> undoBufferData = DevotionData.UNDO_BUFFER.get();
 		List<Integer> undoBuffer = stack.getOrDefault(undoBufferData, List.of());
 
-		if(client.level != null) {
+		if(Minecraft.getInstance().level != null) {
 			lines.clear();
 			auraTypes.clear();
 			lineStart = null;

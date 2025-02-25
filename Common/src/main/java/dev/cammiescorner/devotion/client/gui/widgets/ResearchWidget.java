@@ -7,6 +7,7 @@ import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.common.MainHelper;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -23,7 +24,7 @@ import java.util.Set;
 
 public class ResearchWidget extends AbstractButton {
 	public static final ResourceLocation TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_icons.png");
-	private final RegistryAccess access = client.player.registryAccess();
+	private final RegistryAccess access = Minecraft.getInstance().player.registryAccess();
 	private final Holder.Reference<Research> research;
 	private final OnPress onPress;
 	private float offsetX, offsetY;
@@ -33,7 +34,7 @@ public class ResearchWidget extends AbstractButton {
 		this.research = access.lookupOrThrow(DevotionRegistries.RESEARCH).getOrThrow(ResourceKey.create(DevotionRegistries.RESEARCH, researchId));
 		this.onPress = onPress;
 
-		Set<ResourceLocation> playerResearch = MainHelper.getResearchIds(client.player);
+		Set<ResourceLocation> playerResearch = MainHelper.getResearchIds(Minecraft.getInstance().player);
 
 		if(playerResearch.contains(research.key().location())) {
 			active = true;
@@ -69,7 +70,7 @@ public class ResearchWidget extends AbstractButton {
 	@Override
 	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-		Set<ResourceLocation> playerResearch = MainHelper.getResearchIds(client.player);
+		Set<ResourceLocation> playerResearch = MainHelper.getResearchIds(Minecraft.getInstance().player);
 
 		if(research != null) {
 			if(playerResearch.contains(research.key().location()))
@@ -120,7 +121,7 @@ public class ResearchWidget extends AbstractButton {
 		if(isHovered() && active && guiGraphics.containsPointInScissor(mouseX, mouseY)) {
 			poseStack.pushPose();
 			poseStack.translate(-offsetX, -offsetY, 0);
-			guiGraphics.renderTooltip(client.font, Component.translatable(Util.makeDescriptionId("devotion_research", research.key().location())), mouseX, mouseY);
+			guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable(Util.makeDescriptionId("devotion_research", research.key().location())), mouseX, mouseY);
 			poseStack.popPose();
 		}
 	}

@@ -2,11 +2,11 @@ package dev.cammiescorner.devotion.client.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.cammiescorner.devotion.api.spells.AuraType;
-import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
 import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.registries.DevotionParticles;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.RenderType;

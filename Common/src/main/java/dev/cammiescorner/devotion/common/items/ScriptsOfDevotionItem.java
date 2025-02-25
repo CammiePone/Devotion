@@ -1,7 +1,7 @@
 package dev.cammiescorner.devotion.common.items;
 
-import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.gui.screens.ScriptsOfDevotionScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;

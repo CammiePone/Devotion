@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
 import dev.cammiescorner.devotion.common.blocks.entities.AltarFocusBlockEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -123,7 +124,7 @@ public class AltarFocusRenderer implements BlockEntityRenderer<AltarFocusBlockEn
 			VertexConsumer consumer = bufferSource.getBuffer(DevotionClient.altarError(InventoryMenu.BLOCK_ATLAS));
 			BakedModel model = dispatcher.getBlockModel(blockState);
 			Vec3 offset = blockState.getOffset(level, blockPos);
-			Vec3 traaaaannnnnnssssss = client.gameRenderer.getMainCamera().getPosition().subtract(blockPos.getCenter().add(offset)).normalize().scale(0.005);
+			Vec3 traaaaannnnnnssssss = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition().subtract(blockPos.getCenter().add(offset)).normalize().scale(0.005);
 
 			poseStack.translate(offset.x(), offset.y(), offset.z());
 			poseStack.translate(traaaaannnnnnssssss.x(), traaaaannnnnnssssss.y(), traaaaannnnnnssssss.z());
