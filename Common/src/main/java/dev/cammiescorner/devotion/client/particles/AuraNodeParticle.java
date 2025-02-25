@@ -1,11 +1,15 @@
 package dev.cammiescorner.devotion.client.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource.AuraVertexConsumer;
+import dev.cammiescorner.devotion.api.spells.AuraType;
+import dev.cammiescorner.devotion.client.DevotionClient;
+import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
+import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.registries.DevotionParticles;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -42,11 +46,16 @@ public class AuraNodeParticle extends TextureSheetParticle implements ParticleOp
 
 	@Override
 	public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-		AuraVertexConsumer auraBuffer = new AuraVertexConsumer(buffer, 255, 255, 255, 255);
-		quadSize = 0.25f;
+		Color color = AuraType.NONE.getColor();
+		float alpha = 1f;
+		AuraVertexBufferSource auraBuffer = new AuraVertexBufferSource(
+			DevotionClient.client.renderBuffers().bufferSource(),
+			color.getRedI(), color.getGreenI(), color.getBlueI(),
+			(int) alpha * 255
+		);
+		quadSize = 0.4f;
 
-		super.render(buffer, renderInfo, partialTicks);
-		super.render(auraBuffer, renderInfo, partialTicks);
+		super.render(auraBuffer.getBuffer(RenderType.entityTranslucent(sprite.atlasLocation())), renderInfo, partialTicks);
 	}
 
 	@Override
