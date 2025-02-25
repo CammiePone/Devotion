@@ -41,7 +41,7 @@ public class ClientGameEvents {
 						for(BlockPos blockPos : auraNodeMap.keySet()) {
 							Vec3 pos = blockPos.getCenter();
 
-							// TODO replace with actual render
+							// TODO fix flickering
 							level.addParticle(DevotionParticles.AURA_NODE.get(), pos.x(), pos.y(), pos.z(), 0, 0, 0);
 						}
 					}
