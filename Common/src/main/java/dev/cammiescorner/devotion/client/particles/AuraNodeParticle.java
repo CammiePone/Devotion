@@ -71,10 +71,10 @@ public class AuraNodeParticle extends TextureSheetParticle implements ParticleOp
 				index = 0;
 		}
 
-		// TODO smoothly transition between colors, and use firstAuraType when on the final index to transition back to the first color
-		AuraType firstAuraType = filledAuraTypes.getFirst();
-		AuraType auraType = filledAuraTypes.get(index);
-		Color color = auraType.getColor();
+		// TODO smoothly transition between nextAuraType's color and currentAuraType's color
+		AuraType currentAuraType = filledAuraTypes.get(index);
+		AuraType nextAuraType = filledAuraTypes.get(index + 1 < filledAuraTypes.size() - 1 ? index + 1 : 0);
+		Color color = currentAuraType.getColor();
 		AuraVertexBufferSource auraBuffer = new AuraVertexBufferSource(
 			Minecraft.getInstance().renderBuffers().bufferSource(),
 			color.getRedI(), color.getGreenI(), color.getBlueI(),
