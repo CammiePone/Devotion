@@ -1,6 +1,7 @@
 package dev.cammiescorner.devotion.neoforge.client;
 
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
@@ -16,6 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -40,9 +42,12 @@ public class ClientGameEvents {
 
 						for(BlockPos blockPos : auraNodeMap.keySet()) {
 							Vec3 pos = blockPos.getCenter();
+							Map<AuraType, Float> auraNodes = auraNodeMap.get(blockPos).viewAuraMap();
+							List<AuraType> filledAuraTypes = auraNodes.keySet().stream().filter(auraType -> auraNodes.get(auraType) > 0).toList();
+							int particleLifespan = filledAuraTypes.size() * 20;
 
-							// TODO fix flickering
-							level.addParticle(DevotionParticles.AURA_NODE.get(), pos.x(), pos.y(), pos.z(), 0, 0, 0);
+							if(particleLifespan > 0 && level.getGameTime() % particleLifespan == 0)
+								level.addParticle(DevotionParticles.AURA_NODE.get(), pos.x(), pos.y(), pos.z(), 0, 0, 0);
 						}
 					}
 				}
