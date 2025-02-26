@@ -2,8 +2,10 @@ package dev.cammiescorner.devotion.client.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.cammiescorner.devotion.api.spells.AuraType;
+import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
 import dev.cammiescorner.devotion.common.Color;
+import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionParticles;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -51,6 +53,7 @@ public class AuraNodeParticle extends TextureSheetParticle implements ParticleOp
 
 	@Override
 	public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+		AuraNode auraNode = MainHelper.getAuraNodes(level.getChunk(blockPos)).get(blockPos);
 		Color color = AuraType.NONE.getColor();
 		AuraVertexBufferSource auraBuffer = new AuraVertexBufferSource(
 			Minecraft.getInstance().renderBuffers().bufferSource(),

@@ -2,6 +2,7 @@ package dev.cammiescorner.devotion.common.networking.clientbound;
 
 import commonnetwork.networking.data.PacketContext;
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.common.MainHelper;
 import net.minecraft.client.Minecraft;
@@ -24,14 +25,10 @@ public record ClientboundAuraNodePacket(ChunkPos chunkPos, Map<BlockPos, AuraNod
 		buffer.writeVarInt(value.auraNodeMap.size());
 
 		for(BlockPos blockPos : value.auraNodeMap.keySet()) {
-			AuraNode auraNode = value.auraNodeMap.get(blockPos);
+			AuraNode node = value.auraNodeMap.get(blockPos);
 
 			buffer.writeBlockPos(blockPos);
-			buffer.writeFloat(auraNode.getEnhancementAura());
-			buffer.writeFloat(auraNode.getTransmutationAura());
-			buffer.writeFloat(auraNode.getEmissionAura());
-			buffer.writeFloat(auraNode.getConjurationAura());
-			buffer.writeFloat(auraNode.getManipulationAura());
+			buffer.writeMap(node.viewAuraMap(), FriendlyByteBuf::writeEnum, FriendlyByteBuf::writeFloat);
 		}
 	}, buffer -> {
 		ChunkPos chunkPos = new ChunkPos(buffer.readVarInt(), buffer.readVarInt());
@@ -39,10 +36,11 @@ public record ClientboundAuraNodePacket(ChunkPos chunkPos, Map<BlockPos, AuraNod
 		int mapSize = buffer.readVarInt();
 
 		for(int i = 0; i < mapSize; i++) {
-			BlockPos blockPos = buffer.readBlockPos();
-			AuraNode auraNode = new AuraNode(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+			BlockPos pos = buffer.readBlockPos();
+			Map<AuraType, Float> auraMap = buffer.readMap(byteBuf -> byteBuf.readEnum(AuraType.class), FriendlyByteBuf::readFloat);
+			AuraNode node = new AuraNode(auraMap);
 
-			auraNodeMap.put(blockPos, auraNode);
+			auraNodeMap.put(pos, node);
 		}
 
 		return new ClientboundAuraNodePacket(chunkPos, auraNodeMap);

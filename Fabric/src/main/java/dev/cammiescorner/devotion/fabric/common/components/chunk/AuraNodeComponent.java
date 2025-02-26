@@ -1,5 +1,6 @@
 package dev.cammiescorner.devotion.fabric.common.components.chunk;
 
+import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.fabric.common.registries.DevotionComponents;
 import net.minecraft.core.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -72,7 +74,8 @@ public class AuraNodeComponent implements AutoSyncedComponent {
 
 		for(int i = 0; i < auraMapSize; i++) {
 			BlockPos pos = buf.readBlockPos();
-			AuraNode node = new AuraNode(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
+			Map<AuraType, Float> auraMap = buf.readMap(byteBuf -> byteBuf.readEnum(AuraType.class), FriendlyByteBuf::readFloat);
+			AuraNode node = new AuraNode(auraMap);
 
 			auraNodeMap.put(pos, node);
 		}
@@ -86,11 +89,7 @@ public class AuraNodeComponent implements AutoSyncedComponent {
 			AuraNode node = auraNodeMap.get(blockPos);
 
 			buf.writeBlockPos(blockPos);
-			buf.writeFloat(node.getEnhancementAura());
-			buf.writeFloat(node.getTransmutationAura());
-			buf.writeFloat(node.getEmissionAura());
-			buf.writeFloat(node.getConjurationAura());
-			buf.writeFloat(node.getManipulationAura());
+			buf.writeMap(node.viewAuraMap(), FriendlyByteBuf::writeEnum, FriendlyByteBuf::writeFloat);
 		}
 	}
 

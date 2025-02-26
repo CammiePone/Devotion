@@ -48,7 +48,7 @@ public class AuraNodeFeature extends Feature<NoneFeatureConfiguration> {
 			int offsetY = random.nextInt(3, 6);
 			int offsetZ = random.nextInt(16);
 
-			MainHelper.addAuraNode(access, context.origin().offset(offsetX, offsetY, offsetZ), new AuraNode(auraMap.get(AuraType.ENHANCEMENT), auraMap.get(AuraType.TRANSMUTATION), auraMap.get(AuraType.EMISSION), auraMap.get(AuraType.CONJURATION), auraMap.get(AuraType.MANIPULATION)));
+			MainHelper.addAuraNode(access, context.origin().offset(offsetX, offsetY, offsetZ), new AuraNode(auraMap));
 
 			return true;
 		}
