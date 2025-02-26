@@ -3,13 +3,16 @@ package dev.cammiescorner.devotion.common.items;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
+import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.client.ClientHelper;
+import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionData;
 import dev.cammiescorner.devotion.common.registries.DevotionSpellFoci;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCaps;
 import dev.cammiescorner.devotion.common.registries.DevotionStaffCores;
 import dev.upcraft.sparkweave.api.SparkweaveApi;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,8 +27,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.phys.AABB;
 
 import java.util.List;
+import java.util.Map;
 
 public class StaffItem extends Item {
 	public StaffItem() {
@@ -46,18 +52,17 @@ public class StaffItem extends Item {
 
 	@Override
 	public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-		// TODO aura node is empty, for some reason, and its not as accurate to the location as i'd like it to be. might need to use a raycast after all
-//		AABB aabb = new AABB(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5).move(livingEntity.getEyePosition()).move(livingEntity.getLookAngle());
-//		ChunkAccess chunk = level.getChunk(BlockPos.containing(aabb.getCenter()));
-//		Map<BlockPos, AuraNode> auraNodeMap = MainHelper.getAuraNodes(chunk);
-//
-//		for(BlockPos blockPos : auraNodeMap.keySet()) {
-//			if(aabb.contains(blockPos.getCenter())) {
-//				AuraNode auraNode = auraNodeMap.get(blockPos);
-//
-//				System.out.println(auraNode.viewAuraMap());
-//			}
-//		}
+		AABB aabb = new AABB(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5).move(livingEntity.getEyePosition()).move(livingEntity.getLookAngle());
+		ChunkAccess chunk = level.getChunk(BlockPos.containing(aabb.getCenter()));
+		Map<BlockPos, AuraNode> auraNodeMap = MainHelper.getAuraNodes(chunk);
+
+		for(BlockPos blockPos : auraNodeMap.keySet()) {
+			if(aabb.contains(blockPos.getCenter())) {
+				AuraNode auraNode = auraNodeMap.get(blockPos);
+
+				System.out.println(auraNode.viewAuraMap());
+			}
+		}
 	}
 
 	@Override

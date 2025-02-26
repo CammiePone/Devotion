@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.EmptyLevelChunk;
 
 import java.util.Map;
 import java.util.Set;
@@ -59,24 +60,30 @@ public class MainHelper {
 	public static boolean revokeResearch(Player player, Research research, boolean simulate) {
 		return duck.revokeResearch(player, research, simulate);
 	}
-
+	// TODO check if ChunkAccess is empty chunk for all these methods  below
 	public static void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node) {
+		if(access instanceof EmptyLevelChunk)
+			return;
+
 		duck.addAuraNode(access, pos, node);
 	}
 
 	public static void removeAuraNode(ChunkAccess access, BlockPos pos) {
+		if(access instanceof EmptyLevelChunk)
+			return;
+
 		duck.removeAuraNode(access, pos);
 	}
 
 	public static Map<BlockPos, AuraNode> getAuraNodes(ChunkAccess access) {
-		return duck.getAuraNodeMap(access);
+		return access instanceof EmptyLevelChunk ? Map.of() : duck.getAuraNodeMap(access);
 	}
 
 	public static int getMaxAuraNodes(ChunkAccess access) {
-		return duck.getMaxAuraNodes(access);
+		return access instanceof EmptyLevelChunk ? 0 : duck.getMaxAuraNodes(access);
 	}
 
 	public static float getAuraAffinity(ChunkAccess access) {
-		return duck.getAuraAffinity(access);
+		return access instanceof EmptyLevelChunk ? 0f : duck.getAuraAffinity(access);
 	}
 }

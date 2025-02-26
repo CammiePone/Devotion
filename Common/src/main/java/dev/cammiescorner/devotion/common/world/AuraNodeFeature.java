@@ -30,7 +30,7 @@ public class AuraNodeFeature extends Feature<NoneFeatureConfiguration> {
 			List<AuraType> auraTypes = new ArrayList<>(List.of(AuraType.ENHANCEMENT, AuraType.TRANSMUTATION, AuraType.EMISSION, AuraType.CONJURATION, AuraType.MANIPULATION));
 			Map<AuraType, Float> auraMap = new HashMap<>();
 			float auraAffinity = MainHelper.getAuraAffinity(access);
-			float maximumAura = 256 * auraAffinity;
+			float maximumAura = Math.round(256 * auraAffinity);
 			int maxAuraTypes = random.nextInt(5);
 
 			Collections.shuffle(auraTypes);
@@ -38,7 +38,7 @@ public class AuraNodeFeature extends Feature<NoneFeatureConfiguration> {
 
 			for(int i = 0; i < maxAuraTypes; i++) {
 				AuraType type = auraTypes.get(i);
-				float aura = maximumAura * random.nextFloat();
+				float aura = Math.round(maximumAura * random.nextFloat());
 
 				auraMap.replace(type, i == maxAuraTypes - 1 ? aura : maximumAura);
 				maximumAura -= aura;
