@@ -33,6 +33,9 @@ public class AuraNodeFeature extends Feature<NoneFeatureConfiguration> {
 			float maximumAura = Math.round(256 * auraAffinity);
 			int maxAuraTypes = random.nextInt(5);
 
+			if(maximumAura <= 0 || maxAuraTypes <= 0)
+				return false;
+
 			Collections.shuffle(auraTypes);
 			auraTypes.forEach(auraType -> auraMap.put(auraType, 0f));
 

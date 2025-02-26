@@ -2,10 +2,10 @@ package dev.cammiescorner.devotion.client.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.cammiescorner.devotion.api.spells.AuraType;
-import dev.cammiescorner.devotion.api.world.AuraNode;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
 import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.MainHelper;
+import dev.cammiescorner.devotion.common.registries.DevotionItems;
 import dev.cammiescorner.devotion.common.registries.DevotionParticles;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -18,16 +18,24 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
+import java.util.Map;
+
 public class AuraNodeParticle extends TextureSheetParticle implements ParticleOptions {
 	private final SpriteSet spriteSet;
 	private final BlockPos blockPos;
+	private final Map<AuraType, Float> auraTypeFloatMap;
+	private final List<AuraType> filledAuraTypes;
 	private Vec3 position;
+	private int index;
 
 	public AuraNodeParticle(ClientLevel level, double x, double y, double z, SpriteSet spriteSet) {
 		super(level, x, y, z);
 		this.spriteSet = spriteSet;
 		this.blockPos = BlockPos.containing(x, y, z);
-		this.lifetime = 1;
+		this.auraTypeFloatMap = MainHelper.getAuraNodes(level.getChunk(blockPos)).get(blockPos).viewAuraMap();
+		this.filledAuraTypes = auraTypeFloatMap.keySet().stream().filter(auraType -> auraTypeFloatMap.get(auraType) > 0).toList();
+		this.lifetime = filledAuraTypes.size() * 20;
 		this.xd = 0;
 		this.yd = 0;
 		this.zd = 0;
@@ -53,15 +61,28 @@ public class AuraNodeParticle extends TextureSheetParticle implements ParticleOp
 
 	@Override
 	public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-		AuraNode auraNode = MainHelper.getAuraNodes(level.getChunk(blockPos)).get(blockPos);
-		Color color = AuraType.NONE.getColor();
+		if(lifetime <= 0)
+			return;
+
+		if(level.getGameTime() % 20 == 0) {
+			if(index < filledAuraTypes.size() - 1)
+				index++;
+			else
+				index = 0;
+		}
+
+		// TODO smoothly transition between colors, and use firstAuraType when on the final index to transition back to the first color
+		AuraType firstAuraType = filledAuraTypes.getFirst();
+		AuraType auraType = filledAuraTypes.get(index);
+		Color color = auraType.getColor();
 		AuraVertexBufferSource auraBuffer = new AuraVertexBufferSource(
 			Minecraft.getInstance().renderBuffers().bufferSource(),
 			color.getRedI(), color.getGreenI(), color.getBlueI(),
 			(int) alpha * 255
 		);
 
-		super.render(auraBuffer.getBuffer(RenderType.entityTranslucent(sprite.atlasLocation())), renderInfo, partialTicks);
+		if(Minecraft.getInstance().player.isHolding(DevotionItems.AURAMETER.get()))
+			super.render(auraBuffer.getBuffer(RenderType.entityTranslucent(sprite.atlasLocation())), renderInfo, partialTicks);
 	}
 
 	@Override

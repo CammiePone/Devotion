@@ -1,5 +1,6 @@
 package dev.cammiescorner.devotion.fabric.entrypoints;
 
+import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.api.spells.SpellFocus;
 import dev.cammiescorner.devotion.api.staves.StaffCap;
 import dev.cammiescorner.devotion.api.staves.StaffCore;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CalledByReflection
@@ -95,9 +97,12 @@ public class FabricClient implements ClientModInitializer {
 
 						for(BlockPos blockPos : auraNodeMap.keySet()) {
 							Vec3 pos = blockPos.getCenter();
+							Map<AuraType, Float> auraNodes = auraNodeMap.get(blockPos).viewAuraMap();
+							List<AuraType> filledAuraTypes = auraNodes.keySet().stream().filter(auraType -> auraNodes.get(auraType) > 0).toList();
+							int particleLifespan = filledAuraTypes.size() * 20;
 
-							// TODO fix flickering
-							level.addParticle(DevotionParticles.AURA_NODE.get(), pos.x(), pos.y(), pos.z(), 0, 0, 0);
+							if(particleLifespan > 0 && level.getGameTime() % particleLifespan == 0)
+								level.addParticle(DevotionParticles.AURA_NODE.get(), pos.x(), pos.y(), pos.z(), 0, 0, 0);
 						}
 					}
 				}
