@@ -11,7 +11,7 @@ import dev.cammiescorner.devotion.client.models.armor.DeathCultLeaderArmorModel;
 import dev.cammiescorner.devotion.client.models.armor.DeathCultistRobesModel;
 import dev.cammiescorner.devotion.client.models.armor.MageRobesModel;
 import dev.cammiescorner.devotion.client.models.blockentity.AltarPillarModel;
-import dev.cammiescorner.devotion.client.particles.AuraNodeParticle;
+import dev.cammiescorner.devotion.client.renderers.AuraNodeRenderer;
 import dev.cammiescorner.devotion.client.renderers.blockentity.AltarFocusRenderer;
 import dev.cammiescorner.devotion.client.renderers.blockentity.AltarPillarRenderer;
 import dev.cammiescorner.devotion.client.renderers.entity.armor.DeathCultLeaderArmorRenderer;
@@ -19,7 +19,10 @@ import dev.cammiescorner.devotion.client.renderers.entity.armor.DeathCultistRobe
 import dev.cammiescorner.devotion.client.renderers.entity.armor.MageRobesRenderer;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundGiveResearchScrollPacket;
-import dev.cammiescorner.devotion.common.registries.*;
+import dev.cammiescorner.devotion.common.registries.DevotionBlocks;
+import dev.cammiescorner.devotion.common.registries.DevotionData;
+import dev.cammiescorner.devotion.common.registries.DevotionItems;
+import dev.cammiescorner.devotion.common.registries.DevotionMenus;
 import dev.cammiescorner.velvet.api.event.EntitiesPreRenderCallback;
 import dev.cammiescorner.velvet.api.event.PostLevelRenderCallback;
 import dev.cammiescorner.velvet.api.event.ShaderEffectRenderCallback;
@@ -36,6 +39,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class DevotionClient implements ClientEntryPoint {
@@ -46,6 +51,7 @@ public class DevotionClient implements ClientEntryPoint {
 	private static final ResourceLocation EMITTER_MAGE_ROBES = Devotion.id("textures/entity/armor/emitter_mage_robes.png");
 	private static final ResourceLocation CONJURER_MAGE_ROBES = Devotion.id("textures/entity/armor/conjurer_mage_robes.png");
 	private static final ResourceLocation MANIPULATOR_MAGE_ROBES = Devotion.id("textures/entity/armor/manipulator_mage_robes.png");
+	public static final List<AuraNodeRenderer> AURA_NODE_RENDERERS = new ArrayList<>();
 	public static final ModelResourceLocation STAFF_RESOURCE_LOCATION = ModelResourceLocation.inventory(Devotion.id("staff"));
 	public static float guideBookOffsetX, guideBookOffsetY;
 
@@ -60,10 +66,6 @@ public class DevotionClient implements ClientEntryPoint {
 			event.registerModelLayers(DeathCultistRobesModel.MODEL_LAYER, DeathCultistRobesModel::createBodyLayer);
 			event.registerModelLayers(DeathCultLeaderArmorModel.MODEL_LAYER, DeathCultLeaderArmorModel::createBodyLayer);
 			event.registerModelLayers(AltarPillarModel.MODEL_LAYER, AltarPillarModel::createBodyLayer);
-		});
-
-		RegisterParticleFactoriesEvent.EVENT.register(event -> {
-			event.registerSpriteSet(DevotionParticles.AURA_NODE, AuraNodeParticle.Factory::new);
 		});
 
 		RegisterBlockEntityRenderersEvent.EVENT.register(event -> {
