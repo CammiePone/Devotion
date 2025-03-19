@@ -16,7 +16,6 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 import static dev.cammiescorner.devotion.client.DevotionClient.AURA_NODE_RENDERERS;
 
-
 @EventBusSubscriber(modid = Devotion.MOD_ID)
 public class ClientGameEvents {
 	@SubscribeEvent
@@ -40,7 +39,6 @@ public class ClientGameEvents {
 					}
 				}
 
-				// TODO clean auraNodeRenderers when not rendering that blockpos
 				for(AuraNodeRenderer renderer : AURA_NODE_RENDERERS)
 					renderer.render(event.getCamera(), event.getPartialTick().getGameTimeDeltaTicks(), level.getLightEmission(renderer.getBlockPos()));
 			}

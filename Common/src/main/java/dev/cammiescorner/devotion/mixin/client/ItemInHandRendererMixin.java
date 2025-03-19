@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.client.ClientHelper;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
-import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.MainHelper;
+import dev.upcraft.sparkweave.api.color.Color;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -40,7 +40,7 @@ public abstract class ItemInHandRendererMixin {
 			Color auraColor = primaryAuraType.getColor();
 			float alpha = MainHelper.getAuraAlpha(player, primaryAuraType);
 
-			renderArmWithItem(player, partialTicks, f1, InteractionHand.MAIN_HAND, f4, mainHandItem, f5, poseStack, new AuraVertexBufferSource(buffer, auraColor.getRedI(), auraColor.getGreenI(), auraColor.getBlueI(), (int) (alpha * 255)), combinedLight);
+			renderArmWithItem(player, partialTicks, f1, InteractionHand.MAIN_HAND, f4, mainHandItem, f5, poseStack, new AuraVertexBufferSource(buffer, auraColor.red(), auraColor.green(), auraColor.blue(), (int) (alpha * 255)), combinedLight);
 		}
 	}
 
@@ -57,7 +57,7 @@ public abstract class ItemInHandRendererMixin {
 			Color auraColor = primaryAuraType.getColor();
 			float alpha = MainHelper.getAuraAlpha(player, primaryAuraType);
 
-			renderArmWithItem(player, partialTicks, f1, InteractionHand.OFF_HAND, f6, offHandItem, f7, poseStack, new AuraVertexBufferSource(buffer, auraColor.getRedI(), auraColor.getGreenI(), auraColor.getBlueI(), (int) (alpha * 255)), combinedLight);
+			renderArmWithItem(player, partialTicks, f1, InteractionHand.OFF_HAND, f6, offHandItem, f7, poseStack, new AuraVertexBufferSource(buffer, auraColor.red(), auraColor.green(), auraColor.blue(), (int) (alpha * 255)), combinedLight);
 		}
 	}
 }

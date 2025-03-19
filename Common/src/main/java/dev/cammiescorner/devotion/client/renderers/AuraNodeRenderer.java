@@ -3,9 +3,9 @@ package dev.cammiescorner.devotion.client.renderers;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.spells.AuraType;
-import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.common.registries.DevotionItems;
+import dev.upcraft.sparkweave.api.color.Color;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -47,11 +47,11 @@ public class AuraNodeRenderer {
 
 		// TODO smoothly transition between nextAuraType's color and currentAuraType's color
 		AuraType currentAuraType = filledAuraTypes.get(index);
-		AuraType nextAuraType = filledAuraTypes.get(index + 1 < filledAuraTypes.size() - 1 ? index + 1 : 0);
-		Color color = currentAuraType.getColor();
+		AuraType nextAuraType = filledAuraTypes.get(index + 1 >= filledAuraTypes.size() ? 0 : index + 1);
+		Color color = currentAuraType.getColor().lerp(nextAuraType.getColor(), (level.getGameTime() % (float) cycleSpeed) / cycleSpeed + partialTicks);
 		AuraVertexBufferSource auraBuffer = new AuraVertexBufferSource(
 			Minecraft.getInstance().renderBuffers().bufferSource(),
-			color.getRedI(), color.getGreenI(), color.getBlueI(), 255
+			color.red(), color.green(), color.blue(), 255
 		);
 
 		if(Minecraft.getInstance().player.isHolding(DevotionItems.AURAMETER.get())) {

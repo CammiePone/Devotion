@@ -7,10 +7,10 @@ import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.research.RiddleData;
 import dev.cammiescorner.devotion.api.spells.AuraType;
-import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.networking.serverbound.ServerboundSaveScrollDataPacket;
 import dev.cammiescorner.devotion.common.registries.DevotionData;
 import dev.cammiescorner.devotion.common.screens.ResearchMenu;
+import dev.upcraft.sparkweave.api.color.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -273,9 +273,9 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
 	private void drawLine(PoseStack matrices, float x1, float y1, float x2, float y2) {
 		DataComponentType<Boolean> completedData = DevotionData.SCROLL_COMPLETED.get();
 
-		Color color = stack.getOrDefault(completedData, false) ? colorModulation(0.224f, 0.196f, 0.175f) : new Color(0.224f, 0.196f, 0.175f);
+		Color color = stack.getOrDefault(completedData, false) ? colorModulation(0.224f, 0.196f, 0.175f) : Color.fromFloatArray(Color.Ordering.RGB, 0.224f, 0.196f, 0.175f);
 		RenderSystem.setShader(GameRenderer::getPositionShader);
-		RenderSystem.setShaderColor(color.getRedF(), color.getGreenF(), color.getBlueF(), 1f);
+		RenderSystem.setShaderColor(color.redF(), color.greenF(), color.blueF(), 1f);
 		BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 		Matrix4f matrix = matrices.last().pose();
 		float angle = (float) (Math.atan2(y2 - y1, x2 - x1) - (Math.PI * 0.5));
@@ -299,7 +299,7 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
 		if(Minecraft.getInstance().level != null)
 			colorModifier = 0.25f + (float) Math.sin((Minecraft.getInstance().level.getGameTime() - stack.getOrDefault(completedTimeData, 0).longValue()) * 0.15f) * 0.25f;
 
-		return new Color(r + colorModifier, g + colorModifier, b + colorModifier);
+		return Color.fromFloatArray(Color.Ordering.RGB, r + colorModifier, g + colorModifier, b + colorModifier);
 	}
 
 	public void redrawLines() {

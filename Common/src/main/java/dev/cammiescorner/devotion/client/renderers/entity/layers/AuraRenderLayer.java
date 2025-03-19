@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.client.ClientHelper;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
-import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.MainHelper;
+import dev.upcraft.sparkweave.api.color.Color;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -33,7 +33,7 @@ public class AuraRenderLayer<T extends LivingEntity, M extends EntityModel<T>> e
 
 		if(aura > 0f && ClientHelper.shouldRenderAura(entity)) {
 			EntityDimensions dimensions = entity.getDimensions(entity.getPose());
-			AuraVertexBufferSource auraBufferSource = new AuraVertexBufferSource(bufferSource, auraColor.getRedI(), auraColor.getGreenI(), auraColor.getBlueI(), (int) (MainHelper.getAuraAlpha(entity, primaryAuraType) * 255));
+			AuraVertexBufferSource auraBufferSource = new AuraVertexBufferSource(bufferSource, auraColor.red(), auraColor.green(), auraColor.blue(), (int) (MainHelper.getAuraAlpha(entity, primaryAuraType) * 255));
 
 			poseStack.pushPose();
 			poseStack.scale(scale, scale, scale);

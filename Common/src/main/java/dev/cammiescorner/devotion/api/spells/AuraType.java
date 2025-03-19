@@ -2,7 +2,7 @@ package dev.cammiescorner.devotion.api.spells;
 
 import com.mojang.serialization.Codec;
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.common.Color;
+import dev.upcraft.sparkweave.api.color.Color;
 import net.minecraft.util.StringRepresentable;
 
 public enum AuraType implements StringRepresentable {
@@ -15,7 +15,7 @@ public enum AuraType implements StringRepresentable {
 	private final Color color;
 
 	AuraType(String name, int color) {
-		this.color = new Color(color);
+		this.color = Color.fromInt(color, Color.Ordering.RGB);
 		this.name = name;
 	}
 
@@ -53,18 +53,6 @@ public enum AuraType implements StringRepresentable {
 
 	public Color getColor() {
 		return color;
-	}
-
-	public int getDecimal() {
-		return color.getDecimal();
-	}
-
-	public float[] getRgbF() {
-		return color.getRgbF();
-	}
-
-	public int[] getRgbI() {
-		return color.getRgbI();
 	}
 
 	public String getName() {

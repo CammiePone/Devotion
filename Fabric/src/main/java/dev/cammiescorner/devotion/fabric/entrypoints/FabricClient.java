@@ -102,7 +102,6 @@ public class FabricClient implements ClientModInitializer {
 					}
 				}
 
-				// TODO clean auraNodeRenderers when not rendering that blockpos
 				for(AuraNodeRenderer renderer : AURA_NODE_RENDERERS)
 					renderer.render(context.camera(), context.tickCounter().getGameTimeDeltaTicks(), level.getLightEmission(renderer.getBlockPos()));
 			}

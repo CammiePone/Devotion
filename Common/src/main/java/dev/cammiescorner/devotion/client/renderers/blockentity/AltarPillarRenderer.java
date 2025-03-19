@@ -5,8 +5,8 @@ import com.mojang.math.Axis;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.client.models.blockentity.AltarPillarModel;
 import dev.cammiescorner.devotion.client.renderers.AuraVertexBufferSource;
-import dev.cammiescorner.devotion.common.Color;
 import dev.cammiescorner.devotion.common.blocks.entities.AltarPillarBlockEntity;
+import dev.upcraft.sparkweave.api.color.Color;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -29,7 +29,7 @@ public class AltarPillarRenderer implements BlockEntityRenderer<AltarPillarBlock
 		Vec3 pillarPos = blockEntity.getBlockPos().getCenter();
 		Vec3 direction = pillarPos.subtract(altarFocusPos).normalize();
 		Color auraColor = blockEntity.getContainedAuraType().getColor();
-		AuraVertexBufferSource auraBufferSource = new AuraVertexBufferSource(bufferSource, auraColor.getRedI(), auraColor.getGreenI(), auraColor.getBlueI(), (int) (blockEntity.getAuraAlpha() * 255));
+		AuraVertexBufferSource auraBufferSource = new AuraVertexBufferSource(bufferSource, auraColor.red(), auraColor.green(), auraColor.blue(), (int) (blockEntity.getAuraAlpha() * 255));
 
 		poseStack.pushPose();
 		poseStack.mulPose(Axis.ZP.rotationDegrees(180f));
