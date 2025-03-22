@@ -102,7 +102,7 @@ public class DevotionClient implements ClientEntryPoint {
 			ResourceKey<Research> researchKey = widget.getResearch().key();
 
 			if(MainHelper.getResearchIds(player).contains(researchKey.location()))
-				return;
+				return; // TODO open screen if player knows the research already
 
 			Network.getNetworkHandler().sendToServer(new ServerboundGiveResearchScrollPacket(researchKey));
 		}

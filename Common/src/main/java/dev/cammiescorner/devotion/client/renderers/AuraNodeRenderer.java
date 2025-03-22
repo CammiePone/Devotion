@@ -10,6 +10,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -42,6 +43,7 @@ public class AuraNodeRenderer {
 			return;
 
 		// TODO smoothly transition between nextAuraType's color and currentAuraType's color
+		LocalPlayer player = Minecraft.getInstance().player;
 		AuraType currentAuraType = filledAuraTypes.get(index);
 		AuraType nextAuraType = filledAuraTypes.get(index + 1 >= filledAuraTypes.size() ? 0 : index + 1);
 		Color color = currentAuraType.getColor().lerpDirect(nextAuraType.getColor(), (level.getGameTime() % (float) cycleSpeed) / cycleSpeed);
@@ -50,7 +52,7 @@ public class AuraNodeRenderer {
 			color.red(), color.green(), color.blue(), 255
 		);
 
-		if(Minecraft.getInstance().player.isHolding(DevotionItems.AURAMETER.get())) {
+		if(player != null && player.isHolding(DevotionItems.AURAMETER.get())) {
 			VertexConsumer consumer = auraBuffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
 			Vec3 relativePos = pos.getCenter().subtract(camera.getPosition());
 			Quaternionf quaternionf = new Quaternionf();

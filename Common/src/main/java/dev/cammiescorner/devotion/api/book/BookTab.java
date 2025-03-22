@@ -1,4 +1,4 @@
-package dev.cammiescorner.devotion.api.research;
+package dev.cammiescorner.devotion.api.book;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
