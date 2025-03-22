@@ -41,17 +41,10 @@ public class AuraNodeRenderer {
 		if(filledAuraTypes.isEmpty())
 			return;
 
-		if(level.getGameTime() % cycleSpeed == 0) {
-			if(index < filledAuraTypes.size() - 1)
-				index++;
-			else
-				index = 0;
-		}
-
 		// TODO smoothly transition between nextAuraType's color and currentAuraType's color
 		AuraType currentAuraType = filledAuraTypes.get(index);
 		AuraType nextAuraType = filledAuraTypes.get(index + 1 >= filledAuraTypes.size() ? 0 : index + 1);
-		Color color = currentAuraType.getColor().lerp(nextAuraType.getColor(), (level.getGameTime() % (float) cycleSpeed) / cycleSpeed + partialTicks);
+		Color color = currentAuraType.getColor().lerpDirect(nextAuraType.getColor(), (level.getGameTime() % (float) cycleSpeed) / cycleSpeed);
 		AuraVertexBufferSource auraBuffer = new AuraVertexBufferSource(
 			Minecraft.getInstance().renderBuffers().bufferSource(),
 			color.red(), color.green(), color.blue(), 255
@@ -64,6 +57,13 @@ public class AuraNodeRenderer {
 			SingleQuadParticle.FacingCameraMode.LOOKAT_XYZ.setRotation(quaternionf, camera, partialTicks);
 
 			renderRotatedQuad(consumer, quaternionf, (float) relativePos.x(), (float) relativePos.y(), (float) relativePos.z(), packedLight);
+		}
+
+		if(level.getGameTime() % cycleSpeed == 0) {
+			if(index < filledAuraTypes.size() - 1)
+				index++;
+			else
+				index = 0;
 		}
 	}
 
