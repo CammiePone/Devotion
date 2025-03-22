@@ -38,6 +38,9 @@ public class AuraNodeRenderer {
 	}
 
 	public void render(Camera camera, float partialTicks, int packedLight) {
+		if(filledAuraTypes.isEmpty())
+			return;
+
 		if(level.getGameTime() % cycleSpeed == 0) {
 			if(index < filledAuraTypes.size() - 1)
 				index++;

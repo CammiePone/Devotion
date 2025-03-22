@@ -85,25 +85,31 @@ public class FabricClient implements ClientModInitializer {
 
 		WorldRenderEvents.AFTER_ENTITIES.register(context -> {
 			LocalPlayer player = Minecraft.getInstance().player;
+			int renderDistance = Minecraft.getInstance().options.renderDistance().get() * 16;
 
-			if(player != null && player.isHolding(DevotionItems.AURAMETER.get())) {
-				ClientLevel level = context.world();
-				ClientChunkCache chunkCache = level.getChunkSource();
-				ClientChunkCache.Storage storage = chunkCache.storage;
+			if(player != null) {
+				AURA_NODE_RENDERERS.removeIf(renderer -> renderer.getBlockPos().distSqr(player.blockPosition()) > renderDistance * renderDistance);
 
-				for(int i = 0; i < storage.chunks.length(); i++) {
-					LevelChunk chunk = storage.chunks.get(i);
+				if(player.isHolding(DevotionItems.AURAMETER.get())) {
+					ClientLevel level = context.world();
+					ClientChunkCache chunkCache = level.getChunkSource();
+					ClientChunkCache.Storage storage = chunkCache.storage;
 
-					if(chunk != null) {
-						for(BlockPos blockPos : MainHelper.getAuraNodes(chunk).keySet()) {
-							if(AURA_NODE_RENDERERS.stream().noneMatch(auraNodeRenderer -> auraNodeRenderer.getBlockPos().equals(blockPos)))
-								AURA_NODE_RENDERERS.add(new AuraNodeRenderer(level, blockPos));
+					for(int i = 0; i < storage.chunks.length(); i++) {
+						LevelChunk chunk = storage.chunks.get(i);
+
+						if(chunk != null) {
+							for(BlockPos blockPos : MainHelper.getAuraNodes(chunk).keySet()) {
+								if(blockPos.distSqr(player.blockPosition()) <= renderDistance * renderDistance && AURA_NODE_RENDERERS.stream().noneMatch(renderer -> renderer.getBlockPos().equals(blockPos))) {
+									AURA_NODE_RENDERERS.add(new AuraNodeRenderer(level, blockPos));
+								}
+							}
 						}
 					}
-				}
 
-				for(AuraNodeRenderer renderer : AURA_NODE_RENDERERS)
-					renderer.render(context.camera(), context.tickCounter().getGameTimeDeltaTicks(), level.getLightEmission(renderer.getBlockPos()));
+					for(AuraNodeRenderer renderer : AURA_NODE_RENDERERS)
+						renderer.render(context.camera(), context.tickCounter().getGameTimeDeltaTicks(), level.getLightEmission(renderer.getBlockPos()));
+				}
 			}
 		});
 	}

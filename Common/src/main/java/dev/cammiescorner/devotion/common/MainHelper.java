@@ -60,7 +60,7 @@ public class MainHelper {
 	public static boolean revokeResearch(Player player, Research research, boolean simulate) {
 		return duck.revokeResearch(player, research, simulate);
 	}
-	// TODO check if ChunkAccess is empty chunk for all these methods  below
+
 	public static void addAuraNode(ChunkAccess access, BlockPos pos, AuraNode node) {
 		if(access instanceof EmptyLevelChunk)
 			return;

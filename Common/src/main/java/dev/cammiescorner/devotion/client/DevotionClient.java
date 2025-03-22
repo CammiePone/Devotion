@@ -51,7 +51,7 @@ public class DevotionClient implements ClientEntryPoint {
 	private static final ResourceLocation EMITTER_MAGE_ROBES = Devotion.id("textures/entity/armor/emitter_mage_robes.png");
 	private static final ResourceLocation CONJURER_MAGE_ROBES = Devotion.id("textures/entity/armor/conjurer_mage_robes.png");
 	private static final ResourceLocation MANIPULATOR_MAGE_ROBES = Devotion.id("textures/entity/armor/manipulator_mage_robes.png");
-	public static final List<AuraNodeRenderer> AURA_NODE_RENDERERS = new ArrayList<>(); // TODO clean auraNodeRenderers when not rendering that blockpos
+	public static final List<AuraNodeRenderer> AURA_NODE_RENDERERS = new ArrayList<>();
 	public static final ModelResourceLocation STAFF_RESOURCE_LOCATION = ModelResourceLocation.inventory(Devotion.id("staff"));
 	public static float guideBookOffsetX, guideBookOffsetY;
 

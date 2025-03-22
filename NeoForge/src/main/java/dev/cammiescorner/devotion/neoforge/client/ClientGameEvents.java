@@ -23,24 +23,32 @@ public class ClientGameEvents {
 		if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
 			LocalPlayer player = Minecraft.getInstance().player;
 
-			if(player != null && player.isHolding(DevotionItems.AURAMETER.get())) {
-				ClientLevel level = Minecraft.getInstance().level;
-				ClientChunkCache chunkCache = level.getChunkSource();
-				ClientChunkCache.Storage storage = chunkCache.storage;
+			if(player != null) {
+				if(player.isHolding(DevotionItems.AURAMETER.get())) {
+					ClientLevel level = Minecraft.getInstance().level;
+					ClientChunkCache chunkCache = level.getChunkSource();
+					ClientChunkCache.Storage storage = chunkCache.storage;
 
-				for(int i = 0; i < storage.chunks.length(); i++) {
-					LevelChunk chunk = storage.chunks.get(i);
+					for(int i = 0; i < storage.chunks.length(); i++) {
+						LevelChunk chunk = storage.chunks.get(i);
 
-					if(chunk != null) {
-						for(BlockPos blockPos : MainHelper.getAuraNodes(chunk).keySet()) {
-							if(AURA_NODE_RENDERERS.stream().noneMatch(auraNodeRenderer -> auraNodeRenderer.getBlockPos().equals(blockPos)))
-								AURA_NODE_RENDERERS.add(new AuraNodeRenderer(level, blockPos));
+						if(chunk != null) {
+							for(BlockPos blockPos : MainHelper.getAuraNodes(chunk).keySet()) {
+								if(AURA_NODE_RENDERERS.stream().noneMatch(auraNodeRenderer -> auraNodeRenderer.getBlockPos().equals(blockPos)))
+									AURA_NODE_RENDERERS.add(new AuraNodeRenderer(level, blockPos));
+							}
 						}
 					}
+
+					for(AuraNodeRenderer renderer : AURA_NODE_RENDERERS)
+						renderer.render(event.getCamera(), event.getPartialTick().getGameTimeDeltaTicks(), level.getLightEmission(renderer.getBlockPos()));
 				}
 
-				for(AuraNodeRenderer renderer : AURA_NODE_RENDERERS)
-					renderer.render(event.getCamera(), event.getPartialTick().getGameTimeDeltaTicks(), level.getLightEmission(renderer.getBlockPos()));
+				AURA_NODE_RENDERERS.removeIf(renderer -> {
+					int renderDistance = Minecraft.getInstance().options.renderDistance().get() * 16;
+
+					return renderer.getBlockPos().distSqr(player.blockPosition()) > renderDistance * renderDistance;
+				});
 			}
 		}
 	}
