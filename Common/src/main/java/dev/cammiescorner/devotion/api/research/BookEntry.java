@@ -10,12 +10,10 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
-public record BookEntry(ItemStack icon, Holder<BookTab> tab, Holder<Research> research, int x, int y) {
+public record BookEntry(Holder<BookTab> tab, Holder<Research> research, int x, int y) {
 	public static final Codec<Holder<BookEntry>> CODEC = RegistryFixedCodec.create(DevotionRegistries.BOOK_ENTRY);
 	public static final Codec<BookEntry> DIRECT_CODEC = RecordCodecBuilder.create(tabInstance -> tabInstance.group(
-		ItemStack.CODEC.fieldOf("item_icon").forGetter(BookEntry::icon),
 		BookTab.CODEC.fieldOf("tab").forGetter(BookEntry::tab),
 		Research.CODEC.fieldOf("research").forGetter(BookEntry::research),
 		Codec.INT.optionalFieldOf("posX", 0).forGetter(BookEntry::x),

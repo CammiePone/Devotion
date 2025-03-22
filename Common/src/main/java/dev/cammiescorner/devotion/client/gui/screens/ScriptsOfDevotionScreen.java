@@ -3,16 +3,20 @@ package dev.cammiescorner.devotion.client.gui.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.client.DevotionClient;
-import dev.cammiescorner.devotion.api.events.ScriptsOfDevotionScreenCallback;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
+import dev.cammiescorner.devotion.api.research.BookEntry;
+import dev.cammiescorner.devotion.api.research.BookTab;
 import dev.cammiescorner.devotion.api.research.Research;
+import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.gui.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.client.gui.widgets.TabWidget;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -20,17 +24,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec2;
 import org.joml.Matrix4f;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScriptsOfDevotionScreen extends Screen {
 	public static final ResourceLocation TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_frame.png");
 	private final LinkedHashMap<ResourceLocation, Item> tabs = new LinkedHashMap<>();
 	private final List<TabWidget> tabDrawables = new ArrayList<>();
-	private final List<ResearchWidget> artificeDrawables = new ArrayList<>();
-	private final List<ResearchWidget> spellDrawables = new ArrayList<>();
-	private final List<ResearchWidget> cultDrawables = new ArrayList<>();
+	private final Map<ResearchWidget, BookTab> researchDrawables = new HashMap<>();
+	private final RegistryAccess access = Minecraft.getInstance().player.registryAccess();
 	public ResourceLocation tabId = Devotion.id("artifice");
 	public int leftPos, topPos;
 	public float offsetX, offsetY;
@@ -42,27 +44,27 @@ public class ScriptsOfDevotionScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
+		AtomicInteger tabCount = new AtomicInteger();
 		leftPos = (width - 378) / 2;
 		topPos = (height - 250) / 2;
 		offsetX = DevotionClient.guideBookOffsetX;
 		offsetY = DevotionClient.guideBookOffsetY;
 
-		ScriptsOfDevotionScreenCallback.ADD_RESEARCH.invoker().addWidgets(this, leftPos, topPos);
-		ScriptsOfDevotionScreenCallback.ADD_TAB.invoker().addTabs(tabs);
+		access.registryOrThrow(DevotionRegistries.BOOK_TAB).stream().sorted(Comparator.comparingInt(BookTab::order)).forEach(bookTab -> {
+			if(tabCount.get() >= 26)
+				return;
 
-		// 13 is the max number of tabs along the top
-		for(int i = 0; i < tabs.keySet().size(); i++) {
-			if(i >= 26)
-				break;
+			ResourceLocation tabId = bookTab.getId(access);
+			Item item = bookTab.icon().getItem();
 
-			ResourceLocation tabId = tabs.keySet().stream().toList().get(i);
-			Item item = tabs.get(tabId);
-
-			if(i < 13)
-				addTabChild(new TabWidget(leftPos + 21 + (26 * i), topPos + 2, true, tabId, item, this::clickTab));
+			if(tabCount.get() < 13)
+				addTabChild(new TabWidget(leftPos + 21 + (26 * tabCount.get()), topPos + 2, true, tabId, item, this::clickTab));
 			else
-				addTabChild(new TabWidget(leftPos + 21 + (26 * (i - 13)), topPos + 100, false, tabId, item, this::clickTab));
-		}
+				addTabChild(new TabWidget(leftPos + 21 + (26 * (tabCount.get() - 13)), topPos + 100, false, tabId, item, this::clickTab));
+
+			tabCount.getAndIncrement();
+		});
+		access.registryOrThrow(DevotionRegistries.BOOK_ENTRY).forEach(bookEntry -> addResearchWidget(bookEntry, new ResearchWidget(leftPos + bookEntry.x(), topPos + bookEntry.y(), bookEntry.research().value().getId(access), DevotionClient::researchWidgetClick)));
 	}
 
 	@Override
@@ -111,21 +113,15 @@ public class ScriptsOfDevotionScreen extends Screen {
 
 		if(listener instanceof TabWidget)
 			tabDrawables.remove(listener);
-
-		if(listener instanceof ResearchWidget) {
-			artificeDrawables.remove(listener);
-			spellDrawables.remove(listener);
-			cultDrawables.remove(listener);
-		}
+		if(listener instanceof ResearchWidget)
+			researchDrawables.remove(listener);
 	}
 
 	@Override
 	protected void clearWidgets() {
 		super.clearWidgets();
 		tabDrawables.clear();
-		artificeDrawables.clear();
-		spellDrawables.clear();
-		cultDrawables.clear();
+		researchDrawables.clear();
 	}
 
 	protected void drawBackground(GuiGraphics guiGraphics) {
@@ -142,37 +138,15 @@ public class ScriptsOfDevotionScreen extends Screen {
 		poseStack.pushPose();
 		poseStack.translate(-leftPos + offsetX, -topPos + offsetY, -200);
 
-		if(tabId.equals(Devotion.id("artifice"))) {
-			for(ResearchWidget widget : artificeDrawables) {
-				for(ResearchWidget parent : getParents(widget, artificeDrawables))
+		for(ResearchWidget widget : researchDrawables.keySet()) {
+			if(tabId.equals(researchDrawables.get(widget).getId(access))) {
+				for(ResearchWidget parent : getParents(widget))
 					drawLine(poseStack, parent.getX() + 15, parent.getY() + 15, widget.getX() + 15, widget.getY() + 15);
 			}
-
-			for(ResearchWidget widget : artificeDrawables) {
-				widget.setOffset(offsetX, offsetY, leftPos, topPos);
-				widget.render(guiGraphics, mouseX, mouseY, delta);
-			}
 		}
 
-		if(tabId.equals(Devotion.id("spells"))) {
-			for(ResearchWidget widget : spellDrawables) {
-				for(ResearchWidget parent : getParents(widget, spellDrawables))
-					drawLine(poseStack, parent.getX() + offsetX + 15, parent.getY() + offsetY + 15, widget.getX() + offsetX + 15, widget.getY() + offsetY + 15);
-			}
-
-			for(ResearchWidget widget : spellDrawables) {
-				widget.setOffset(offsetX, offsetY, leftPos, topPos);
-				widget.render(guiGraphics, mouseX, mouseY, delta);
-			}
-		}
-
-		if(tabId.equals(Devotion.id("cults"))) {
-			for(ResearchWidget widget : cultDrawables) {
-				for(ResearchWidget parent : getParents(widget, cultDrawables))
-					drawLine(poseStack, parent.getX() + offsetX + 15, parent.getY() + offsetY + 15, widget.getX() + offsetX + 15, widget.getY() + offsetY + 15);
-			}
-
-			for(ResearchWidget widget : cultDrawables) {
+		for(ResearchWidget widget : researchDrawables.keySet()) {
+			if(tabId.equals(researchDrawables.get(widget).getId(access))) {
 				widget.setOffset(offsetX, offsetY, leftPos, topPos);
 				widget.render(guiGraphics, mouseX, mouseY, delta);
 			}
@@ -193,39 +167,22 @@ public class ScriptsOfDevotionScreen extends Screen {
 		poseStack.pushPose();
 		poseStack.translate(offsetX, offsetY, 0);
 
-		if(tabId.equals(Devotion.id("artifice")))
-			for(ResearchWidget widget : artificeDrawables)
+		for(ResearchWidget widget : researchDrawables.keySet()) {
+			if(tabId.equals(researchDrawables.get(widget).getId(access)))
 				widget.renderTooltip(guiGraphics, poseStack, mouseX, mouseY);
-
-		if(tabId.equals(Devotion.id("spells")))
-			for(ResearchWidget widget : spellDrawables)
-				widget.renderTooltip(guiGraphics, poseStack, mouseX, mouseY);
-
-		if(tabId.equals(Devotion.id("cults")))
-			for(ResearchWidget widget : cultDrawables)
-				widget.renderTooltip(guiGraphics, poseStack, mouseX, mouseY);
+		}
 
 		poseStack.popPose();
 	}
 
-	private <T extends TabWidget> T addTabChild(T drawable) {
+	public <T extends TabWidget> T addTabChild(T drawable) {
 		tabDrawables.add(drawable);
 		return addWidget(drawable);
 	}
 
-	public <T extends ResearchWidget> T addArtificeChild(T drawable) {
-		artificeDrawables.add(drawable);
-		return addWidget(drawable);
-	}
-
-	public <T extends ResearchWidget> T addSpellChild(T drawable) {
-		spellDrawables.add(drawable);
-		return addWidget(drawable);
-	}
-
-	public <T extends ResearchWidget> T addCultChild(T drawable) {
-		cultDrawables.add(drawable);
-		return addWidget(drawable);
+	public <T extends ResearchWidget> void addResearchWidget(BookEntry bookEntry, T drawable) {
+		researchDrawables.put(drawable, bookEntry.tab().value());
+		addWidget(drawable);
 	}
 
 	private void drawLine(PoseStack poseStack, float x1, float y1, float x2, float y2) {
@@ -302,13 +259,13 @@ public class ScriptsOfDevotionScreen extends Screen {
 		return pos1.scale(1 - delta).add(pos2.scale(delta));
 	}
 
-	private List<ResearchWidget> getParents(ResearchWidget widget, List<ResearchWidget> drawables) {
+	private List<ResearchWidget> getParents(ResearchWidget widget) {
 		List<ResearchWidget> parents = new ArrayList<>();
 
 		if(widget.visible) {
 			Holder.Reference<Research> research = widget.getResearch();
 
-			for(ResearchWidget parent : drawables)
+			for(ResearchWidget parent : researchDrawables.keySet())
 				if(parent.visible && research.value().parentIds().contains(parent.getResearch().key().location()))
 					parents.add(parent);
 		}

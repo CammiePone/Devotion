@@ -3,7 +3,6 @@ package dev.cammiescorner.devotion.client;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.api.events.ScriptsOfDevotionScreenCallback;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.client.gui.screens.ResearchScreen;
 import dev.cammiescorner.devotion.client.gui.widgets.ResearchWidget;
@@ -94,27 +93,9 @@ public class DevotionClient implements ClientEntryPoint {
 
 			event.register(DevotionItems.RESEARCH_SCROLL, Devotion.id("completed_research"), (stack, level, entity, seed) -> stack.getOrDefault(DevotionData.SCROLL_COMPLETED.get(), false) ? 1f : 0f);
 		});
-
-		ScriptsOfDevotionScreenCallback.ADD_TAB.register(tabMap -> {
-			tabMap.put(Devotion.id("artifice"), DevotionItems.BASIC_MAGE_HOOD.get());
-			tabMap.put(Devotion.id("spells"), DevotionBlocks.ALTAR_FOCUS_BLOCK.get().asItem());
-			tabMap.put(Devotion.id("cults"), DevotionItems.DEATH_CULTIST_HOOD.get());
-		});
-
-		ScriptsOfDevotionScreenCallback.ADD_RESEARCH.register((screen, x, y) -> {
-			screen.addArtificeChild(new ResearchWidget(x + 144, y + 170, Devotion.id("root"), DevotionClient::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 204, y + 170, Devotion.id("research"), DevotionClient::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 174, y + 111, Devotion.id("altar_focus"), DevotionClient::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 54, y + 130, Devotion.id("basic_mage_armor"), DevotionClient::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 54, y + 66, Devotion.id("enhancement_mage_armor"), DevotionClient::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 114, y + 111, Devotion.id("transmutation_mage_armor"), DevotionClient::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x - 6, y + 111, Devotion.id("emission_mage_armor"), DevotionClient::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 91, y + 181, Devotion.id("conjuration_mage_armor"), DevotionClient::researchWidgetClick));
-			screen.addArtificeChild(new ResearchWidget(x + 17, y + 181, Devotion.id("manipulation_mage_armor"), DevotionClient::researchWidgetClick));
-		});
 	}
 
-	private static void researchWidgetClick(ResearchWidget widget) {
+	public static void researchWidgetClick(ResearchWidget widget) {
 		Player player = Minecraft.getInstance().player;
 
 		if(player != null) {
