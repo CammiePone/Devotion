@@ -43,7 +43,7 @@ public class ResearchScrollItem extends Item {
 				if(research != null && MainHelper.getResearchIds(player).containsAll(research.value().parentIds())) {
 					if(MainHelper.giveResearch(player, research.value(), false)) {
 						stack.consume(1, player);
-						level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS);
+						level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 0.25f, 1f);
 						return InteractionResultHolder.success(stack);
 					}
 					else {
