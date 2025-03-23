@@ -120,8 +120,8 @@ public class BookPageScreen extends Screen {
 		poseStack.popPose();
 
 		poseStack.pushPose();
-		poseStack.translate(24f, 48f, 1f);
-		poseStack.scale(0.75f, 0.75f, 1f);
+		poseStack.translate(32f, 48f, 1f);
+		poseStack.scale(0.8f, 0.8f, 1f);
 
 		// TODO format main body text & pictures
 		font.drawInBatch(Component.translatable(page.text()), 0, 0, 0x000000, false, poseStack.last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0xffffff, 0);
