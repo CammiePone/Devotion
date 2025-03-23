@@ -46,7 +46,7 @@ public class TabWidget extends AbstractButton {
 
 	@Override
 	public boolean isFocused() {
-		return Minecraft.getInstance().screen instanceof ScriptsOfDevotionScreen guideBookScreen && guideBookScreen.tabId.equals(tabId);
+		return Minecraft.getInstance().screen instanceof ScriptsOfDevotionScreen screen && screen.tabId.equals(tabId);
 	}
 
 	@Override
