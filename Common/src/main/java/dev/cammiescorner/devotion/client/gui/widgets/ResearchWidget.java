@@ -81,7 +81,8 @@ public class ResearchWidget extends AbstractButton {
 				visible = false;
 
 			if(visible) {
-				isHovered = mouseX >= getX() + offsetX && mouseY >= getY() + offsetY && mouseX < getX() + offsetX + width && mouseY < getY() + offsetY + height;
+				isHovered = mouseX >= getX() + offsetX && mouseY >= getY() + offsetY &&
+					mouseX < getX() + offsetX + width && mouseY < getY() + offsetY + height;
 				renderButton(guiGraphics, playerResearch);
 			}
 		}
