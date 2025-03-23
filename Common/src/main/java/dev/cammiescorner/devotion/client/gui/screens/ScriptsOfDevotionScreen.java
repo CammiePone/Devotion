@@ -55,9 +55,9 @@ public class ScriptsOfDevotionScreen extends Screen {
 			Item item = bookTab.icon().getItem();
 
 			if(bookTab.isTop())
-				addTabWidget(new TabWidget(leftPos + 21 + (26 * topTabs), topPos + 2, true, tabId, item, this::clickTab));
+				addTabWidget(new TabWidget(leftPos + 23 + (28 * topTabs), topPos + 2, true, tabId, item, this::clickTab));
 			else
-				addTabWidget(new TabWidget(leftPos + 21 + (26 * bottomTabs), topPos + 200, false, tabId, item, this::clickTab));
+				addTabWidget(new TabWidget(leftPos + 23 + (28 * bottomTabs), topPos + 200, false, tabId, item, this::clickTab));
 		});
 	}
 
@@ -89,18 +89,8 @@ public class ScriptsOfDevotionScreen extends Screen {
 		poseStack.popPose();
 		guiGraphics.disableScissor();
 
-		drawForeground(guiGraphics);
+		drawForeground(guiGraphics, mouseX, mouseY);
 		drawWidgetTooltips(guiGraphics, poseStack, mouseX, mouseY);
-
-		// TODO figure out why the offset doesnt change, but the tabs move a lot anyways when resizing window
-		if(mouseX >= leftPos + 20 && mouseY >= topPos + 6 && mouseX < leftPos + 46 && mouseY < topPos + 16)
-			topTabOffset = Math.min(topTabOffset + 2, 0);
-		if(mouseX >= leftPos + 332 && mouseY >= topPos + 6 && mouseX < leftPos + 358 && mouseY < topPos + 16)
-			topTabOffset = Math.max(topTabOffset - 2, -Math.max(topTabs - 13, 0) * 26);
-		if(mouseX >= leftPos + 20 && mouseY >= topPos + 234 && mouseX < leftPos + 46 && mouseY < topPos + 244)
-			bottomTabOffset = Math.min(bottomTabOffset + 2, 0);
-		if(mouseX >= leftPos + 332 && mouseY >= topPos + 234 && mouseX < leftPos + 358 && mouseY < topPos + 244)
-			bottomTabOffset = Math.max(bottomTabOffset - 2, -Math.max(bottomTabs - 13, 0) * 26);
 	}
 
 	@Override
@@ -149,22 +139,22 @@ public class ScriptsOfDevotionScreen extends Screen {
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 256, 378, 250, 512, 512);
 	}
 
-	protected void drawForeground(GuiGraphics guiGraphics) {
+	protected void drawForeground(GuiGraphics guiGraphics, float mouseX, float mouseY) {
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 200, 0, 0, 378, 250, 512, 512); // main frame
 
-		if(topTabs > 13) {
+		if(topTabs > 12) {
 			if(topTabOffset < 0)
-				guiGraphics.blit(TEXTURE, leftPos + 21, topPos + 7, 200, 384, 0, 24, 8, 512, 512); // top left arrow
-			if(topTabOffset > -Math.max(topTabs - 13, 0) * 26)
-				guiGraphics.blit(TEXTURE, leftPos + 333, topPos + 7, 200, 408, 0, 24, 8, 512, 512); // top right arrow
+				guiGraphics.blit(TEXTURE, leftPos + 21, topPos + 7, 200, 384, scrollTopTabs(mouseX, mouseY) == ScrollDirection.LEFT ? 8 : 0, 24, 8, 512, 512); // top left arrow
+			if(topTabOffset > -Math.max(topTabs - 12, 0) * 28)
+				guiGraphics.blit(TEXTURE, leftPos + 333, topPos + 7, 200, 408, scrollTopTabs(mouseX, mouseY) == ScrollDirection.RIGHT ? 8 : 0, 24, 8, 512, 512); // top right arrow
 		}
 
-		if(bottomTabs > 13) {
+		if(bottomTabs > 12) {
 			if(bottomTabOffset < 0)
-				guiGraphics.blit(TEXTURE, leftPos + 21, topPos + 235, 200, 384, 0, 24, 8, 512, 512); // bottom left arrow
-			if(bottomTabOffset > -Math.max(bottomTabs - 13, 0) * 26)
-				guiGraphics.blit(TEXTURE, leftPos + 333, topPos + 235, 200, 408, 0, 24, 8, 512, 512); // bottom right arrow
+				guiGraphics.blit(TEXTURE, leftPos + 21, topPos + 235, 200, 384, scrollBottomTabs(mouseX, mouseY) == ScrollDirection.LEFT ? 24 : 16, 24, 8, 512, 512); // bottom left arrow
+			if(bottomTabOffset > -Math.max(bottomTabs - 12, 0) * 28)
+				guiGraphics.blit(TEXTURE, leftPos + 333, topPos + 235, 200, 408, scrollBottomTabs(mouseX, mouseY) == ScrollDirection.RIGHT ? 24 : 16, 24, 8, 512, 512); // bottom right arrow
 		}
 	}
 
@@ -330,5 +320,35 @@ public class ScriptsOfDevotionScreen extends Screen {
 		tabId = widget.getTabId();
 		entryOffsetX = offsets.x;
 		entryOffsetY = offsets.y;
+	}
+
+	private ScrollDirection scrollTopTabs(float mouseX, float mouseY) {
+		if(mouseX >= leftPos + 20 && mouseY >= topPos + 6 && mouseX < leftPos + 46 && mouseY < topPos + 16) {
+			topTabOffset = Math.min(topTabOffset + 2, 0);
+			return ScrollDirection.LEFT;
+		}
+		if(mouseX >= leftPos + 332 && mouseY >= topPos + 6 && mouseX < leftPos + 358 && mouseY < topPos + 16) {
+			topTabOffset = Math.max(topTabOffset - 2, -Math.max(topTabs - 12, 0) * 28);
+			return ScrollDirection.RIGHT;
+		}
+
+		return ScrollDirection.NONE;
+	}
+
+	private ScrollDirection scrollBottomTabs(float mouseX, float mouseY) {
+		if(mouseX >= leftPos + 20 && mouseY >= topPos + 234 && mouseX < leftPos + 46 && mouseY < topPos + 244) {
+			bottomTabOffset = Math.min(bottomTabOffset + 2, 0);
+			return ScrollDirection.LEFT;
+		}
+		if(mouseX >= leftPos + 332 && mouseY >= topPos + 234 && mouseX < leftPos + 358 && mouseY < topPos + 244) {
+			bottomTabOffset = Math.max(bottomTabOffset - 2, -Math.max(bottomTabs - 12, 0) * 28);
+			return ScrollDirection.RIGHT;
+		}
+
+		return ScrollDirection.NONE;
+	}
+
+	private enum ScrollDirection {
+		LEFT, RIGHT, NONE
 	}
 }
