@@ -1,0 +1,13 @@
+{
+	"item_icon": {
+		"id": "devotion:death_cultist_hood"
+	},
+	"difficulty": "hard",
+	"hidden": true,
+	"parents": [
+		"devotion:occult/cults"
+	],
+	"tab": "devotion:occult",
+	"posX": 224,
+	"posY": 111
+}

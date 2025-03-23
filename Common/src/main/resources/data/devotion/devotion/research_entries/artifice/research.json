@@ -1,0 +1,9 @@
+{
+	"item_icon": {
+		"id": "devotion:research_scroll"
+	},
+    "difficulty": "easy",
+	"tab": "devotion:artifice",
+	"posX": 204,
+	"posY": 170
+}

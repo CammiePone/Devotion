@@ -53,7 +53,6 @@ public class TabWidget extends AbstractButton {
 	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		PoseStack poseStack = guiGraphics.pose();
-		int u = isHoveredOrFocused() ? 0 : 24;
 
 		isHovered = Minecraft.getInstance().screen instanceof ScriptsOfDevotionScreen screen && isInsideBorder(screen, mouseX, mouseY) &&
 			mouseX >= getX() + getScrollOffset() && mouseY >= getY() + getOffsetY() &&
@@ -61,6 +60,7 @@ public class TabWidget extends AbstractButton {
 		yPos = isHoveredOrFocused() ? isFocused() ? 10 : Math.min(10, yPos + 1) : Math.max(0, yPos - 1);
 
 		float lerp = Mth.lerp(yPos / 10f, 0f, 17f);
+		int u = isHoveredOrFocused() ? 0 : 24;
 
 		poseStack.pushPose();
 

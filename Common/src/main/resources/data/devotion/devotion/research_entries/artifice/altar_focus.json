@@ -1,0 +1,13 @@
+{
+    "item_icon": {
+		"id": "devotion:altar_focus"
+	},
+    "difficulty": "easy",
+    "parents": [
+        "devotion:artifice/basics",
+        "devotion:artifice/research"
+    ],
+	"tab": "devotion:artifice",
+	"posX": 174,
+	"posY": 111
+}

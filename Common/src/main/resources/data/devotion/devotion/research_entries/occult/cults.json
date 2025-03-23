@@ -1,0 +1,9 @@
+{
+	"item_icon": {
+		"id": "minecraft:skeleton_skull"
+	},
+	"difficulty": "normal",
+	"tab": "devotion:occult",
+	"posX": 174,
+	"posY": 111
+}

@@ -3,7 +3,6 @@ package dev.cammiescorner.devotion.client.gui.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.api.book.BookEntry;
 import dev.cammiescorner.devotion.api.book.BookTab;
 import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.Research;
@@ -12,6 +11,7 @@ import dev.cammiescorner.devotion.client.gui.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.client.gui.widgets.TabWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -28,8 +28,8 @@ import java.util.*;
 
 public class ScriptsOfDevotionScreen extends Screen {
 	public static final ResourceLocation TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_frame.png");
-	private final List<TabWidget> tabDrawables = new ArrayList<>();
-	private final Map<ResearchWidget, BookTab> researchDrawables = new HashMap<>();
+	private final List<TabWidget> tabWidgets = new ArrayList<>();
+	private final Map<ResearchWidget, BookTab> researchWidgets = new HashMap<>();
 	private final RegistryAccess access = Minecraft.getInstance().level.registryAccess();
 	public ResourceLocation tabId = Devotion.id("artifice");
 	public int leftPos, topPos, topTabs, bottomTabs, topTabOffset, bottomTabOffset;
@@ -51,7 +51,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 		topTabOffset = 0;
 		bottomTabOffset = 0;
 
-		access.registryOrThrow(DevotionRegistries.BOOK_ENTRY).forEach(bookEntry -> addResearchWidget(bookEntry, new ResearchWidget(leftPos + bookEntry.x(), topPos + bookEntry.y(), bookEntry.research().value().getId(access), DevotionClient::researchWidgetClick)));
+		access.registryOrThrow(DevotionRegistries.RESEARCH).forEach(research -> addResearchWidget(research, new ResearchWidget(leftPos + research.x(), topPos + research.y(), research.getId(access), DevotionClient::researchWidgetClick)));
 		access.registryOrThrow(DevotionRegistries.BOOK_TAB).stream().sorted(Comparator.comparingInt(BookTab::order)).forEach(bookTab -> {
 			ResourceLocation tabId = bookTab.getId(access);
 			Item item = bookTab.icon().getItem();
@@ -111,8 +111,14 @@ public class ScriptsOfDevotionScreen extends Screen {
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if(button == 0) {
-			entryOffsetX = (float) Mth.clamp(entryOffsetX + dragX, -172, 172);
-			entryOffsetY = (float) Mth.clamp(entryOffsetY + dragY, -108, 108);
+			int minX = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).max(Comparator.comparingInt(AbstractWidget::getX)).orElseThrow().getX();
+			int minY = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).max(Comparator.comparingInt(AbstractWidget::getY)).orElseThrow().getY();
+			int maxX = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).min(Comparator.comparingInt(AbstractWidget::getX)).orElseThrow().getX();
+			int maxY = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).min(Comparator.comparingInt(AbstractWidget::getY)).orElseThrow().getY();
+
+			// i have no fucking clue why these numbers work, but they do so fuck it, we ball
+			entryOffsetX = (float) Mth.clamp(entryOffsetX + dragX, 228 - (172 + minX), 168 + (172 - maxX));
+			entryOffsetY = (float) Mth.clamp(entryOffsetY + dragY, 138 - (111 + minY), 72 + (111 - maxY));
 		}
 
 		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
@@ -123,16 +129,16 @@ public class ScriptsOfDevotionScreen extends Screen {
 		super.removeWidget(listener);
 
 		if(listener instanceof TabWidget)
-			tabDrawables.remove(listener);
+			tabWidgets.remove(listener);
 		if(listener instanceof ResearchWidget)
-			researchDrawables.remove(listener);
+			researchWidgets.remove(listener);
 	}
 
 	@Override
 	protected void clearWidgets() {
 		super.clearWidgets();
-		tabDrawables.clear();
-		researchDrawables.clear();
+		tabWidgets.clear();
+		researchWidgets.clear();
 	}
 
 	protected void drawBackground(GuiGraphics guiGraphics) {
@@ -163,15 +169,15 @@ public class ScriptsOfDevotionScreen extends Screen {
 		poseStack.pushPose();
 		poseStack.translate(-leftPos + entryOffsetX, -topPos + entryOffsetY, -200);
 
-		for(ResearchWidget widget : researchDrawables.keySet()) {
-			if(tabId.equals(researchDrawables.get(widget).getId(access))) {
+		for(ResearchWidget widget : researchWidgets.keySet()) {
+			if(tabId.equals(researchWidgets.get(widget).getId(access))) {
 				for(ResearchWidget parent : getParents(widget))
 					drawLine(poseStack, parent.getX() + 15, parent.getY() + 15, widget.getX() + 15, widget.getY() + 15);
 			}
 		}
 
-		for(ResearchWidget widget : researchDrawables.keySet()) {
-			if(tabId.equals(researchDrawables.get(widget).getId(access))) {
+		for(ResearchWidget widget : researchWidgets.keySet()) {
+			if(tabId.equals(researchWidgets.get(widget).getId(access))) {
 				widget.setOffset(entryOffsetX, entryOffsetY, leftPos, topPos);
 				widget.render(guiGraphics, mouseX, mouseY, delta);
 			}
@@ -182,7 +188,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 		poseStack.pushPose();
 		poseStack.translate(-leftPos, -topPos, 0);
 
-		for(TabWidget widget : tabDrawables) {
+		for(TabWidget widget : tabWidgets) {
 			widget.setScrollOffsets(topTabOffset, bottomTabOffset);
 			widget.render(guiGraphics, mouseX, mouseY, delta);
 		}
@@ -194,14 +200,14 @@ public class ScriptsOfDevotionScreen extends Screen {
 		poseStack.pushPose();
 		poseStack.translate(entryOffsetX, entryOffsetY, 0);
 
-		for(ResearchWidget widget : researchDrawables.keySet()) {
-			if(tabId.equals(researchDrawables.get(widget).getId(access)))
+		for(ResearchWidget widget : researchWidgets.keySet()) {
+			if(tabId.equals(researchWidgets.get(widget).getId(access)))
 				widget.renderTooltip(guiGraphics, poseStack, mouseX, mouseY);
 		}
 
 		poseStack.popPose();
 
-		for(TabWidget widget : tabDrawables) {
+		for(TabWidget widget : tabWidgets) {
 			poseStack.pushPose();
 			poseStack.translate(widget.isTop() ? topTabOffset : bottomTabOffset, 0, 0);
 
@@ -212,12 +218,12 @@ public class ScriptsOfDevotionScreen extends Screen {
 	}
 
 	public <T extends TabWidget> void addTabWidget(T drawable) {
-		tabDrawables.add(drawable);
+		tabWidgets.add(drawable);
 		addWidget(drawable);
 	}
 
-	public <T extends ResearchWidget> void addResearchWidget(BookEntry bookEntry, T drawable) {
-		researchDrawables.put(drawable, bookEntry.tab().value());
+	public <T extends ResearchWidget> void addResearchWidget(Research bookEntry, T drawable) {
+		researchWidgets.put(drawable, bookEntry.tab().value());
 		addWidget(drawable);
 	}
 
@@ -301,7 +307,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 		if(widget.visible) {
 			Holder.Reference<Research> research = widget.getResearch();
 
-			for(ResearchWidget parent : researchDrawables.keySet())
+			for(ResearchWidget parent : researchWidgets.keySet())
 				if(parent.visible && research.value().parentIds().contains(parent.getResearch().key().location()))
 					parents.add(parent);
 		}

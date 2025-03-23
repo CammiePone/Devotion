@@ -1,10 +1,8 @@
 package dev.cammiescorner.devotion.fabric.entrypoints;
 
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.api.book.BookPage;
-import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
-import dev.cammiescorner.devotion.api.book.BookEntry;
 import dev.cammiescorner.devotion.api.book.BookTab;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.MainHelper;
@@ -23,10 +21,8 @@ import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 public class FabricMain implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		DynamicRegistries.registerSynced(DevotionRegistries.RESEARCH, Research.DIRECT_CODEC);
 		DynamicRegistries.registerSynced(DevotionRegistries.BOOK_TAB, BookTab.DIRECT_CODEC);
-		DynamicRegistries.registerSynced(DevotionRegistries.BOOK_ENTRY, BookEntry.DIRECT_CODEC);
-		DynamicRegistries.registerSynced(DevotionRegistries.BOOK_PAGE, BookPage.DIRECT_CODEC);
+		DynamicRegistries.registerSynced(DevotionRegistries.RESEARCH, Research.DIRECT_CODEC);
 
 		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.SURFACE_STRUCTURES, ResourceKey.create(Registries.PLACED_FEATURE, Devotion.id("aura_node")));
 

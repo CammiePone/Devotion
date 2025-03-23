@@ -4,6 +4,9 @@
 	},
     "difficulty": "hard",
     "parents": [
-        "devotion:basic_mage_armor"
-    ]
+        "devotion:artifice/basic_mage_armor"
+    ],
+	"tab": "devotion:artifice",
+	"posX": 17,
+	"posY": 181
 }

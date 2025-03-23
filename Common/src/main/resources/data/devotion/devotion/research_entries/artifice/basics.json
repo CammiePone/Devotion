@@ -1,6 +1,9 @@
 {
+	"item_icon": {
+		"id": "devotion:scripts_of_devotion"
+	},
+    "difficulty": "easy",
 	"tab": "devotion:artifice",
-	"research": "devotion:root",
 	"posX": 144,
 	"posY": 170,
 	"pages": [

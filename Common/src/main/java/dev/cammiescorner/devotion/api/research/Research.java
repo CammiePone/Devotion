@@ -2,6 +2,8 @@ package dev.cammiescorner.devotion.api.research;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.cammiescorner.devotion.api.book.BookPage;
+import dev.cammiescorner.devotion.api.book.BookTab;
 import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -19,13 +21,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public record Research(ItemStack icon, Research.Difficulty difficulty, boolean isHidden, Set<ResourceLocation> parentIds) {
+public record Research(ItemStack icon, Research.Difficulty difficulty, boolean isHidden, Set<ResourceLocation> parentIds, Holder<BookTab> tab, int x, int y, Set<BookPage> pages) {
 	public static final Codec<Holder<Research>> CODEC = RegistryFixedCodec.create(DevotionRegistries.RESEARCH);
 	public static final Codec<Research> DIRECT_CODEC = RecordCodecBuilder.create(researchInstance -> researchInstance.group(
 		ItemStack.CODEC.fieldOf("item_icon").forGetter(Research::icon),
 		Difficulty.CODEC.fieldOf("difficulty").forGetter(Research::difficulty),
 		Codec.BOOL.optionalFieldOf("hidden", false).forGetter(Research::isHidden),
-		ResourceLocation.CODEC.listOf().xmap(Set::copyOf, List::copyOf).optionalFieldOf("parents", Set.of()).forGetter(Research::parentIds)
+		ResourceLocation.CODEC.listOf().xmap(Set::copyOf, List::copyOf).optionalFieldOf("parents", Set.of()).forGetter(Research::parentIds),
+		BookTab.CODEC.fieldOf("tab").forGetter(Research::tab),
+		Codec.INT.optionalFieldOf("posX", 0).forGetter(Research::x),
+		Codec.INT.optionalFieldOf("posY", 0).forGetter(Research::y),
+		BookPage.CODEC.listOf().xmap(Set::copyOf, List::copyOf).optionalFieldOf("pages", Set.of()).forGetter(Research::pages)
 	).apply(researchInstance, Research::new));
 	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Research>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DevotionRegistries.RESEARCH);
 

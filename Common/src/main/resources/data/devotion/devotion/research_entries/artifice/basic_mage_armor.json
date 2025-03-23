@@ -4,6 +4,9 @@
 	},
     "difficulty": "normal",
     "parents": [
-        "devotion:altar_focus"
-    ]
+        "devotion:artifice/altar_focus"
+    ],
+	"tab": "devotion:artifice",
+	"posX": 54,
+	"posY": 130
 }

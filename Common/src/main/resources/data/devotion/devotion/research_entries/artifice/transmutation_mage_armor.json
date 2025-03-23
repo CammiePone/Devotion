@@ -1,0 +1,12 @@
+{
+	"item_icon": {
+		"id": "devotion:transmuter_mage_hood"
+	},
+    "difficulty": "hard",
+    "parents": [
+        "devotion:artifice/basic_mage_armor"
+    ],
+	"tab": "devotion:artifice",
+	"posX": 114,
+	"posY": 111
+}
