@@ -48,22 +48,16 @@ public class ScriptsOfDevotionScreen extends Screen {
 		tabId = DevotionClient.lastGuideBookTab;
 		entryOffsetX = offsets.x;
 		entryOffsetY = offsets.y;
-		topTabOffset = 0;
-		bottomTabOffset = 0;
 
 		access.registryOrThrow(DevotionRegistries.RESEARCH).forEach(research -> addResearchWidget(research, new ResearchWidget(leftPos + research.x(), topPos + research.y(), research.getId(access), DevotionClient::researchWidgetClick)));
 		access.registryOrThrow(DevotionRegistries.BOOK_TAB).stream().sorted(Comparator.comparingInt(BookTab::order)).forEach(bookTab -> {
 			ResourceLocation tabId = bookTab.getId(access);
 			Item item = bookTab.icon().getItem();
 
-			if(bookTab.isTop()) {
+			if(bookTab.isTop())
 				addTabWidget(new TabWidget(leftPos + 21 + (26 * topTabs), topPos + 2, true, tabId, item, this::clickTab));
-				topTabs++;
-			}
-			else {
+			else
 				addTabWidget(new TabWidget(leftPos + 21 + (26 * bottomTabs), topPos + 200, false, tabId, item, this::clickTab));
-				bottomTabs++;
-			}
 		});
 	}
 
@@ -128,10 +122,17 @@ public class ScriptsOfDevotionScreen extends Screen {
 	protected void removeWidget(GuiEventListener listener) {
 		super.removeWidget(listener);
 
-		if(listener instanceof TabWidget)
+		if(listener instanceof TabWidget tab) {
 			tabWidgets.remove(listener);
-		if(listener instanceof ResearchWidget)
+
+			if(tab.isTop())
+				topTabs--;
+			else
+				bottomTabs--;
+		}
+		if(listener instanceof ResearchWidget) {
 			researchWidgets.remove(listener);
+		}
 	}
 
 	@Override
@@ -139,6 +140,8 @@ public class ScriptsOfDevotionScreen extends Screen {
 		super.clearWidgets();
 		tabWidgets.clear();
 		researchWidgets.clear();
+		topTabs = 0;
+		bottomTabs = 0;
 	}
 
 	protected void drawBackground(GuiGraphics guiGraphics) {
@@ -218,6 +221,11 @@ public class ScriptsOfDevotionScreen extends Screen {
 	}
 
 	public <T extends TabWidget> void addTabWidget(T drawable) {
+		if(drawable.isTop())
+			topTabs++;
+		else
+			bottomTabs++;
+
 		tabWidgets.add(drawable);
 		addWidget(drawable);
 	}

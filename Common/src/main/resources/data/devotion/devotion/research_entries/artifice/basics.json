@@ -9,6 +9,7 @@
 	"pages": [
 		{
 			// TODO write page stuff
+			"text_key": "devotion.basics.book_entry.1"
 		}
 	]
 }
