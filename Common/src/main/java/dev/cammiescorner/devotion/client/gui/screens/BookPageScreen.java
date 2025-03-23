@@ -112,8 +112,8 @@ public class BookPageScreen extends Screen {
 		PoseStack poseStack = guiGraphics.pose();
 
 		poseStack.pushPose();
-		poseStack.translate((378 / 2f) - ((font.width(title.getString()) * 1.25f) / 2f), 24f, 0f);
-		poseStack.scale(1.25f, 1.25f, 1f);
+		poseStack.translate((378 / 2f) - ((font.width(title.getString()) * 1.2f) / 2f), 24f, 0f);
+		poseStack.scale(1.2f, 1.2f, 1f);
 
 		font.drawInBatch(title, 0, 0, 0x000000, false, poseStack.last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0xffffff, 0);
 
