@@ -28,7 +28,6 @@ import java.util.*;
 
 public class ScriptsOfDevotionScreen extends Screen {
 	public static final ResourceLocation TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_frame.png");
-	private final LinkedHashMap<ResourceLocation, Item> tabs = new LinkedHashMap<>();
 	private final List<TabWidget> tabDrawables = new ArrayList<>();
 	private final Map<ResearchWidget, BookTab> researchDrawables = new HashMap<>();
 	private final RegistryAccess access = Minecraft.getInstance().level.registryAccess();
@@ -45,11 +44,13 @@ public class ScriptsOfDevotionScreen extends Screen {
 		super.init();
 		leftPos = (width - 378) / 2;
 		topPos = (height - 250) / 2;
+		tabId = DevotionClient.lastGuideBookTab;
 		entryOffsetX = DevotionClient.guideBookOffsetX;
 		entryOffsetY = DevotionClient.guideBookOffsetY;
 		topTabOffset = 0;
 		bottomTabOffset = 0;
 
+		access.registryOrThrow(DevotionRegistries.BOOK_ENTRY).forEach(bookEntry -> addResearchWidget(bookEntry, new ResearchWidget(leftPos + bookEntry.x(), topPos + bookEntry.y(), bookEntry.research().value().getId(access), DevotionClient::researchWidgetClick)));
 		access.registryOrThrow(DevotionRegistries.BOOK_TAB).stream().sorted(Comparator.comparingInt(BookTab::order)).forEach(bookTab -> {
 			ResourceLocation tabId = bookTab.getId(access);
 			Item item = bookTab.icon().getItem();
@@ -63,11 +64,11 @@ public class ScriptsOfDevotionScreen extends Screen {
 				bottomTabs++;
 			}
 		});
-		access.registryOrThrow(DevotionRegistries.BOOK_ENTRY).forEach(bookEntry -> addResearchWidget(bookEntry, new ResearchWidget(leftPos + bookEntry.x(), topPos + bookEntry.y(), bookEntry.research().value().getId(access), DevotionClient::researchWidgetClick)));
 	}
 
 	@Override
 	public void onClose() {
+		DevotionClient.lastGuideBookTab = tabId;
 		DevotionClient.guideBookOffsetX = entryOffsetX;
 		DevotionClient.guideBookOffsetY = entryOffsetY;
 		super.onClose();

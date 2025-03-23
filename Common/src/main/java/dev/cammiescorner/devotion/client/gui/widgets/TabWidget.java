@@ -57,7 +57,7 @@ public class TabWidget extends AbstractButton {
 		int u = 0;
 
 		if(isHoveredOrFocused()) {
-			yPos = Math.min(10, yPos + 1);
+			yPos = isFocused() ? 10 : Math.min(10, yPos + 1);
 		}
 		else {
 			u = 24;
