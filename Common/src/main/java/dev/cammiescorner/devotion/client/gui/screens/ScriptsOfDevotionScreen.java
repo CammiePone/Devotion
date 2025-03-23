@@ -30,7 +30,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 	public static final ResourceLocation TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_frame.png");
 	private final List<TabWidget> tabWidgets = new ArrayList<>();
 	private final Map<ResearchWidget, BookTab> researchWidgets = new HashMap<>();
-	private final RegistryAccess access = Minecraft.getInstance().level.registryAccess();
+	private RegistryAccess access;
 	public ResourceLocation tabId = Devotion.id("artifice");
 	public int leftPos, topPos, topTabs, bottomTabs, topTabOffset, bottomTabOffset;
 	private float entryOffsetX, entryOffsetY;
@@ -43,6 +43,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 	protected void init() {
 		super.init();
 		Vec2 offsets = DevotionClient.GUIDEBOOK_TAB_OFFSETS.getOrDefault(DevotionClient.lastGuideBookTab, new Vec2(0, 0));
+		access = Minecraft.getInstance().level.registryAccess();
 		leftPos = (width - 378) / 2;
 		topPos = (height - 250) / 2;
 		tabId = DevotionClient.lastGuideBookTab;
@@ -65,6 +66,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 	public void onClose() {
 		DevotionClient.lastGuideBookTab = tabId;
 		DevotionClient.GUIDEBOOK_TAB_OFFSETS.put(tabId, new Vec2(entryOffsetX, entryOffsetY));
+		DevotionClient.lastGuideBookScreen = this;
 		super.onClose();
 	}
 
@@ -139,7 +141,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 256, 378, 250, 512, 512);
 	}
 
-	protected void drawForeground(GuiGraphics guiGraphics, float mouseX, float mouseY) {
+	protected void drawForeground(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 200, 0, 0, 378, 250, 512, 512); // main frame
 
@@ -152,9 +154,9 @@ public class ScriptsOfDevotionScreen extends Screen {
 
 		if(bottomTabs > 12) {
 			if(bottomTabOffset < 0)
-				guiGraphics.blit(TEXTURE, leftPos + 21, topPos + 235, 200, 384, scrollBottomTabs(mouseX, mouseY) == ScrollDirection.LEFT ? 24 : 16, 24, 8, 512, 512); // bottom left arrow
+				guiGraphics.blit(TEXTURE, leftPos + 21, topPos + 235, 200, 384, scrollBottomTabs(mouseX, mouseY) == ScrollDirection.LEFT ? 32 : 24, 24, 8, 512, 512); // bottom left arrow
 			if(bottomTabOffset > -Math.max(bottomTabs - 12, 0) * 28)
-				guiGraphics.blit(TEXTURE, leftPos + 333, topPos + 235, 200, 408, scrollBottomTabs(mouseX, mouseY) == ScrollDirection.RIGHT ? 24 : 16, 24, 8, 512, 512); // bottom right arrow
+				guiGraphics.blit(TEXTURE, leftPos + 333, topPos + 235, 200, 408, scrollBottomTabs(mouseX, mouseY) == ScrollDirection.RIGHT ? 32 : 24, 24, 8, 512, 512); // bottom right arrow
 		}
 	}
 
@@ -220,8 +222,8 @@ public class ScriptsOfDevotionScreen extends Screen {
 		addWidget(drawable);
 	}
 
-	public <T extends ResearchWidget> void addResearchWidget(Research bookEntry, T drawable) {
-		researchWidgets.put(drawable, bookEntry.tab().value());
+	public <T extends ResearchWidget> void addResearchWidget(Research research, T drawable) {
+		researchWidgets.put(drawable, research.tab().value());
 		addWidget(drawable);
 	}
 
@@ -322,7 +324,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 		entryOffsetY = offsets.y;
 	}
 
-	private ScrollDirection scrollTopTabs(float mouseX, float mouseY) {
+	private ScrollDirection scrollTopTabs(int mouseX, int mouseY) {
 		if(mouseX >= leftPos + 20 && mouseY >= topPos + 6 && mouseX < leftPos + 46 && mouseY < topPos + 16) {
 			topTabOffset = Math.min(topTabOffset + 2, 0);
 			return ScrollDirection.LEFT;
@@ -335,7 +337,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 		return ScrollDirection.NONE;
 	}
 
-	private ScrollDirection scrollBottomTabs(float mouseX, float mouseY) {
+	private ScrollDirection scrollBottomTabs(int mouseX, int mouseY) {
 		if(mouseX >= leftPos + 20 && mouseY >= topPos + 234 && mouseX < leftPos + 46 && mouseY < topPos + 244) {
 			bottomTabOffset = Math.min(bottomTabOffset + 2, 0);
 			return ScrollDirection.LEFT;

@@ -162,6 +162,8 @@
 	"devotion_riddle.specialization_8": "This is filler text #9 for a Specialization riddle.",
 	"devotion_riddle.specialization_9": "This is filler text #10 for a Specialization riddle.",
 
+	"devotion_research.devotion.artifice.basics": "The Basics",
+
 	"research_error.devotion.not_enough_aura": "You don't have enough Aura to learn this.",
 	"research_error.devotion.already_known": "You've already learned this research!",
 	"research_error.devotion.dont_know_parents": "Perhaps you should learn more before trying to understand this.",

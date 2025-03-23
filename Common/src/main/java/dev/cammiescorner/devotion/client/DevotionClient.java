@@ -3,8 +3,11 @@ package dev.cammiescorner.devotion.client;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import commonnetwork.api.Network;
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.Research;
+import dev.cammiescorner.devotion.client.gui.screens.BookPageScreen;
 import dev.cammiescorner.devotion.client.gui.screens.ResearchScreen;
+import dev.cammiescorner.devotion.client.gui.screens.ScriptsOfDevotionScreen;
 import dev.cammiescorner.devotion.client.gui.widgets.ResearchWidget;
 import dev.cammiescorner.devotion.client.models.armor.DeathCultLeaderArmorModel;
 import dev.cammiescorner.devotion.client.models.armor.DeathCultistRobesModel;
@@ -31,8 +34,10 @@ import dev.upcraft.sparkweave.api.client.event.*;
 import dev.upcraft.sparkweave.api.entrypoint.ClientEntryPoint;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -57,6 +62,7 @@ public class DevotionClient implements ClientEntryPoint {
 	public static final ModelResourceLocation STAFF_RESOURCE_LOCATION = ModelResourceLocation.inventory(Devotion.id("staff"));
 	public static final Map<ResourceLocation, Vec2> GUIDEBOOK_TAB_OFFSETS = new HashMap<>();
 	public static ResourceLocation lastGuideBookTab = Devotion.id("artifice");
+	public static Screen lastGuideBookScreen = new ScriptsOfDevotionScreen();
 
 	@Override
 	public void onInitializeClient(ModContainer mod) {
@@ -105,8 +111,12 @@ public class DevotionClient implements ClientEntryPoint {
 		if(player != null) {
 			ResourceKey<Research> researchKey = widget.getResearch().key();
 
-			if(MainHelper.getResearchIds(player).contains(researchKey.location()))
-				return; // TODO open screen if player knows the research already
+			if(MainHelper.getResearchIds(player).contains(researchKey.location())) {
+				Holder.Reference<Research> research = player.registryAccess().lookupOrThrow(DevotionRegistries.RESEARCH).getOrThrow(researchKey);
+
+				Minecraft.getInstance().setScreen(new BookPageScreen(research));
+				return;
+			}
 
 			Network.getNetworkHandler().sendToServer(new ServerboundGiveResearchScrollPacket(researchKey));
 		}

@@ -7,9 +7,12 @@
 	"posX": 144,
 	"posY": 170,
 	"pages": [
+		// TODO write page stuff
 		{
-			// TODO write page stuff
 			"text_key": "devotion.basics.book_entry.1"
+		},
+		{
+			"text_key": "devotion.basics.book_entry.2"
 		}
 	]
 }

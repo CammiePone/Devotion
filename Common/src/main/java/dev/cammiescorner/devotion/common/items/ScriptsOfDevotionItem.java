@@ -1,6 +1,6 @@
 package dev.cammiescorner.devotion.common.items;
 
-import dev.cammiescorner.devotion.client.gui.screens.ScriptsOfDevotionScreen;
+import dev.cammiescorner.devotion.client.DevotionClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,7 +19,7 @@ public class ScriptsOfDevotionItem extends Item {
 		ItemStack stack = player.getItemInHand(usedHand);
 
 		if(level.isClientSide())
-			Minecraft.getInstance().setScreen(new ScriptsOfDevotionScreen());
+			Minecraft.getInstance().setScreen(DevotionClient.lastGuideBookScreen); // TODO make a packet, will crash on servers otherwise
 
 		return InteractionResultHolder.success(stack);
 	}
