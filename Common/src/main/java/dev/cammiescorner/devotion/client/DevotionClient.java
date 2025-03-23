@@ -37,9 +37,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.phys.Vec2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class DevotionClient implements ClientEntryPoint {
@@ -52,8 +55,8 @@ public class DevotionClient implements ClientEntryPoint {
 	private static final ResourceLocation MANIPULATOR_MAGE_ROBES = Devotion.id("textures/entity/armor/manipulator_mage_robes.png");
 	public static final List<AuraNodeRenderer> AURA_NODE_RENDERERS = new ArrayList<>();
 	public static final ModelResourceLocation STAFF_RESOURCE_LOCATION = ModelResourceLocation.inventory(Devotion.id("staff"));
+	public static final Map<ResourceLocation, Vec2> GUIDEBOOK_TAB_OFFSETS = new HashMap<>();
 	public static ResourceLocation lastGuideBookTab = Devotion.id("artifice");
-	public static float guideBookOffsetX, guideBookOffsetY;
 
 	@Override
 	public void onInitializeClient(ModContainer mod) {

@@ -42,11 +42,12 @@ public class ScriptsOfDevotionScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
+		Vec2 offsets = DevotionClient.GUIDEBOOK_TAB_OFFSETS.getOrDefault(DevotionClient.lastGuideBookTab, new Vec2(0, 0));
 		leftPos = (width - 378) / 2;
 		topPos = (height - 250) / 2;
 		tabId = DevotionClient.lastGuideBookTab;
-		entryOffsetX = DevotionClient.guideBookOffsetX;
-		entryOffsetY = DevotionClient.guideBookOffsetY;
+		entryOffsetX = offsets.x;
+		entryOffsetY = offsets.y;
 		topTabOffset = 0;
 		bottomTabOffset = 0;
 
@@ -69,8 +70,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 	@Override
 	public void onClose() {
 		DevotionClient.lastGuideBookTab = tabId;
-		DevotionClient.guideBookOffsetX = entryOffsetX;
-		DevotionClient.guideBookOffsetY = entryOffsetY;
+		DevotionClient.GUIDEBOOK_TAB_OFFSETS.put(tabId, new Vec2(entryOffsetX, entryOffsetY));
 		super.onClose();
 	}
 
@@ -310,8 +310,11 @@ public class ScriptsOfDevotionScreen extends Screen {
 	}
 
 	private void clickTab(TabWidget widget) {
-		entryOffsetX = 0;
-		entryOffsetY = 0;
+		Vec2 offsets = DevotionClient.GUIDEBOOK_TAB_OFFSETS.getOrDefault(widget.getTabId(), new Vec2(0, 0));
+		DevotionClient.GUIDEBOOK_TAB_OFFSETS.put(tabId, new Vec2(entryOffsetX, entryOffsetY));
+
 		tabId = widget.getTabId();
+		entryOffsetX = offsets.x;
+		entryOffsetY = offsets.y;
 	}
 }
