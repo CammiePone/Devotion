@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cammiescorner.devotion.Devotion;
 import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.Research;
+import dev.cammiescorner.devotion.client.gui.screens.ScriptsOfDevotionScreen;
 import dev.cammiescorner.devotion.common.MainHelper;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -119,12 +120,16 @@ public class ResearchWidget extends AbstractButton {
 	}
 
 	public void renderTooltip(GuiGraphics guiGraphics, PoseStack poseStack, int mouseX, int mouseY) {
-		if(isHovered() && active && guiGraphics.containsPointInScissor(mouseX, mouseY)) {
+		if(Minecraft.getInstance().screen instanceof ScriptsOfDevotionScreen screen && isHovered() && active && isInsideBorder(screen, mouseX, mouseY)) {
 			poseStack.pushPose();
 			poseStack.translate(-offsetX, -offsetY, 0);
 			guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable(Util.makeDescriptionId("devotion_research", research.key().location())), mouseX, mouseY);
 			poseStack.popPose();
 		}
+	}
+
+	private boolean isInsideBorder(ScriptsOfDevotionScreen screen, int mouseX, int mouseY) {
+		return mouseX >= screen.leftPos + 16 && mouseY >= screen.topPos + 16 && mouseX < screen.leftPos + 362 && mouseY < screen.topPos + 234;
 	}
 
 	public void setOffset(float offsetX, float offsetY, int leftPos, int topPos) {

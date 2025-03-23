@@ -117,8 +117,8 @@ public class ScriptsOfDevotionScreen extends Screen {
 			int maxY = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).min(Comparator.comparingInt(AbstractWidget::getY)).orElseThrow().getY();
 
 			// i have no fucking clue why these numbers work, but they do so fuck it, we ball
-			entryOffsetX = (float) Mth.clamp(entryOffsetX + dragX, 228 - (172 + minX), 168 + (172 - maxX));
-			entryOffsetY = (float) Mth.clamp(entryOffsetY + dragY, 138 - (111 + minY), 72 + (111 - maxY));
+			entryOffsetX = (float) Mth.clamp(entryOffsetX + dragX, minX - (172 + minX), (maxX + (172 - maxX)) * 2 - 22);
+			entryOffsetY = (float) Mth.clamp(entryOffsetY + dragY, minY - (111 + minY) - 38, (maxY + (111 - maxY)) + 11);
 		}
 
 		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
