@@ -98,6 +98,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 		drawForeground(guiGraphics);
 		drawWidgetTooltips(guiGraphics, poseStack, mouseX, mouseY);
 
+		// TODO figure out why the offset doesnt change, but the tabs move a lot anyways when resizing window
 		if(mouseX >= leftPos + 20 && mouseY >= topPos + 6 && mouseX < leftPos + 46 && mouseY < topPos + 16)
 			topTabOffset = Math.min(topTabOffset + 2, 0);
 		if(mouseX >= leftPos + 332 && mouseY >= topPos + 6 && mouseX < leftPos + 358 && mouseY < topPos + 16)
@@ -110,15 +111,14 @@ public class ScriptsOfDevotionScreen extends Screen {
 
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if(button == 0) {
-			int minX = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).max(Comparator.comparingInt(AbstractWidget::getX)).orElseThrow().getX();
-			int minY = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).max(Comparator.comparingInt(AbstractWidget::getY)).orElseThrow().getY();
-			int maxX = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).min(Comparator.comparingInt(AbstractWidget::getX)).orElseThrow().getX();
-			int maxY = researchWidgets.keySet().stream().filter(widget -> researchWidgets.get(widget).getId(access).equals(tabId) && widget.visible).min(Comparator.comparingInt(AbstractWidget::getY)).orElseThrow().getY();
+		if(button == 0 && researchWidgets.containsValue(access.registryOrThrow(DevotionRegistries.BOOK_TAB).get(tabId))) {
+			int minX = researchWidgets.keySet().stream().filter(widget -> widget.visible && researchWidgets.get(widget).getId(access).equals(tabId)).max(Comparator.comparingInt(AbstractWidget::getX)).orElseThrow().getX();
+			int minY = researchWidgets.keySet().stream().filter(widget -> widget.visible && researchWidgets.get(widget).getId(access).equals(tabId)).max(Comparator.comparingInt(AbstractWidget::getY)).orElseThrow().getY();
+			int maxX = researchWidgets.keySet().stream().filter(widget -> widget.visible && researchWidgets.get(widget).getId(access).equals(tabId)).min(Comparator.comparingInt(AbstractWidget::getX)).orElseThrow().getX();
+			int maxY = researchWidgets.keySet().stream().filter(widget -> widget.visible && researchWidgets.get(widget).getId(access).equals(tabId)).min(Comparator.comparingInt(AbstractWidget::getY)).orElseThrow().getY();
 
-			// i have no fucking clue why these numbers work, but they do so fuck it, we ball
-			entryOffsetX = (float) Mth.clamp(entryOffsetX + dragX, minX - (172 + minX), (maxX + (172 - maxX)) * 2 - 22);
-			entryOffsetY = (float) Mth.clamp(entryOffsetY + dragY, minY - (111 + minY) - 38, (maxY + (111 - maxY)) + 11);
+			entryOffsetX = (float) Mth.clamp(entryOffsetX + dragX, (leftPos - minX) + 32, (leftPos + 378 - maxX) - 62);
+			entryOffsetY = (float) Mth.clamp(entryOffsetY + dragY, (topPos - minY) + 32, (topPos + 250 - maxY) - 62);
 		}
 
 		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);

@@ -3,7 +3,6 @@
 		"id": "devotion:death_cultist_hood"
 	},
 	"difficulty": "hard",
-	"hidden": true,
 	"parents": [
 		"devotion:occult/cults"
 	],
