@@ -310,6 +310,8 @@ public class ScriptsOfDevotionScreen extends Screen {
 	}
 
 	private void clickTab(TabWidget widget) {
+		entryOffsetX = 0;
+		entryOffsetY = 0;
 		tabId = widget.getTabId();
 	}
 }
