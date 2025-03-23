@@ -2,5 +2,10 @@
 	"tab": "devotion:artifice",
 	"research": "devotion:root",
 	"posX": 144,
-	"posY": 170
+	"posY": 170,
+	"pages": [
+		{
+			// TODO write page stuff
+		}
+	]
 }

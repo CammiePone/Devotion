@@ -3,9 +3,9 @@ package dev.cammiescorner.devotion.client.gui.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.cammiescorner.devotion.Devotion;
-import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.book.BookEntry;
 import dev.cammiescorner.devotion.api.book.BookTab;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
 import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.gui.widgets.ResearchWidget;
@@ -25,17 +25,16 @@ import net.minecraft.world.phys.Vec2;
 import org.joml.Matrix4f;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScriptsOfDevotionScreen extends Screen {
 	public static final ResourceLocation TEXTURE = Devotion.id("textures/gui/scripts_of_devotion_frame.png");
 	private final LinkedHashMap<ResourceLocation, Item> tabs = new LinkedHashMap<>();
 	private final List<TabWidget> tabDrawables = new ArrayList<>();
 	private final Map<ResearchWidget, BookTab> researchDrawables = new HashMap<>();
-	private final RegistryAccess access = Minecraft.getInstance().player.registryAccess();
+	private final RegistryAccess access = Minecraft.getInstance().level.registryAccess();
 	public ResourceLocation tabId = Devotion.id("artifice");
-	public int leftPos, topPos;
-	public float offsetX, offsetY;
+	public int leftPos, topPos, topTabs, bottomTabs, topTabOffset, bottomTabOffset;
+	private float entryOffsetX, entryOffsetY;
 
 	public ScriptsOfDevotionScreen() {
 		super(Component.empty());
@@ -44,33 +43,33 @@ public class ScriptsOfDevotionScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
-		AtomicInteger tabCount = new AtomicInteger();
 		leftPos = (width - 378) / 2;
 		topPos = (height - 250) / 2;
-		offsetX = DevotionClient.guideBookOffsetX;
-		offsetY = DevotionClient.guideBookOffsetY;
+		entryOffsetX = DevotionClient.guideBookOffsetX;
+		entryOffsetY = DevotionClient.guideBookOffsetY;
+		topTabOffset = 0;
+		bottomTabOffset = 0;
 
 		access.registryOrThrow(DevotionRegistries.BOOK_TAB).stream().sorted(Comparator.comparingInt(BookTab::order)).forEach(bookTab -> {
-			if(tabCount.get() >= 26)
-				return;
-
 			ResourceLocation tabId = bookTab.getId(access);
 			Item item = bookTab.icon().getItem();
 
-			if(tabCount.get() < 13)
-				addTabChild(new TabWidget(leftPos + 21 + (26 * tabCount.get()), topPos + 2, true, tabId, item, this::clickTab));
-			else
-				addTabChild(new TabWidget(leftPos + 21 + (26 * (tabCount.get() - 13)), topPos + 100, false, tabId, item, this::clickTab));
-
-			tabCount.getAndIncrement();
+			if(bookTab.isTop()) {
+				addTabWidget(new TabWidget(leftPos + 21 + (26 * topTabs), topPos + 2, true, tabId, item, this::clickTab));
+				topTabs++;
+			}
+			else {
+				addTabWidget(new TabWidget(leftPos + 21 + (26 * bottomTabs), topPos + 200, false, tabId, item, this::clickTab));
+				bottomTabs++;
+			}
 		});
 		access.registryOrThrow(DevotionRegistries.BOOK_ENTRY).forEach(bookEntry -> addResearchWidget(bookEntry, new ResearchWidget(leftPos + bookEntry.x(), topPos + bookEntry.y(), bookEntry.research().value().getId(access), DevotionClient::researchWidgetClick)));
 	}
 
 	@Override
 	public void onClose() {
-		DevotionClient.guideBookOffsetX = offsetX;
-		DevotionClient.guideBookOffsetY = offsetY;
+		DevotionClient.guideBookOffsetX = entryOffsetX;
+		DevotionClient.guideBookOffsetY = entryOffsetY;
 		super.onClose();
 	}
 
@@ -88,20 +87,31 @@ public class ScriptsOfDevotionScreen extends Screen {
 		guiGraphics.enableScissor(leftPos + 16, topPos + 16, leftPos + 362, topPos + 234);
 		poseStack.pushPose();
 		poseStack.translate(leftPos, topPos, 0);
+
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		drawWidgets(guiGraphics, poseStack, mouseX, mouseY, partialTick);
+
 		poseStack.popPose();
 		guiGraphics.disableScissor();
 
 		drawForeground(guiGraphics);
 		drawWidgetTooltips(guiGraphics, poseStack, mouseX, mouseY);
+
+		if(mouseX >= leftPos + 20 && mouseY >= topPos + 6 && mouseX < leftPos + 46 && mouseY < topPos + 16)
+			topTabOffset = Math.min(topTabOffset + 2, 0);
+		if(mouseX >= leftPos + 332 && mouseY >= topPos + 6 && mouseX < leftPos + 358 && mouseY < topPos + 16)
+			topTabOffset = Math.max(topTabOffset - 2, -Math.max(topTabs - 13, 0) * 26);
+		if(mouseX >= leftPos + 20 && mouseY >= topPos + 234 && mouseX < leftPos + 46 && mouseY < topPos + 244)
+			bottomTabOffset = Math.min(bottomTabOffset + 2, 0);
+		if(mouseX >= leftPos + 332 && mouseY >= topPos + 234 && mouseX < leftPos + 358 && mouseY < topPos + 244)
+			bottomTabOffset = Math.max(bottomTabOffset - 2, -Math.max(bottomTabs - 13, 0) * 26);
 	}
 
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if(button == 0) {
-			offsetX = (float) Mth.clamp(offsetX + dragX, -172, 172);
-			offsetY = (float) Mth.clamp(offsetY + dragY, -108, 108);
+			entryOffsetX = (float) Mth.clamp(entryOffsetX + dragX, -172, 172);
+			entryOffsetY = (float) Mth.clamp(entryOffsetY + dragY, -108, 108);
 		}
 
 		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
@@ -131,12 +141,26 @@ public class ScriptsOfDevotionScreen extends Screen {
 
 	protected void drawForeground(GuiGraphics guiGraphics) {
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-		guiGraphics.blit(TEXTURE, leftPos, topPos, 110, 0, 0, 378, 250, 512, 512);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 200, 0, 0, 378, 250, 512, 512); // main frame
+
+		if(topTabs > 13) {
+			if(topTabOffset < 0)
+				guiGraphics.blit(TEXTURE, leftPos + 21, topPos + 7, 200, 384, 0, 24, 8, 512, 512); // top left arrow
+			if(topTabOffset > -Math.max(topTabs - 13, 0) * 26)
+				guiGraphics.blit(TEXTURE, leftPos + 333, topPos + 7, 200, 408, 0, 24, 8, 512, 512); // top right arrow
+		}
+
+		if(bottomTabs > 13) {
+			if(bottomTabOffset < 0)
+				guiGraphics.blit(TEXTURE, leftPos + 21, topPos + 235, 200, 384, 0, 24, 8, 512, 512); // bottom left arrow
+			if(bottomTabOffset > -Math.max(bottomTabs - 13, 0) * 26)
+				guiGraphics.blit(TEXTURE, leftPos + 333, topPos + 235, 200, 408, 0, 24, 8, 512, 512); // bottom right arrow
+		}
 	}
 
 	protected void drawWidgets(GuiGraphics guiGraphics, PoseStack poseStack, int mouseX, int mouseY, float delta) {
 		poseStack.pushPose();
-		poseStack.translate(-leftPos + offsetX, -topPos + offsetY, -200);
+		poseStack.translate(-leftPos + entryOffsetX, -topPos + entryOffsetY, -200);
 
 		for(ResearchWidget widget : researchDrawables.keySet()) {
 			if(tabId.equals(researchDrawables.get(widget).getId(access))) {
@@ -147,7 +171,7 @@ public class ScriptsOfDevotionScreen extends Screen {
 
 		for(ResearchWidget widget : researchDrawables.keySet()) {
 			if(tabId.equals(researchDrawables.get(widget).getId(access))) {
-				widget.setOffset(offsetX, offsetY, leftPos, topPos);
+				widget.setOffset(entryOffsetX, entryOffsetY, leftPos, topPos);
 				widget.render(guiGraphics, mouseX, mouseY, delta);
 			}
 		}
@@ -157,15 +181,17 @@ public class ScriptsOfDevotionScreen extends Screen {
 		poseStack.pushPose();
 		poseStack.translate(-leftPos, -topPos, 0);
 
-		for(TabWidget widget : tabDrawables)
+		for(TabWidget widget : tabDrawables) {
+			widget.setScrollOffsets(topTabOffset, bottomTabOffset);
 			widget.render(guiGraphics, mouseX, mouseY, delta);
+		}
 
 		poseStack.popPose();
 	}
 
 	protected void drawWidgetTooltips(GuiGraphics guiGraphics, PoseStack poseStack, int mouseX, int mouseY) {
 		poseStack.pushPose();
-		poseStack.translate(offsetX, offsetY, 0);
+		poseStack.translate(entryOffsetX, entryOffsetY, 0);
 
 		for(ResearchWidget widget : researchDrawables.keySet()) {
 			if(tabId.equals(researchDrawables.get(widget).getId(access)))
@@ -173,11 +199,20 @@ public class ScriptsOfDevotionScreen extends Screen {
 		}
 
 		poseStack.popPose();
+
+		for(TabWidget widget : tabDrawables) {
+			poseStack.pushPose();
+			poseStack.translate(widget.isTop() ? topTabOffset : bottomTabOffset, 0, 0);
+
+			widget.renderTooltip(guiGraphics, poseStack, mouseX, mouseY);
+
+			poseStack.popPose();
+		}
 	}
 
-	public <T extends TabWidget> T addTabChild(T drawable) {
+	public <T extends TabWidget> void addTabWidget(T drawable) {
 		tabDrawables.add(drawable);
-		return addWidget(drawable);
+		addWidget(drawable);
 	}
 
 	public <T extends ResearchWidget> void addResearchWidget(BookEntry bookEntry, T drawable) {

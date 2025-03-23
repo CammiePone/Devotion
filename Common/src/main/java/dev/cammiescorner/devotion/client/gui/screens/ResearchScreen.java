@@ -40,8 +40,8 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
 	private final List<Vec2> postions = Arrays.asList(
 		new Vec2(268, 52),  // top
 		new Vec2(328, 97),  // top right
-		new Vec2(305, 167), // bottom right
-		new Vec2(231, 167), // bottom left
+		new Vec2(305, 167), // isTop right
+		new Vec2(231, 167), // isTop left
 		new Vec2(208, 97),  // top left
 		new Vec2(268, 116)  // center
 	);
