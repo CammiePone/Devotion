@@ -84,7 +84,7 @@ public class BookPageScreen extends Screen {
 
 	@Override
 	public Component getNarrationMessage() {
-		return Component.translatable(pages.get(index).text());
+		return !pages.isEmpty() ? Component.translatable(pages.get(index).text()) : Component.empty();
 	}
 
 	public <T extends ArrowWidget> void addArrowWidget(T drawable) {
@@ -108,7 +108,6 @@ public class BookPageScreen extends Screen {
 	}
 
 	private void drawContents(GuiGraphics guiGraphics) {
-		BookPage page = pages.get(index);
 		PoseStack poseStack = guiGraphics.pose();
 
 		poseStack.pushPose();
@@ -119,14 +118,16 @@ public class BookPageScreen extends Screen {
 
 		poseStack.popPose();
 
-		poseStack.pushPose();
-		poseStack.translate(32f, 48f, 1f);
-		poseStack.scale(0.8f, 0.8f, 1f);
+		if(!pages.isEmpty()) {
+			poseStack.pushPose();
+			poseStack.translate(32f, 48f, 1f);
+			poseStack.scale(0.8f, 0.8f, 1f);
 
-		// TODO format main body text & pictures
-		font.drawInBatch(Component.translatable(page.text()), 0, 0, 0x000000, false, poseStack.last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0xffffff, 0);
+			// TODO format main body text & pictures
+			font.drawInBatch(Component.translatable(pages.get(index).text()), 0, 0, 0x000000, false, poseStack.last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0xffffff, 0);
 
-		poseStack.popPose();
+			poseStack.popPose();
+		}
 	}
 
 	private void clickNext(ArrowWidget arrowWidget) {

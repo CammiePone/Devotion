@@ -3,6 +3,7 @@
 		"id": "devotion:research_scroll"
 	},
     "difficulty": "easy",
+	"known_by_default": true,
 	"tab": "devotion:artifice",
 	"posX": 204,
 	"posY": 170

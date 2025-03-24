@@ -3,6 +3,7 @@
 		"id": "devotion:scripts_of_devotion"
 	},
     "difficulty": "easy",
+	"known_by_default": true,
 	"tab": "devotion:artifice",
 	"posX": 144,
 	"posY": 170,

@@ -1,11 +1,15 @@
 package dev.cammiescorner.devotion.neoforge.common;
 
 import dev.cammiescorner.devotion.Devotion;
+import dev.cammiescorner.devotion.api.registries.DevotionRegistries;
+import dev.cammiescorner.devotion.api.research.Research;
 import dev.cammiescorner.devotion.api.spells.AuraType;
 import dev.cammiescorner.devotion.common.MainHelper;
 import dev.cammiescorner.devotion.neoforge.common.attachments.entity.AuraAttachment;
 import dev.cammiescorner.devotion.neoforge.entrypoints.NeoMain;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -26,6 +30,15 @@ public class CommonGameEvents {
 
 		if(entity instanceof Player)
 			entity.getData(NeoMain.KNOWN_RESEARCH);
+
+		if(entity instanceof ServerPlayer player) {
+			RegistryAccess access = player.registryAccess();
+
+			for(Research research : access.registryOrThrow(DevotionRegistries.RESEARCH)) {
+				if(research.knownByDefault() && !MainHelper.getResearchIds(player).contains(research.getId(access)))
+					MainHelper.giveResearch(player, research, false);
+			}
+		}
 	}
 
 	@SubscribeEvent

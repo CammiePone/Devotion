@@ -12,8 +12,11 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 
@@ -33,6 +36,16 @@ public class FabricMain implements ModInitializer {
 
 			for(AuraType auraType : AuraType.values())
 				MainHelper.setAura(newPlayer, auraType, MainHelper.getAura(oldPlayer, auraType));
+		});
+
+		ServerPlayConnectionEvents.JOIN.register((packetListener, packetSender, server) -> {
+			ServerPlayer player = packetListener.player;
+			RegistryAccess access = player.registryAccess();
+
+			for(Research research : access.registryOrThrow(DevotionRegistries.RESEARCH)) {
+				if(research.knownByDefault() && !MainHelper.getResearchIds(player).contains(research.getId(access)))
+					MainHelper.giveResearch(player, research, false);
+			}
 		});
 	}
 }

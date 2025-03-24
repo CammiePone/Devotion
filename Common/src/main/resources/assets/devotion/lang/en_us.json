@@ -162,7 +162,12 @@
 	"devotion_riddle.specialization_8": "This is filler text #9 for a Specialization riddle.",
 	"devotion_riddle.specialization_9": "This is filler text #10 for a Specialization riddle.",
 
+	"devotion_tab.devotion.artifice": "Artifice",
+	"devotion_tab.devotion.spellcraft": "Spellcraft",
+	"devotion_tab.devotion.occult": "Occult",
+
 	"devotion_research.devotion.artifice.basics": "The Basics",
+	"devotion_research.devotion.artifice.research": "How To Research",
 
 	"research_error.devotion.not_enough_aura": "You don't have enough Aura to learn this.",
 	"research_error.devotion.already_known": "You've already learned this research!",

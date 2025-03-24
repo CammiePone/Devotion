@@ -21,13 +21,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public record Research(ItemStack icon, Research.Difficulty difficulty, boolean isHidden, Set<ResourceLocation> parentIds, Holder<BookTab> tab, int x, int y, List<BookPage> pages) {
+public record Research(ItemStack icon, Research.Difficulty difficulty, boolean isHidden, boolean knownByDefault, Set<ResourceLocation> parentIds, Holder<BookTab> tab, int x, int y, List<BookPage> pages) {
 	public static final Codec<Holder<Research>> CODEC = RegistryFixedCodec.create(DevotionRegistries.RESEARCH);
 	public static final Codec<Research> DIRECT_CODEC = RecordCodecBuilder.create(researchInstance -> researchInstance.group(
 		ItemStack.CODEC.fieldOf("item_icon").forGetter(Research::icon),
 		Difficulty.CODEC.fieldOf("difficulty").forGetter(Research::difficulty),
 		Codec.BOOL.optionalFieldOf("hidden", false).forGetter(Research::isHidden),
-		ResourceLocation.CODEC.listOf().xmap(Set::copyOf, List::copyOf).optionalFieldOf("parents", Set.of()).forGetter(Research::parentIds),
+		Codec.BOOL.optionalFieldOf("known_by_default", false).forGetter(Research::knownByDefault),
+		ResourceLocation.CODEC.listOf().xmap(java.util.Set::copyOf, List::copyOf).optionalFieldOf("parents", java.util.Set.of()).forGetter(Research::parentIds),
 		BookTab.CODEC.fieldOf("tab").forGetter(Research::tab),
 		Codec.INT.optionalFieldOf("posX", 0).forGetter(Research::x),
 		Codec.INT.optionalFieldOf("posY", 0).forGetter(Research::y),
