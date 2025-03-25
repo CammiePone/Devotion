@@ -8,7 +8,6 @@ import dev.cammiescorner.devotion.client.DevotionClient;
 import dev.cammiescorner.devotion.client.gui.widgets.ArrowWidget;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -114,7 +113,7 @@ public class BookPageScreen extends Screen {
 		poseStack.translate((378 / 2f) - ((font.width(title.getString()) * 1.2f) / 2f), 24f, 0f);
 		poseStack.scale(1.2f, 1.2f, 1f);
 
-		font.drawInBatch(title, 0, 0, 0x000000, false, poseStack.last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0xffffff, 0);
+		guiGraphics.drawString(font, title, 0, 0, 0x000000, false);
 
 		poseStack.popPose();
 
@@ -124,7 +123,7 @@ public class BookPageScreen extends Screen {
 			poseStack.scale(0.8f, 0.8f, 1f);
 
 			// TODO format main body text & pictures
-			font.drawInBatch(Component.translatable(pages.get(index).text()), 0, 0, 0x000000, false, poseStack.last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0xffffff, 0);
+			guiGraphics.drawString(font, Component.translatable(pages.get(index).text()), 0, 0, 0x000000, false);
 
 			poseStack.popPose();
 		}
